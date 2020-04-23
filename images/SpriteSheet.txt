@@ -1,0 +1,32 @@
+weapon_sword_1 224, 128
+goblin_knife 240, 128   
+
+knight_idle_anim 0, 144, 16, 16, 6
+knight_run_anim 0, 160 , 16, 16, 6
+
+fly_anim_anim 0, 64, 16, 16, 4
+goblin_idle_anim 0, 80, 16, 16, 6
+goblin_run_anim 0, 96, 16, 16, 6
+slime_idle_anim 0, 112, 16, 16, 6
+slime_run_anim 0, 128, 16, 16, 6
+
+empty_gray 144, 0
+empty_brown 160, 0
+
+wall_1 240, 0
+wall_2 256, 0
+wall_3 272, 0
+wall_4 240, 16
+wall_5 256, 16
+wall_6 272, 16
+ 
+floor_1 96, 16
+floor_2 112, 16
+floor_3 128, 16
+floor_4 96, 32
+floor_5 128, 32
+floor_6 96, 48
+floor_7 128, 48
+
+corridor_1 80, 32
+corridor_2 80, 48
