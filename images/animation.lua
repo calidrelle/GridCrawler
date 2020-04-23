@@ -7,7 +7,11 @@ this.createNew = function(quad, nbFrames, secPerFrame)
     local duration = secPerFrame
     local timer = secPerFrame
     local frame = 1
-    local x, y, w, h = quad:getViewport()
+    local qx, qy, qw, qh = quad:getViewport() -- si on recréé le player, le viewport se décale
+
+    function anim:reset()
+        quad:setViewport(qx, qy, qw, qh)
+    end
 
     function anim:update(dt)
         timer = timer - dt
@@ -17,7 +21,7 @@ this.createNew = function(quad, nbFrames, secPerFrame)
             if frame > anim.nbFrames then
                 frame = 1
             end
-            quad:setViewport(x + TILESIZE * (frame - 1), y, w, h)
+            quad:setViewport(qx + TILESIZE * (frame - 1), qy, qw, qh)
         end
     end
 

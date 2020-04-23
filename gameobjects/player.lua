@@ -20,6 +20,11 @@ this.createNew = function(x, y)
     this.currentAnim = nil
 end
 
+this.resetAnims = function()
+    this.animIdle.reset()
+    this.animRun.reset()
+end
+
 this.setMap = function(map)
     this.map = map
 end

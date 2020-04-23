@@ -1,5 +1,10 @@
 local factory = {}
 
+WALL = 1
+FLOOR = 2
+CORRIDOR = 3
+GRID = 4
+
 factory.create = function(type, quad)
     local this = {}
     local rnd
@@ -13,6 +18,8 @@ factory.create = function(type, quad)
     elseif type == WALL then
         rnd = love.math.random(1, #Assets.wall)
         this.quad = Assets.wall[rnd]
+    elseif type == GRID then
+        this.quad = Assets.floor_grid
     end
     if quad ~= nil then
         this.quad = quad

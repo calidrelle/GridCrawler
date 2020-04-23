@@ -4,11 +4,6 @@ local seed = 1
 local map = nil
 local player = nil
 
-BEDROCK = 0
-WALL = 1
-FLOOR = 2
-CORRIDOR = 3
-
 this.reset = function()
     map = nil
 end
@@ -19,9 +14,8 @@ this.load = function()
         print("init map")
         local mapBuilder = require("gameobjects.dungeonBuilder")
         map = mapBuilder.build(60, 60, seed)
-        local spawn = mapBuilder.getEmptyLocation()
         player = require("gameobjects.player")
-        player.createNew(spawn.x * TILESIZE, spawn.y * TILESIZE)
+        player.createNew(map.spawn.x * TILESIZE, map.spawn.y * TILESIZE)
         player.setMap(map)
     end
 end
@@ -32,6 +26,7 @@ end
 
 local function drawGui()
     love.graphics.print("Coord: " .. player.x .. ", " .. player.y, 10, 10)
+    love.graphics.draw(Assets.gui, WIDTH - 100 * SCALE, 100 * SCALE, 0, SCALE, SCALE)
 end
 
 this.draw = function()
@@ -39,22 +34,22 @@ this.draw = function()
     love.graphics.scale(SCALE)
     love.graphics.translate((-player.x + (WIDTH / SCALE) / 2), (-player.y + (HEIGHT / SCALE) / 2))
 
-    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.clear(76 / 256, 57 / 256, 65 / 256, 1)
+
     -- La map
-    -- TODO: Optimiser les tiles à afficher
-    for x = 1, map.width do
-        for y = map.height, 1, -1 do
+    local nbTilesX = 15
+    local nbTilesY = 10
+    local xmin = math.max(1, math.floor(player.x / TILESIZE) - nbTilesX)
+    local xmax = math.min(map.width, math.floor(player.x / TILESIZE) + nbTilesX)
+    local ymin = math.max(1, math.floor(player.y / TILESIZE) - nbTilesY)
+    local ymax = math.min(map.height, math.floor(player.y / TILESIZE) + nbTilesY)
+
+    for x = xmin, xmax do
+        for y = ymin, ymax do
             local tile = map[x][y]
             local tx = x * TILESIZE
             local ty = y * TILESIZE
             tile.draw(tx, ty)
-            -- if tile == FLOOR then
-            --     Assets.draw(Assets.floor_1, tx, ty)
-            -- elseif tile == WALL then
-            --     Assets.draw(Assets.wall_1, tx, ty)
-            -- elseif tile == CORRIDOR then
-            --     Assets.draw(Assets.corridor_1, tx, ty)
-            -- end
         end
     end
     -- le player
@@ -71,6 +66,7 @@ this.keypressed = function(key)
     if key == "r" then
         seed = nil
         map = nil
+        player.resetAnims()
         player = nil
         this.load()
     end

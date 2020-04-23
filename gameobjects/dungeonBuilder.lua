@@ -177,6 +177,13 @@ this.build = function(width, height, seed)
     createCorridors()
     removeWalls()
 
+    -- Création du spawn du player
+    map.spawn = this.getEmptyLocation(1)
+
+    -- Création de la grille de sortie
+    map.grid = this.getEmptyLocation(1)
+    map[map.grid.x][map.grid.y] = tileFactory.create(GRID)
+
     function map:collideAt(x, y)
         local tileX = math.floor(x / TILESIZE)
         local tileY = math.floor(y / TILESIZE)
@@ -192,13 +199,31 @@ this.build = function(width, height, seed)
     return map
 end
 
-this.getEmptyLocation = function()
+-- roomNumber = nil -> n'importe ou dans la map
+-- roomNumber = 0 -> n'importe ou, mais dans une pièce
+-- roomNumber = n -> n'importe ou, dans la pièce n
+this.getEmptyLocation = function(roomNumber)
+    local xmin = 1
+    local xmax = map.width
+    local ymin = 1
+    local ymax = map.height
+
+    if roomNumber ~= nil then
+        if roomNumber == 0 then
+            roomNumber = love.math.random(1, #rooms)
+        end
+        xmin = rooms[roomNumber].x
+        xmax = xmin + rooms[roomNumber].width
+        ymin = rooms[roomNumber].y
+        ymax = ymin + rooms[roomNumber].height
+    end
+
     local tx, ty
     local nbTry = 0
     repeat
         nbTry = nbTry + 1
-        tx = love.math.random(1, map.width)
-        ty = love.math.random(1, map.height)
+        tx = love.math.random(xmin, xmax)
+        ty = love.math.random(ymin, ymax)
     until map[tx][ty].type == FLOOR or nbTry > 200
     return {x = tx, y = ty}
 end

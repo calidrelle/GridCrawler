@@ -25,10 +25,12 @@ ScreenManager.setScreen = function(name)
 end
 
 function love.load()
-    love.window.setMode(1280, 768)
-    love.window.setTitle("GRIDCRAFT (by Wile)")
+    -- love.window.setMode(640, 480)
+    -- love.window.setFullscreen(true)
+    love.window.setTitle("Grid Crawler (by Wile)")
     WIDTH = love.graphics.getWidth()
     HEIGHT = love.graphics.getHeight()
+    print("Game launch in " .. WIDTH .. "x" .. HEIGHT)
 
     require("images.assets").init()
 

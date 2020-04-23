@@ -3,10 +3,11 @@ Assets = {}
 local sheet = nil
 
 local createQuad = function(x, y)
-    return love.graphics.newQuad(x, y, TILESIZE, TILESIZE, sheet:getDimensions()) -- 6
+    return love.graphics.newQuad(x, y, TILESIZE, TILESIZE, sheet:getDimensions())
 end
 
 Assets.init = function()
+    Assets.gui = love.graphics.newImage("images/gui.png")
     -- Chargement de la spritesheet
     sheet = love.graphics.newImage("images/SpriteSheet.png")
 
@@ -41,11 +42,18 @@ Assets.init = function()
     Assets.floor[6] = createQuad(96, 48)
     Assets.floor[7] = createQuad(128, 48)
 
+    Assets.floor_grid = createQuad(112, 32) -- EXIT
+    Assets.stairs = createQuad(16, 48)
+
     Assets.corridor = {}
     Assets.corridor[1] = createQuad(80, 32)
     Assets.corridor[2] = createQuad(80, 48)
 
     -- Items
+    Assets.gold = createQuad(0, 0)
+    Assets.barrel = createQuad(16, 0)
+    Assets.key = createQuad(80, 0)
+
     Assets.weapon_sword_1 = createQuad(224, 128)
     Assets.goblin_knife = createQuad(240, 128)
 
