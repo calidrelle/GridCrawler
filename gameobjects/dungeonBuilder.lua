@@ -1,6 +1,6 @@
 local this = {}
 
-local ROOM_MIN_WIDTH = 4
+local ROOM_MIN_WIDTH = 6
 local ROOM_MAX_WIDTH = 12
 
 local map = {}
@@ -163,7 +163,7 @@ end
 local function createBarrels()
     for i = 1, 20 do
         local pos = this.getEmptyLocation()
-        ItemManager.create(Assets.barrel, pos.x, pos.y)
+        ItemManager.newBarrel(pos.x * TILESIZE, pos.y * TILESIZE)
     end
 end
 
@@ -186,10 +186,10 @@ this.build = function(width, height, seed)
     createBarrels()
 
     -- Création du spawn du player
-    map.spawn = this.getEmptyLocation(1)
+    map.spawn = this.getEmptyLocation()
 
     -- Création de la grille de sortie
-    map.grid = this.getEmptyLocation(1)
+    map.grid = this.getEmptyLocation()
     map[map.grid.x][map.grid.y] = tileFactory.create(GRID)
 
     function map:collideAt(x, y)

@@ -4,11 +4,16 @@ this.y = 0
 this.dx = 0
 this.dy = 0
 this.speed = 120
+this.gold = 0
+
 this.flip = false
 this.bounds = {}
 this.map = {}
 
+FRICTION = 0.85
+
 this.createNew = function(x, y)
+    this.name = "player"
     this.x = x
     this.y = y
     this.bounds.x = 6
@@ -18,6 +23,16 @@ this.createNew = function(x, y)
     this.animIdle = require("images.animation").createNew(Assets.knight_idle_anim, 6, 0.1)
     this.animRun = require("images.animation").createNew(Assets.knight_run_anim, 6, 0.1)
     this.currentAnim = nil
+
+    this.pv = 10
+    this.atkRange = 20
+    this.atk = 2
+    this.def = 2
+
+end
+
+this.getCenter = function()
+    return {x = this.x + this.bounds.x + this.bounds.width / 2, y = this.y + this.bounds.y + this.bounds.height / 2}
 end
 
 this.resetAnims = function()
@@ -33,32 +48,49 @@ local function move(dt)
     local tdx = this.dx * this.speed * dt
     local tdy = this.dy * this.speed * dt
 
+    local px1
+    local px2
+    local py1
+    local py2
     if (this.dx < 0) then
-        if this.map.collideAt(self, this.x + this.bounds.x + tdx, this.y + this.bounds.y) or
-            this.map.collideAt(self, this.x + this.bounds.x + tdx, this.y + this.bounds.y + this.bounds.height) then
+        px1 = this.x + this.bounds.x + tdx
+        py1 = this.y + this.bounds.y
+        py2 = this.y + this.bounds.y + this.bounds.height
+
+        if this.map.collideAt(self, px1, py1) or this.map.collideAt(self, px1, py2) or ItemManager.isItemAt(px1, py1) or
+            ItemManager.isItemAt(px1, py2) then
             this.dx = 0
             tdx = 0
         end
     end
     if (this.dx > 0) then
-        if this.map.collideAt(self, this.x + this.bounds.x + this.bounds.width + tdx, this.y + this.bounds.y) or
-            this.map.collideAt(self, this.x + this.bounds.x + this.bounds.width + tdx, this.y + this.bounds.y + this.bounds.height) then
+        px1 = this.x + this.bounds.x + this.bounds.width + tdx
+        py1 = this.y + this.bounds.y
+        py2 = this.y + this.bounds.y + this.bounds.height
+        if this.map.collideAt(self, px1, py1) or this.map.collideAt(self, px1, py2) or ItemManager.isItemAt(px1, py1) or
+            ItemManager.isItemAt(px1, py2) then
             this.dx = 0
             tdx = 0
         end
     end
 
     if (this.dy < 0) then
-        if this.map.collideAt(self, this.x + this.bounds.x, this.y + this.bounds.y + tdy) or
-            this.map.collideAt(self, this.x + this.bounds.x + this.bounds.width, this.y + this.bounds.y + tdy) then
+        px1 = this.x + this.bounds.x
+        py1 = this.y + this.bounds.y + tdy
+        px2 = this.x + this.bounds.x + this.bounds.width
+        if this.map.collideAt(self, px1, py1) or this.map.collideAt(self, px2, py1) or ItemManager.isItemAt(px1, py1) or
+            ItemManager.isItemAt(px2, py1) then
             this.dy = 0
             tdy = 0
         end
     end
 
     if (this.dy > 0) then
-        if this.map.collideAt(self, this.x + this.bounds.x, this.y + this.bounds.y + this.bounds.height + tdy) or
-            this.map.collideAt(self, this.x + this.bounds.x + this.bounds.width, this.y + this.bounds.y + this.bounds.height + tdy) then
+        px1 = this.x + this.bounds.x
+        py1 = this.y + this.bounds.y + this.bounds.height + tdy
+        px2 = this.x + this.bounds.x + this.bounds.width
+        if this.map.collideAt(self, px1, py1) or this.map.collideAt(self, px2, py1) or ItemManager.isItemAt(px1, py1) or
+            ItemManager.isItemAt(px2, py1) then
             this.dy = 0
             tdy = 0
         end
@@ -67,8 +99,6 @@ local function move(dt)
     this.x = this.x + tdx
     this.y = this.y + tdy
 
-    this.dx = this.dx * 0.85
-    this.dy = this.dy * 0.85
     if math.abs(this.dx) < 0.2 then
         this.dx = 0
     end
@@ -82,18 +112,36 @@ local function move(dt)
         this.currentAnim = this.animRun
     end
     this.currentAnim.update(self, dt)
+    this.dx = this.dx * FRICTION
+    this.dy = this.dy * FRICTION
 end
 
-local function checkActions(dt)
-    if love.mouse.isDown(1) then
-        local mx, my = love.mouse.getPosition()
-        mx = (mx - (PIXELLARGE / 2)) / SCALE + this.x
-        my = (my - (HEIGHT / 2)) / SCALE + this.y
+local function canTouch(item)
+    local x1 = item.x + item.width / 2
+    local y1 = item.y + item.height / 2
+    local x2 = this.getCenter().x
+    local y2 = this.getCenter().y
 
-        -- distance ?
-        local item = ItemManager.getItemAt(mx, my)
-        if item ~= nil then
-            item.hit()
+    -- distance rapide
+    if math.abs(x1 - x2) > TILESIZE * 3 then
+        return false
+    elseif math.abs(y1 - y2) > TILESIZE * 3 then
+        return false
+    end
+
+    local dist2 = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)
+    return dist2 <= (this.atkRange * this.atkRange)
+end
+
+local function checkActions(mx, my)
+    mx = (mx - (PIXELLARGE / 2)) / SCALE + this.x
+    my = (my - (HEIGHT / 2)) / SCALE + this.y
+
+    -- distance ?
+    local item = ItemManager.getItemAt(mx, my)
+    if item ~= nil then
+        if canTouch(item) then
+            item.hit(this)
         end
     end
 end
@@ -113,13 +161,23 @@ this.update = function(dt)
         this.dy = 1
     end
     move(dt)
-    checkActions(dt)
+    local item = ItemManager.getItemAt(this.getCenter().x, this.getCenter().y)
+    if item ~= nil then
+        item.walkOver(this)
+    end
 end
 
 this.draw = function()
     this.currentAnim.draw(self, this.x, this.y, this.flip)
     -- love.graphics.setColor(1, 1, 1)
     -- love.graphics.rectangle("line", this.x + this.bounds.x, this.y + this.bounds.y, this.bounds.width, this.bounds.height)
+    -- love.graphics.circle("line", this.getCenter().x, this.getCenter().y, this.atkRange)
+end
+
+function love.mousepressed(x, y, button)
+    if button == 1 then
+        checkActions(x, y)
+    end
 end
 
 return this

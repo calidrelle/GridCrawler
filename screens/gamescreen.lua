@@ -33,6 +33,8 @@ local function drawGui()
     love.graphics.print("mouse" .. love.mouse.getX() .. ", " .. love.mouse.getY(), 10, 30)
     love.graphics.draw(Assets.gui, WIDTH - 100 * SCALE, 0, 0, SCALE, SCALE)
     love.graphics.draw(Assets.gui_bottom, WIDTH - 100 * SCALE, HEIGHT - Assets.gui_bottom:getHeight() * SCALE, 0, SCALE, SCALE)
+
+    love.graphics.print("Golds : " .. player.gold, PIXELLARGE + 50, 250)
 end
 
 this.draw = function()
@@ -76,6 +78,7 @@ this.keypressed = function(key)
     if key == "r" then
         seed = nil
         map = nil
+        ItemManager.reset()
         player.resetAnims()
         player = nil
         this.load()
