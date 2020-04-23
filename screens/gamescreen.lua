@@ -20,15 +20,17 @@ this.load = function()
     end
 
     -- Calcul de la zone de jeu
-    this.pixelLarge = (WIDTH - 100 * SCALE)
+    PIXELLARGE = (WIDTH - 100 * SCALE)
 end
 
 this.update = function(dt)
+    ItemManager.update(dt)
     player.update(dt)
 end
 
 local function drawGui()
-    love.graphics.print("Coord: " .. player.x .. ", " .. player.y, 10, 10)
+    love.graphics.print("player " .. player.x .. ", " .. player.y, 10, 10)
+    love.graphics.print("mouse" .. love.mouse.getX() .. ", " .. love.mouse.getY(), 10, 30)
     love.graphics.draw(Assets.gui, WIDTH - 100 * SCALE, 0, 0, SCALE, SCALE)
     love.graphics.draw(Assets.gui_bottom, WIDTH - 100 * SCALE, HEIGHT - Assets.gui_bottom:getHeight() * SCALE, 0, SCALE, SCALE)
 end
@@ -36,12 +38,12 @@ end
 this.draw = function()
     love.graphics.push()
     love.graphics.scale(SCALE)
-    love.graphics.translate((-player.x + (this.pixelLarge / SCALE) / 2), (-player.y + (HEIGHT / SCALE) / 2))
+    love.graphics.translate((-player.x + (PIXELLARGE / SCALE) / 2), (-player.y + (HEIGHT / SCALE) / 2))
 
     love.graphics.clear(0.297, 0.223, 0.254)
 
     -- La map
-    local nbTilesX = this.pixelLarge / TILESIZE - 1
+    local nbTilesX = PIXELLARGE / TILESIZE - 1
     local nbTilesY = HEIGHT / TILESIZE - 1
     local xmin = math.max(1, math.floor(player.x / TILESIZE) - nbTilesX)
     local xmax = math.min(map.width, math.floor(player.x / TILESIZE) + nbTilesX)
@@ -56,6 +58,10 @@ this.draw = function()
             tile.draw(tx, ty)
         end
     end
+
+    -- les items
+    ItemManager.draw()
+
     -- le player
     player.draw()
 

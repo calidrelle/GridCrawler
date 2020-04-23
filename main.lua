@@ -34,6 +34,7 @@ function love.load()
     print("Game launch in " .. WIDTH .. "x" .. HEIGHT)
 
     require("images.assets").init()
+    require("gameobjects.itemManager")
 
     ScreenManager.setScreen("GAME") -- MENU
 end

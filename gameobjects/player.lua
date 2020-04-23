@@ -75,14 +75,31 @@ local function move(dt)
     if math.abs(this.dy) < 0.2 then
         this.dy = 0
     end
+    -- Animations
     if this.dx == 0 and this.dy == 0 then
         this.currentAnim = this.animIdle
     else
         this.currentAnim = this.animRun
     end
+    this.currentAnim.update(self, dt)
+end
+
+local function checkActions(dt)
+    if love.mouse.isDown(1) then
+        local mx, my = love.mouse.getPosition()
+        mx = (mx - (PIXELLARGE / 2)) / SCALE + this.x
+        my = (my - (HEIGHT / 2)) / SCALE + this.y
+
+        -- distance ?
+        local item = ItemManager.getItemAt(mx, my)
+        if item ~= nil then
+            item.hit()
+        end
+    end
 end
 
 this.update = function(dt)
+    -- Déplacements
     if love.keyboard.isDown("q") then
         this.dx = -1
         this.flip = true
@@ -96,7 +113,7 @@ this.update = function(dt)
         this.dy = 1
     end
     move(dt)
-    this.currentAnim.update(self, dt)
+    checkActions(dt)
 end
 
 this.draw = function()

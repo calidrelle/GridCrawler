@@ -160,6 +160,13 @@ local function removeWalls()
     end
 end
 
+local function createBarrels()
+    for i = 1, 20 do
+        local pos = this.getEmptyLocation()
+        ItemManager.create(Assets.barrel, pos.x, pos.y)
+    end
+end
+
 this.build = function(width, height, seed)
     map = {}
     rooms = {}
@@ -176,6 +183,7 @@ this.build = function(width, height, seed)
     createRooms()
     createCorridors()
     removeWalls()
+    createBarrels()
 
     -- Création du spawn du player
     map.spawn = this.getEmptyLocation(1)
