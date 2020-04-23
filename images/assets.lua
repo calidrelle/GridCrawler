@@ -8,6 +8,7 @@ end
 
 Assets.init = function()
     Assets.gui = love.graphics.newImage("images/gui.png")
+    Assets.gui_bottom = love.graphics.newImage("images/gui_bottom.png")
     -- Chargement de la spritesheet
     sheet = love.graphics.newImage("images/SpriteSheet.png")
 
