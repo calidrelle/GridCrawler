@@ -29,12 +29,10 @@ this.update = function(dt)
 end
 
 local function drawGui()
-    love.graphics.print("player " .. player.x .. ", " .. player.y, 10, 10)
-    love.graphics.print("mouse" .. love.mouse.getX() .. ", " .. love.mouse.getY(), 10, 30)
+    -- love.graphics.print("player " .. player.x .. ", " .. player.y, 10, 10)
+    -- love.graphics.print("mouse" .. love.mouse.getX() .. ", " .. love.mouse.getY(), 10, 30)
     love.graphics.draw(Assets.gui, WIDTH - 100 * SCALE, 0, 0, SCALE, SCALE)
     love.graphics.draw(Assets.gui_bottom, WIDTH - 100 * SCALE, HEIGHT - Assets.gui_bottom:getHeight() * SCALE, 0, SCALE, SCALE)
-
-    love.graphics.print("Golds : " .. player.gold, PIXELLARGE + 50, 250)
 end
 
 this.draw = function()
@@ -43,6 +41,7 @@ this.draw = function()
     love.graphics.translate((-player.x + (PIXELLARGE / SCALE) / 2), (-player.y + (HEIGHT / SCALE) / 2))
 
     love.graphics.clear(0.297, 0.223, 0.254)
+    love.graphics.setColor(1, 1, 1)
 
     -- La map
     local nbTilesX = PIXELLARGE / TILESIZE - 1
@@ -69,6 +68,12 @@ this.draw = function()
 
     love.graphics.pop()
     drawGui()
+    Inventory.draw()
+
+    love.graphics.setColor(0, 0, 0)
+    for _, msg in pairs(player.messages) do
+        love.graphics.print(msg.text, PIXELLARGE + SCALE * 16 + 6, HEIGHT - (76 * SCALE))
+    end
 end
 
 this.keypressed = function(key)

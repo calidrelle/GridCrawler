@@ -6,8 +6,13 @@ local gameScreen = require("screens.gamescreen")
 local menuScreen = require("screens.menuscreen")
 local screen = nil
 
+Font20 = love.graphics.newFont("fonts/decterm.ttf", 20)
+
+love.graphics.setFont(Font20)
+
 TILESIZE = 16
-SCALE = 3
+SCALE = 4
+FULLSCREEN = false
 
 ScreenManager = {}
 ScreenManager.setScreen = function(name)
@@ -26,15 +31,14 @@ end
 
 function love.load()
     love.window.setMode(1280, 768)
-    love.window.setFullscreen(false)
-    -- love.window.setFullscreen(true)
+    love.window.setFullscreen(FULLSCREEN)
     love.window.setTitle("Grid Crawler (by Wile)")
     WIDTH = love.graphics.getWidth()
     HEIGHT = love.graphics.getHeight()
-    print("Game launch in " .. WIDTH .. "x" .. HEIGHT)
 
     require("images.assets").init()
     require("gameobjects.itemManager")
+    require("gameobjects.inventory").init()
 
     ScreenManager.setScreen("GAME") -- MENU
 end

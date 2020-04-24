@@ -28,5 +28,15 @@ floor_5 128, 32
 floor_6 96, 48
 floor_7 128, 48
 
+parch_1 288, 0
+parch_2 304, 0
+parch_3 320, 0
+parch_4 336, 0
+parch_5 352, 0
+parch_6 368, 0
+parch_7 384, 0
+parch_8 400, 0
+
+
 corridor_1 80, 32
 corridor_2 80, 48

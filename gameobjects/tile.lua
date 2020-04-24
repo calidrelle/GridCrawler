@@ -18,8 +18,6 @@ factory.create = function(type, quad)
     elseif type == WALL then
         rnd = love.math.random(1, #Assets.wall)
         this.quad = Assets.wall[rnd]
-    elseif type == GRID then
-        this.quad = Assets.floor_grid
     end
     if quad ~= nil then
         this.quad = quad

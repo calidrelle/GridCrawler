@@ -160,10 +160,57 @@ local function removeWalls()
     end
 end
 
+local function createPagesPieces()
+    -- key in 9 parts : in monsters and in createBarrels
+    local split = love.math.random(3, 6)
+    local pos
+    for i = 1, split do
+        pos = this.getEmptyLocation()
+        local barel = ItemManager.newBarrel(pos.x * TILESIZE, pos.y * TILESIZE)
+        barel.loot = "page" .. i
+    end
+    for i = split + 1, 9 do
+        repeat
+            pos = this.getEmptyLocation(0)
+        until pos.room ~= map.spawn.room -- pas de slim dans la pièce du spanw
+
+        local slim = ItemManager.newSlim(pos.x * TILESIZE, pos.y * TILESIZE)
+        slim.loot = "page" .. i
+    end
+end
+
 local function createBarrels()
-    for i = 1, 20 do
+    local nb = 0
+    for _, item in pairs(ItemManager.getItems()) do
+        if item.name == "barrel" then
+            nb = nb + 1
+        end
+    end
+    for _ = nb + 1, 20 do
         local pos = this.getEmptyLocation()
         ItemManager.newBarrel(pos.x * TILESIZE, pos.y * TILESIZE)
+    end
+end
+
+-- local function distanceToPlayer(item)
+--     local dx = item.x - map.spawn.x
+--     local dy = item.y - map.spawn.y
+--     return math.sqrt(dx * dx + dy * dy)
+-- end
+
+local function createSlims()
+    local nb = 0
+    local pos
+    for _, item in pairs(ItemManager.getItems()) do
+        if item.name == "slim" then
+            nb = nb + 1
+        end
+    end
+    for _ = nb + 1, 12 do
+        repeat
+            pos = this.getEmptyLocation(0) -- monsters in rooms only
+        until pos.room ~= map.spawn.room
+        ItemManager.newSlim(pos.x * TILESIZE, pos.y * TILESIZE)
     end
 end
 
@@ -183,14 +230,18 @@ this.build = function(width, height, seed)
     createRooms()
     createCorridors()
     removeWalls()
-    createBarrels()
 
     -- Création du spawn du player
-    map.spawn = this.getEmptyLocation()
+    map.spawn = this.getEmptyLocation(0) -- forcément dans une pièce
 
     -- Création de la grille de sortie
-    map.grid = this.getEmptyLocation()
-    map[map.grid.x][map.grid.y] = tileFactory.create(GRID)
+    local pos = this.getEmptyLocation(map.spawn.room)
+    ItemManager.newExitGrid(pos.x * TILESIZE, pos.y * TILESIZE)
+
+    -- on créé les autres entités du niveau par rapport à la position du player
+    createPagesPieces()
+    createBarrels()
+    createSlims()
 
     function map:collideAt(x, y)
         local tileX = math.floor(x / TILESIZE)
@@ -233,7 +284,7 @@ this.getEmptyLocation = function(roomNumber)
         tx = love.math.random(xmin, xmax)
         ty = love.math.random(ymin, ymax)
     until map[tx][ty].type == FLOOR or nbTry > 200
-    return {x = tx, y = ty}
+    return {x = tx, y = ty, room = roomNumber}
 end
 
 return this

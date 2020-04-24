@@ -8,7 +8,9 @@ ItemManager.newGold = function(tileX, tileY)
     end
 
     item.walkOver = function(other)
-        other.gold = other.gold + 1
+        local po = math.random(1, 5)
+        Inventory.addItem(item, po)
+        other.addMessage("Vous ramassez " .. po .. " pièce(s) d'or", po)
         item.actif = false
     end
 

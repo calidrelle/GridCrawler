@@ -4,6 +4,11 @@ local items = {}
 
 require("gameobjects.barrel")
 require("gameobjects.gold")
+require("gameobjects.exitGrid")
+require("gameobjects.page")
+
+-- mobs
+require("gameobjects.slim")
 
 ItemManager.create = function(quad, x, y)
     local item = {}
@@ -17,6 +22,7 @@ ItemManager.create = function(quad, x, y)
 
     item.initStats = function(pv, atkRange, atk, def)
         item.pv = pv
+        item.pvMax = pv
         item.atkRange = atkRange
         item.atk = atk
         item.def = def
@@ -59,9 +65,51 @@ ItemManager.isItemAt = function(x, y)
     end
 end
 
+ItemManager.getItems = function()
+    return items
+end
+
 ItemManager.draw = function()
     for _, item in pairs(items) do
-        Assets.draw(item.quad, item.x, item.y)
+        -- si l'item à une animation, on l'affiche, sinon, on affiche le quad de base
+        love.graphics.setColor(1, 1, 1)
+        if item.currentAnim ~= nil then
+            item.currentAnim.draw(item, item.x, item.y, item.flip)
+        else
+            Assets.draw(item.quad, item.x, item.y)
+        end
+        -- si l'item à des PV, on les affiche
+        if item.pv > 0 then
+            love.graphics.setColor(1, 0, 0)
+            love.graphics.rectangle("fill", item.x, item.y, TILESIZE * item.pv / item.pvMax, 3) -- La barre de vie à la taille d'une tile
+            love.graphics.setColor(0, 0, 0)
+            love.graphics.rectangle("line", item.x, item.y, TILESIZE, 3) -- La barre de vie à la taille d'une tile
+        end
+        if item.loot ~= nil then
+            love.graphics.print(item.loot, item.x, item.y)
+        end
+    end
+end
+
+ItemManager.doAttack = function(fighter, target)
+    local damage = math.random(fighter.atk) - target.def
+    if damage > 0 then
+        print(fighter.name .. " hit " .. target.name .. " and deals " .. damage .. " damages")
+        target.pv = target.pv - damage
+    else
+        print(fighter.name .. " missed")
+    end
+
+    if target.pv <= 0 then
+        target.actif = false
+
+        if target.loot == nil then
+            ItemManager.newGold(target.x, target.y)
+        else
+            if string.sub(target.loot, 1, 4) == "page" then
+                ItemManager.newPage(target.x, target.y, string.sub(target.loot, 5) + 0)
+            end
+        end
     end
 end
 

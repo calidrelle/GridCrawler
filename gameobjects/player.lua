@@ -9,8 +9,9 @@ this.gold = 0
 this.flip = false
 this.bounds = {}
 this.map = {}
+this.messages = {}
 
-FRICTION = 0.85
+FRICTION = 0.75
 
 this.createNew = function(x, y)
     this.name = "player"
@@ -26,7 +27,7 @@ this.createNew = function(x, y)
 
     this.pv = 10
     this.atkRange = 20
-    this.atk = 2
+    this.atk = 3
     this.def = 2
 
 end
@@ -146,6 +147,18 @@ local function checkActions(mx, my)
     end
 end
 
+this.addMessage = function(text, timer)
+    for key, msg in pairs(this.messages) do
+        if msg.text == text then
+            return
+        end
+    end
+    local msg = {}
+    msg.text = text
+    msg.timer = timer
+    table.insert(this.messages, msg)
+end
+
 this.update = function(dt)
     -- Déplacements
     if love.keyboard.isDown("q") then
@@ -161,13 +174,24 @@ this.update = function(dt)
         this.dy = 1
     end
     move(dt)
+
+    -- on marche sur un truc
     local item = ItemManager.getItemAt(this.getCenter().x, this.getCenter().y)
     if item ~= nil then
         item.walkOver(this)
     end
+
+    -- les messages
+    for i = #this.messages, 1, -1 do
+        this.messages[i].timer = this.messages[i].timer - dt
+        if this.messages[i].timer <= 0 then
+            table.remove(this.messages, i)
+        end
+    end
 end
 
 this.draw = function()
+    love.graphics.setColor(1, 1, 1)
     this.currentAnim.draw(self, this.x, this.y, this.flip)
     -- love.graphics.setColor(1, 1, 1)
     -- love.graphics.rectangle("line", this.x + this.bounds.x, this.y + this.bounds.y, this.bounds.width, this.bounds.height)

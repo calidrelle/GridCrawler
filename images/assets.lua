@@ -50,6 +50,17 @@ Assets.init = function()
     Assets.corridor[1] = createQuad(80, 32)
     Assets.corridor[2] = createQuad(80, 48)
 
+    -- Parchemins
+    Assets.page = {}
+    Assets.page[1] = createQuad(288, 0)
+    Assets.page[2] = createQuad(304, 0)
+    Assets.page[3] = createQuad(320, 0)
+    Assets.page[4] = createQuad(336, 0)
+    Assets.page[5] = createQuad(352, 0)
+    Assets.page[6] = createQuad(368, 0)
+    Assets.page[7] = createQuad(384, 0)
+    Assets.page[8] = createQuad(400, 0)
+
     -- Items
     Assets.gold = createQuad(0, 0)
     Assets.barrel = createQuad(16, 0)
@@ -65,11 +76,11 @@ Assets.getSheet = function()
     return sheet
 end
 
-Assets.draw = function(quad, x, y, flip)
+Assets.draw = function(quad, x, y, flip, scale)
     if flip then
         love.graphics.draw(sheet, quad, x + TILESIZE, y, 0, -1, 1, 1)
     else
-        love.graphics.draw(sheet, quad, x, y)
+        love.graphics.draw(sheet, quad, x, y, 0, scale, scale)
     end
 end
 
