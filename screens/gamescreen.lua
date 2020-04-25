@@ -5,7 +5,13 @@ local map = nil
 local player = nil
 
 this.reset = function()
+    Assets.init()
+    seed = nil
     map = nil
+    ItemManager.reset()
+    player.resetAnims()
+    player = nil
+    this.load()
 end
 
 this.load = function()
@@ -81,12 +87,7 @@ this.keypressed = function(key)
         ScreenManager.setScreen("MENU")
     end
     if key == "r" then
-        seed = nil
-        map = nil
-        ItemManager.reset()
-        player.resetAnims()
-        player = nil
-        this.load()
+        this.reset()
     end
 end
 

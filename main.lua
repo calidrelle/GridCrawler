@@ -4,9 +4,15 @@ love.graphics.setDefaultFilter("nearest") -- pas d'aliasing
 
 local gameScreen = require("screens.gamescreen")
 local menuScreen = require("screens.menuscreen")
+local titleScreen = require("screens.titlescreen")
+local gameQuit = require("screens.quitscreen")
+local optionsScreen = require("screens.optionsscreen")
 local screen = nil
 
 Font20 = love.graphics.newFont("fonts/decterm.ttf", 20)
+local musicIntro
+local musicLoops = {}
+local musicLoop = nil
 
 love.graphics.setFont(Font20)
 
@@ -16,13 +22,16 @@ FULLSCREEN = false
 
 ScreenManager = {}
 ScreenManager.setScreen = function(name)
-    if name == "MENU" then
+    if name == "TITLE" then
+        screen = titleScreen
+    elseif name == "MENU" then
         screen = menuScreen
-    elseif name == "NEWGAME" then
-        screen = gameScreen
-        screen.reset()
     elseif name == "GAME" then
         screen = gameScreen
+    elseif name == "OPTIONS" then
+        screen = optionsScreen
+    elseif name == "QUIT" then
+        screen = gameQuit
     else
         error("L'écran " .. name .. " n'existe pas")
     end
@@ -40,10 +49,31 @@ function love.load()
     require("gameobjects.itemManager")
     require("gameobjects.inventory").init()
 
-    ScreenManager.setScreen("GAME") -- MENU
+    musicIntro = love.audio.newSource("sons/BeepBox-Song2-intro.wav", "stream")
+    musicLoops[1] = love.audio.newSource("sons/BeepBox-Song2-loop1.wav", "stream")
+    musicLoops[2] = love.audio.newSource("sons/BeepBox-Song2-loop2.wav", "stream")
+    musicLoops[3] = love.audio.newSource("sons/BeepBox-Song2-loop3.wav", "stream")
+
+    musicIntro:play()
+
+    ScreenManager.setScreen("TITLE") -- MENU
+end
+
+local function updateMusic()
+    if not musicIntro:isPlaying() and musicLoop == nil then
+        local n = math.random(#musicLoops)
+        musicLoop = musicLoops[n]
+        musicLoop:play()
+    end
+    if musicLoop ~= nil and not musicLoop:isPlaying() then
+        local n = math.random(#musicLoops)
+        musicLoop = musicLoops[n]
+        musicLoop:play()
+    end
 end
 
 function love.update(dt)
+    updateMusic()
     screen.update(dt)
 end
 

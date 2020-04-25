@@ -11,24 +11,24 @@ Ces 9 parties sont disséminées dans les tonneaux ou sur des monstres
 
 TODO:
 ( ) key check for opening grid
-( )fight an item
+( ) fight an item
     - sword animation (rotation) in the mouse direction
     - hide mouse cursor
 (/) item die and drop
 (/) loot
 (/) inventory 4x4, stacks
 ( ) monsters
-    - ATK & DEF & PV
-    - range detection
-    - simple AI : seek the player
-    - attack when un range
-    - bumped when hit (to avoid spam fight)
-    - screen shake when I'm touch
-    - blood particules when monster is touched
+    (/) ATK & DEF & PV
+    ( ) range detection
+    ( ) simple AI : seek the player
+    ( ) attack when in range
+    ( ) bumped when hit (to avoid spam fight)
+    ( ) screen shake when player is touch
+    ( ) blood particules when monster is touched
 ( ) change level
 ( ) MENUS
 ( ) Sounds & music (music: BeepBox ?)
-( ) light shader
+( ) bonus: light shader
 
 ex: https://www.youtube.com/watch?v=u0GZKJGeQLY
 

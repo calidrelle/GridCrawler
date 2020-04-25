@@ -2,6 +2,7 @@ local this = {}
 
 local ROOM_MIN_WIDTH = 6
 local ROOM_MAX_WIDTH = 12
+local MAX_PAGES = 8
 
 local map = {}
 local rooms = {}
@@ -162,14 +163,14 @@ end
 
 local function createPagesPieces()
     -- key in 9 parts : in monsters and in createBarrels
-    local split = love.math.random(3, 6)
+    local split = math.floor(love.math.random(MAX_PAGES / 3, MAX_PAGES / 3 * 2))
     local pos
     for i = 1, split do
         pos = this.getEmptyLocation()
         local barel = ItemManager.newBarrel(pos.x * TILESIZE, pos.y * TILESIZE)
         barel.loot = "page" .. i
     end
-    for i = split + 1, 9 do
+    for i = split + 1, MAX_PAGES do
         repeat
             pos = this.getEmptyLocation(0)
         until pos.room ~= map.spawn.room -- pas de slim dans la pièce du spanw
