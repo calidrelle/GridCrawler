@@ -12,7 +12,7 @@ Ces 9 parties sont disséminées dans les tonneaux ou sur des monstres
 Gauntlet : https://www.youtube.com/watch?v=QEEkCTD8zVI
 
 TODO:
-( ) Complètement au clavier
+(/) Complètement au clavier
 ( ) Manque de challenge, porte et clef ?
 ( ) Certains donjons fait à la main
 ( ) Spawn à mob
@@ -22,7 +22,7 @@ TODO:
 ( ) key check for opening grid
 ( ) fight an item
     - sword animation (rotation) in the mouse direction
-    - hide mouse cursor
+    (/) hide mouse cursor
 (/) item die and drop
 (/) loot
 ( ) inventory 4x4, stack
