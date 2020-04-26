@@ -1,32 +1,36 @@
 local this = {}
 
+local btnPlay
+local btnOptions
+local btnQuit
+
 this.load = function()
+    local x = (WIDTH - 80 * SCALE) / 2
+    local y = HEIGHT / 2
+
+    btnPlay = GUI.addButton("Lancer une partie", x, y, 64 * SCALE)
+    btnOptions = GUI.addButton("Options", x, y + 60, 64 * SCALE)
+    btnQuit = GUI.addButton("Quitter", x, y + 120, 64 * SCALE)
 end
 
 this.update = function(dt)
+    if btnPlay.clicked then
+        ScreenManager.setScreen("GAME")
+    elseif btnOptions.clicked then
+        ScreenManager.setScreen("OPTIONS")
+    elseif btnQuit.clicked then
+        ScreenManager.setScreen("QUIT")
+    end
 end
 
 this.draw = function()
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.draw(Assets.titleScreen, 0, 0, 0, WIDTH / Assets.titleScreen:getWidth(), HEIGHT / Assets.titleScreen:getHeight())
-
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.print("MENU", 50, 50)
-    love.graphics.print("Enter pour jouer", 80, 120)
-    love.graphics.print("Espace pour afficher les options", 80, 140)
-    -- love.graphics.print("Espace pour générer une nouvelle map", 80, 140)
-    love.graphics.print("Escape pour quitter", 80, 160)
 end
 
 this.keypressed = function(key)
-    if key == "return" or key == "kpenter" then
-        ScreenManager.setScreen("GAME")
-    elseif key == "space" then
-        ScreenManager.setScreen("OPTIONS")
-    elseif key == "escape" then
+    if key == "escape" then
         ScreenManager.setScreen("QUIT")
-    else
-        print(key)
     end
 end
 

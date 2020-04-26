@@ -23,13 +23,12 @@ this.createNew = function(x, y)
     this.bounds.height = 8
     this.animIdle = require("images.animation").createNew(Assets.knight_idle_anim, 6, 0.1)
     this.animRun = require("images.animation").createNew(Assets.knight_run_anim, 6, 0.1)
-    this.currentAnim = nil
+    this.currentAnim = this.animIdle
 
     this.pv = 10
     this.atkRange = 20
     this.atk = 3
     this.def = 2
-
 end
 
 this.getCenter = function()

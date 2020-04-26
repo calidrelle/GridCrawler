@@ -7,11 +7,12 @@ local createQuad = function(x, y)
 end
 
 Assets.init = function()
-
     Assets.titleScreen = love.graphics.newImage("images/EcranTitre.png")
+    Assets.button = love.graphics.newImage("images/button.png")
 
     Assets.gui = love.graphics.newImage("images/gui.png")
     Assets.gui_bottom = love.graphics.newImage("images/gui_bottom.png")
+
     -- Chargement de la spritesheet
     sheet = love.graphics.newImage("images/SpriteSheet.png")
 

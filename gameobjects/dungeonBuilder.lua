@@ -8,7 +8,7 @@ local map = {}
 local rooms = {}
 local corridors = {}
 
-local tileFactory = require("gameobjects.tile")
+local tileFactory = require("engine.tile")
 
 local function initWalls()
     for x = 1, map.width do

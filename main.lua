@@ -10,18 +10,42 @@ local optionsScreen = require("screens.optionsscreen")
 local screen = nil
 
 Font20 = love.graphics.newFont("fonts/decterm.ttf", 20)
+Font32 = love.graphics.newFont("fonts/decterm.ttf", 32)
+Font8 = love.graphics.newFont("fonts/decterm.ttf", 8)
 local musicIntro
 local musicLoops = {}
-local musicLoop = nil
-
-love.graphics.setFont(Font20)
+MUSICPLAYER = nil
 
 TILESIZE = 16
 SCALE = 4
-FULLSCREEN = false
+
+function love.load()
+    love.window.setMode(1280, 768)
+    love.window.setFullscreen(OPTIONS.fullscreen)
+    love.window.setTitle("Grid Crawler (by Wile)")
+    WIDTH = love.graphics.getWidth()
+    HEIGHT = love.graphics.getHeight()
+
+    require("images.assets").init()
+    require("gameobjects.itemManager")
+    require("gameobjects.inventory").init()
+    require("engine.gui").init()
+
+    musicIntro = love.audio.newSource("sons/BeepBox-Song2-intro.wav", "stream")
+    musicLoops[1] = love.audio.newSource("sons/BeepBox-Song2-loop1.wav", "stream")
+    musicLoops[2] = love.audio.newSource("sons/BeepBox-Song2-loop2.wav", "stream")
+    musicLoops[3] = love.audio.newSource("sons/BeepBox-Song2-loop3.wav", "stream")
+
+    MUSICPLAYER = musicIntro
+    MUSICPLAYER:play()
+    MUSICPLAYER:setVolume(OPTIONS.volume / 100)
+
+    ScreenManager.setScreen("TITLE") -- MENU
+end
 
 ScreenManager = {}
 ScreenManager.setScreen = function(name)
+    GUI.reset()
     if name == "TITLE" then
         screen = titleScreen
     elseif name == "MENU" then
@@ -38,47 +62,34 @@ ScreenManager.setScreen = function(name)
     screen.load()
 end
 
-function love.load()
-    love.window.setMode(1280, 768)
-    love.window.setFullscreen(FULLSCREEN)
-    love.window.setTitle("Grid Crawler (by Wile)")
-    WIDTH = love.graphics.getWidth()
-    HEIGHT = love.graphics.getHeight()
-
-    require("images.assets").init()
-    require("gameobjects.itemManager")
-    require("gameobjects.inventory").init()
-
-    musicIntro = love.audio.newSource("sons/BeepBox-Song2-intro.wav", "stream")
-    musicLoops[1] = love.audio.newSource("sons/BeepBox-Song2-loop1.wav", "stream")
-    musicLoops[2] = love.audio.newSource("sons/BeepBox-Song2-loop2.wav", "stream")
-    musicLoops[3] = love.audio.newSource("sons/BeepBox-Song2-loop3.wav", "stream")
-
-    musicIntro:play()
-
-    ScreenManager.setScreen("TITLE") -- MENU
-end
-
 local function updateMusic()
-    if not musicIntro:isPlaying() and musicLoop == nil then
+    if not MUSICPLAYER:isPlaying() then
         local n = math.random(#musicLoops)
-        musicLoop = musicLoops[n]
-        musicLoop:play()
+        MUSICPLAYER = musicLoops[n]
+        MUSICPLAYER:play()
     end
-    if musicLoop ~= nil and not musicLoop:isPlaying() then
-        local n = math.random(#musicLoops)
-        musicLoop = musicLoops[n]
-        musicLoop:play()
-    end
+    -- if not musicIntro:isPlaying() and musicLoop == nil then
+    --     local n = math.random(#musicLoops)
+    --     musicLoop = musicLoops[n]
+    --     musicLoop:play()
+    -- end
+    -- if musicLoop ~= nil and not musicLoop:isPlaying() then
+    --     local n = math.random(#musicLoops)
+    --     musicLoop = musicLoops[n]
+    --     musicLoop:play()
+    -- end
 end
 
 function love.update(dt)
     updateMusic()
+    GUI.update(dt)
     screen.update(dt)
 end
 
 function love.draw()
+    love.graphics.setFont(Font20)
     screen.draw()
+    GUI.draw()
 end
 
 function love.keypressed(key)
