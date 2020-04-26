@@ -5,8 +5,8 @@ ItemManager.newSlim = function(tileX, tileY)
     item.name = "slim"
     item.solid = true -- item collide with player/mob ?
     item.initStats(5, 20, 2, 1) -- pv, atkRange, atk, def (player de base: pv = 10, atkRange = 20, atk = 2, def = 2
-    item.animIdle = require("images.animation").createNew(Assets.slime_idle_anim, 6, 0.1)
-    item.animRun = require("images.animation").createNew(Assets.slime_run_anim, 6, 0.1)
+    item.animIdle = require("engine.animation").createNew(Assets.slime_idle_anim, 6, 0.1)
+    item.animRun = require("engine.animation").createNew(Assets.slime_run_anim, 6, 0.1)
     item.currentAnim = item.animIdle
 
     item.hit = function(other)

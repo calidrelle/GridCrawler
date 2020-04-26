@@ -40,10 +40,9 @@ local function drawGui()
 end
 
 local function drawMessages()
-
     love.graphics.setColor(0, 0, 0)
-    for _, msg in pairs(Player.messages) do
-        love.graphics.printf("*" .. msg.text, PIXELLARGE + SCALE * 16 + 6, HEIGHT - (76 * SCALE), 70 * SCALE, "left")
+    if #Player.messages > 0 then
+        love.graphics.printf(Player.messages[1].text, PIXELLARGE + SCALE * 16 + 6, HEIGHT - (76 * SCALE), 70 * SCALE, "left")
     end
 end
 

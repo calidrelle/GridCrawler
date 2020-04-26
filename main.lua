@@ -9,6 +9,7 @@ local menuScreen = require("screens.menuscreen")
 local gameQuit = require("screens.quitscreen")
 local optionsScreen = require("screens.optionsscreen")
 local keysOptionsScreen = require("screens.keysoptions")
+local nextLevelScreen = require("screens.nextlevel")
 local screen = nil
 
 Font20 = love.graphics.newFont("fonts/decterm.ttf", 20)
@@ -56,6 +57,8 @@ ScreenManager.setScreen = function(name)
         screen = keysOptionsScreen
     elseif name == "QUIT" then
         screen = gameQuit
+    elseif name == "NEXTLEVEL" then
+        screen = nextLevelScreen
     else
         error("L'écran " .. name .. " n'existe pas")
     end

@@ -2,6 +2,10 @@ Inventory = {}
 local nbItems = 16
 local items = {}
 
+Inventory.getItems = function()
+    return items
+end
+
 Inventory.init = function()
     for i = 1, nbItems do
         items[i] = {}

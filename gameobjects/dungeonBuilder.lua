@@ -2,7 +2,7 @@ local this = {}
 
 local ROOM_MIN_WIDTH = 6
 local ROOM_MAX_WIDTH = 12
-local MAX_PAGES = 8
+MAX_PAGES = 1
 
 local map = {}
 local rooms = {}

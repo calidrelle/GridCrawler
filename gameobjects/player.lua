@@ -11,6 +11,7 @@ this.flip = false
 this.bounds = {}
 this.map = {}
 this.messages = {}
+local cooldown = 0
 
 FRICTION = 0.75
 
@@ -22,9 +23,10 @@ this.createNew = function(x, y)
     this.bounds.y = 6
     this.bounds.width = 5
     this.bounds.height = 8
-    this.animIdle = require("images.animation").createNew(Assets.knight_idle_anim, 6, 0.1)
-    this.animRun = require("images.animation").createNew(Assets.knight_run_anim, 6, 0.1)
+    this.animIdle = require("engine.animation").createNew(Assets.knight_idle_anim, 6, 0.1)
+    this.animRun = require("engine.animation").createNew(Assets.knight_run_anim, 6, 0.1)
     this.currentAnim = this.animIdle
+    this.gridOpened = false
 
     this.pv = 10
     this.atkRange = 20
@@ -161,7 +163,18 @@ this.addMessage = function(text, timer)
     table.insert(this.messages, msg)
 end
 
-local cooldown = 0
+local function checkGridOpen()
+    local count = 0
+    for _, item in pairs(Inventory.getItems()) do
+        if item.name ~= nil then
+            if item.name:sub(1, 4) == "page" then
+                count = count + 1
+            end
+        end
+    end
+    return count == MAX_PAGES
+end
+
 local function shoot(dt)
     -- on tir
     if cooldown >= 0 then
@@ -198,6 +211,13 @@ this.update = function(dt)
     local item = ItemManager.getItemAt(this.getCenter().x, this.getCenter().y)
     if item ~= nil then
         item.walkOver(this)
+        if checkGridOpen() then
+            if not this.gridOpened then
+                this.gridOpened = true
+                Assets.snd_opengrid:play()
+                Player.addMessage("La grille est ouverte !", 5)
+            end
+        end
     end
 
     -- les messages
