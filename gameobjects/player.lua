@@ -110,6 +110,8 @@ local function move(dt)
         this.currentAnim = this.animIdle
     else
         this.currentAnim = this.animRun
+        this.shootx = this.dx
+        this.shooty = this.dy
     end
     this.currentAnim.update(self, dt)
     this.dx = this.dx * FRICTION
@@ -158,21 +160,37 @@ this.addMessage = function(text, timer)
     table.insert(this.messages, msg)
 end
 
+local cooldown = 0
+local function shoot(dt)
+    -- on tir
+    if cooldown >= 0 then
+        cooldown = cooldown - dt
+        if cooldown <= 0 then
+            cooldown = 0
+        end
+    end
+    if love.keyboard.isDown(OPTIONS.FIRE) and cooldown == 0 then
+        ItemManager.newSword(this.x, this.y, this.shootx, this.shooty)
+        cooldown = 0.1
+    end
+end
+
 this.update = function(dt)
     -- Déplacements
-    if love.keyboard.isDown("q") then
+    if love.keyboard.isDown(OPTIONS.LEFT) then
         this.dx = -1
         this.flip = true
-    elseif love.keyboard.isDown("d") then
+    elseif love.keyboard.isDown(OPTIONS.RIGHT) then
         this.dx = 1
         this.flip = false
     end
-    if love.keyboard.isDown("z") then
+    if love.keyboard.isDown(OPTIONS.UP) then
         this.dy = -1
-    elseif love.keyboard.isDown("s") then
+    elseif love.keyboard.isDown(OPTIONS.DOWN) then
         this.dy = 1
     end
     move(dt)
+    shoot(dt)
 
     -- on marche sur un truc
     local item = ItemManager.getItemAt(this.getCenter().x, this.getCenter().y)
@@ -194,10 +212,10 @@ this.draw = function()
     this.currentAnim.draw(self, this.x, this.y, this.flip)
 end
 
-function love.mousepressed(x, y, button)
-    if button == 1 then
-        checkActions(x, y)
-    end
-end
+-- function love.mousepressed(x, y, button)
+--     if button == 1 then
+--         checkActions(x, y)
+--     end
+-- end
 
 return this

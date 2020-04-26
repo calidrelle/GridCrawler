@@ -70,9 +70,11 @@ Assets.init = function()
     Assets.barrel = createQuad(16, 0)
     Assets.key = createQuad(80, 0)
 
-    Assets.weapon_sword_1 = createQuad(224, 128)
-    Assets.goblin_knife = createQuad(240, 128)
+    Assets.weapon_sword = createQuad(224, 64)
+    Assets.goblin_knife = createQuad(240, 64)
 
+    ---------- SONDS
+    Assets.snd_error = love.audio.newSource("sons/error.wav", "static")
     print("Assets loaded")
 end
 
@@ -80,11 +82,12 @@ Assets.getSheet = function()
     return sheet
 end
 
-Assets.draw = function(quad, x, y, flip, scale)
+Assets.draw = function(quad, x, y, flip, scale, rotation)
+    rotation = rotation or 0
     if flip then
-        love.graphics.draw(sheet, quad, x + TILESIZE, y, 0, -1, 1, 1)
+        love.graphics.draw(sheet, quad, x + TILESIZE, y, rotation, -1, 1, 1)
     else
-        love.graphics.draw(sheet, quad, x, y, 0, scale, scale)
+        love.graphics.draw(sheet, quad, x, y, rotation, scale, scale)
     end
 end
 

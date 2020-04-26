@@ -6,6 +6,7 @@ require("gameobjects.barrel")
 require("gameobjects.gold")
 require("gameobjects.exitGrid")
 require("gameobjects.page")
+require("gameobjects.sword")
 
 -- mobs
 require("gameobjects.slim")
@@ -85,13 +86,20 @@ ItemManager.draw = function()
             love.graphics.setColor(0, 0, 0)
             love.graphics.rectangle("line", item.x, item.y, TILESIZE, 3) -- La barre de vie à la taille d'une tile
         end
-        if item.loot ~= nil then
-            love.graphics.print(item.loot, item.x, item.y)
+        if INFODEBUG then
+            if item.loot ~= nil then
+                love.graphics.print(item.loot, item.x, item.y)
+            end
+            -- love.graphics.rectangle("line", item.x, item.y, 2, 2)
         end
     end
 end
 
 ItemManager.doAttack = function(fighter, target)
+    if target.name == "exit" or target.name == "sword" or target.name == "gold" or target.name:sub(1, 4) == "page" then
+        return false
+    end
+
     local damage = math.random(fighter.atk) - target.def
     if damage > 0 then
         print(fighter.name .. " hit " .. target.name .. " and deals " .. damage .. " damages")
@@ -111,6 +119,7 @@ ItemManager.doAttack = function(fighter, target)
             end
         end
     end
+    return true
 end
 
 return ItemManager

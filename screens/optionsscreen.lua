@@ -3,6 +3,7 @@ local this = {}
 OPTIONS = {}
 OPTIONS.volume = 10
 OPTIONS.fullscreen = false
+
 SCALE = 3
 
 -- 800, 600 (4/3)
@@ -24,13 +25,14 @@ local btnVolDec
 local btnFullscreen
 local btnScale3
 local btnScale4
+local btnKeyOptions
 
 local xpos
 local ypos
 
 this.load = function()
     GUI.reset()
-    xpos = (WIDTH - 80 * SCALE) / 2
+    xpos = WIDTH / 3
     ypos = HEIGHT / 3
     btnVolDec = GUI.addButton("Volume -", xpos, ypos)
     btnVolInc = GUI.addButton("Volume +", xpos + 80 * SCALE, ypos)
@@ -40,7 +42,9 @@ this.load = function()
     btnScale3 = GUI.addButton("Echelle 3", xpos, ypos + 160)
     btnScale4 = GUI.addButton("Echelle 4", xpos + 80 * SCALE, ypos + 160)
 
-    btnBack = GUI.addButton("Retour", xpos, ypos + 300, 64 * SCALE)
+    btnKeyOptions = GUI.addButton("Touches", xpos, ypos + 240)
+
+    btnBack = GUI.addButton("Retour", xpos, ypos + 320, 64 * SCALE)
 end
 
 this.update = function(dt)
@@ -75,6 +79,10 @@ this.update = function(dt)
     if btnScale4.clicked then
         SCALE = 4
         this.load()
+    end
+
+    if btnKeyOptions.clicked then
+        ScreenManager.setScreen("KEYS")
     end
 end
 

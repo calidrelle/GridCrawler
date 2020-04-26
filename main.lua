@@ -2,10 +2,13 @@
 -- [Fonction mathématiques Love2D](https://love2d.org/wiki/General_math)
 love.graphics.setDefaultFilter("nearest") -- pas d'aliasing
 
+INFODEBUG = true
+
 local gameScreen = require("screens.gamescreen")
 local menuScreen = require("screens.menuscreen")
 local gameQuit = require("screens.quitscreen")
 local optionsScreen = require("screens.optionsscreen")
+local keysOptionsScreen = require("screens.keysoptions")
 local screen = nil
 
 Font20 = love.graphics.newFont("fonts/decterm.ttf", 20)
@@ -41,12 +44,16 @@ end
 ScreenManager = {}
 ScreenManager.setScreen = function(name)
     GUI.reset()
+    love.mouse.setVisible(true)
     if name == "MENU" then
         screen = menuScreen
     elseif name == "GAME" then
+        love.mouse.setVisible(false)
         screen = gameScreen
     elseif name == "OPTIONS" then
         screen = optionsScreen
+    elseif name == "KEYS" then
+        screen = keysOptionsScreen
     elseif name == "QUIT" then
         screen = gameQuit
     else
