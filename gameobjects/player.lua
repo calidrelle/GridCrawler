@@ -192,9 +192,6 @@ end
 this.draw = function()
     love.graphics.setColor(1, 1, 1)
     this.currentAnim.draw(self, this.x, this.y, this.flip)
-    -- love.graphics.setColor(1, 1, 1)
-    -- love.graphics.rectangle("line", this.x + this.bounds.x, this.y + this.bounds.y, this.bounds.width, this.bounds.height)
-    -- love.graphics.circle("line", this.getCenter().x, this.getCenter().y, this.atkRange)
 end
 
 function love.mousepressed(x, y, button)

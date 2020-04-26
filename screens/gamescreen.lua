@@ -41,6 +41,30 @@ local function drawGui()
     love.graphics.draw(Assets.gui_bottom, WIDTH - 100 * SCALE, HEIGHT - Assets.gui_bottom:getHeight() * SCALE, 0, SCALE, SCALE)
 end
 
+local function drawMessages()
+    love.graphics.setColor(0, 0, 0)
+    local numLigne = 0
+    for _, msg in pairs(player.messages) do
+        local words = {}
+        table.insert(words, "*")
+        for word in msg.text:gmatch("%S+") do
+            table.insert(words, word)
+        end
+        -- on rajoute les mots sauf s'il ne rentre pas dans la largeur (70 * scale)
+        local msgToPrint = ""
+        for _, word in pairs(words) do
+            if string.len(msgToPrint) > 7 * SCALE then
+                love.graphics.print(msgToPrint, PIXELLARGE + SCALE * 16 + 6, HEIGHT - (76 * SCALE) + numLigne * 16)
+                msgToPrint = ""
+                numLigne = numLigne + 1
+            end
+            msgToPrint = msgToPrint .. word .. " "
+        end
+        love.graphics.print(msgToPrint, PIXELLARGE + SCALE * 16 + 6, HEIGHT - (76 * SCALE) + numLigne * 16)
+        numLigne = numLigne + 1
+    end
+end
+
 this.draw = function()
     love.graphics.push()
     love.graphics.scale(SCALE)
@@ -76,10 +100,7 @@ this.draw = function()
     drawGui()
     Inventory.draw()
 
-    love.graphics.setColor(0, 0, 0)
-    for _, msg in pairs(player.messages) do
-        love.graphics.print(msg.text, PIXELLARGE + SCALE * 16 + 6, HEIGHT - (76 * SCALE))
-    end
+    drawMessages()
 end
 
 this.keypressed = function(key)
