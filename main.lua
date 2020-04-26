@@ -26,8 +26,8 @@ function love.load()
     love.window.setTitle("Grid Crawler (by Wile)")
 
     require("engine.assets").init()
-    require("gameobjects.itemManager")
-    require("gameobjects.inventory").init()
+    require("engine.itemManager")
+    require("engine.inventory").init()
     require("engine.gui").init()
 
     musicIntro = love.audio.newSource("sons/BeepBox-Song2-intro.wav", "stream")
