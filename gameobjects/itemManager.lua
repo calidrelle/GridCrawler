@@ -104,12 +104,16 @@ ItemManager.doAttack = function(fighter, target)
     if damage > 0 then
         print(fighter.name .. " hit " .. target.name .. " and deals " .. damage .. " damages")
         target.pv = target.pv - damage
+        if target.pv > 0 then
+            Assets.snd_hurt:play()
+        end
     else
         print(fighter.name .. " missed")
     end
 
     if target.pv <= 0 then
         target.actif = false
+        Assets.snd_dead:play()
 
         if target.loot == nil then
             ItemManager.newGold(target.x, target.y)

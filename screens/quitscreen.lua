@@ -42,6 +42,8 @@ end
 this.keypressed = function(key)
     if key == "escape" then
         love.event.quit()
+    elseif key == "return" then
+        ScreenManager.setScreen("MENU")
     end
 end
 

@@ -5,6 +5,7 @@ this.dx = 0
 this.dy = 0
 this.speed = 120
 this.gold = 0
+this.cd = 0.1
 
 this.flip = false
 this.bounds = {}
@@ -171,7 +172,8 @@ local function shoot(dt)
     end
     if love.keyboard.isDown(OPTIONS.FIRE) and cooldown == 0 then
         ItemManager.newSword(this.x, this.y, this.shootx, this.shooty)
-        cooldown = 0.1
+        Assets.snd_shoot:play()
+        cooldown = this.cd
     end
 end
 

@@ -12,6 +12,7 @@ Inventory.addItem = function(newItem, nombre)
     for i = 1, nbItems do
         if items[i].name == newItem.name then
             items[i].count = items[i].count + nombre
+            Assets.snd_loot:play()
             return
         end
     end
@@ -20,10 +21,11 @@ Inventory.addItem = function(newItem, nombre)
         if items[i].name == nil then
             items[i] = newItem
             items[i].count = nombre
+            Assets.snd_loot:play()
             return
         end
     end
-    print("Inventory full")
+    Assets.snd_error:play()
 end
 
 Inventory.draw = function()

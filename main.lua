@@ -24,7 +24,7 @@ function love.load()
     OPTIONS.setValues()
     love.window.setTitle("Grid Crawler (by Wile)")
 
-    require("images.assets").init()
+    require("engine.assets").init()
     require("gameobjects.itemManager")
     require("gameobjects.inventory").init()
     require("engine.gui").init()
