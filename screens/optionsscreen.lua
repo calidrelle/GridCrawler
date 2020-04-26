@@ -2,12 +2,28 @@ local this = {}
 
 OPTIONS = {}
 OPTIONS.volume = 30
-OPTIONS.fullscreen = true
+OPTIONS.fullscreen = false
+SCALE = 3
 
+-- 800, 600 (4/3)
+-- 1024 x 576 (16/9)
+-- 1024 x 768 (4/3)
+-- 1600 x 900 (16/9)
+
+love.window.setMode(1280, 768)
+
+OPTIONS.setValues = function()
+    love.window.setFullscreen(OPTIONS.fullscreen)
+    WIDTH = love.graphics.getWidth()
+    HEIGHT = love.graphics.getHeight()
+end
+---------------------------------------------------------
 local btnBack
 local btnVolInc
 local btnVolDec
 local btnFullscreen
+local btnScale3
+local btnScale4
 
 local xpos
 local ypos
@@ -15,11 +31,14 @@ local ypos
 this.load = function()
     GUI.reset()
     xpos = (WIDTH - 80 * SCALE) / 2
-    ypos = HEIGHT / 2
+    ypos = HEIGHT / 3
     btnVolDec = GUI.addButton("Volume -", xpos, ypos)
-    btnVolInc = GUI.addButton("Volume +", xpos + 200, ypos)
+    btnVolInc = GUI.addButton("Volume +", xpos + 80 * SCALE, ypos)
 
-    btnFullscreen = GUI.addButton("Plein écran", xpos, ypos + 60)
+    btnFullscreen = GUI.addButton("Plein écran", xpos, ypos + 80)
+
+    btnScale3 = GUI.addButton("Echelle 3", xpos, ypos + 160)
+    btnScale4 = GUI.addButton("Echelle 4", xpos + 80 * SCALE, ypos + 160)
 
     btnBack = GUI.addButton("Retour", xpos, ypos + 300, 64 * SCALE)
 end
@@ -45,9 +64,16 @@ this.update = function(dt)
 
     if btnFullscreen.clicked then
         OPTIONS.fullscreen = not OPTIONS.fullscreen
-        love.window.setFullscreen(OPTIONS.fullscreen)
-        WIDTH = love.graphics.getWidth()
-        HEIGHT = love.graphics.getHeight()
+        OPTIONS.setValues()
+        this.load()
+    end
+
+    if btnScale3.clicked then
+        SCALE = 3
+        this.load()
+    end
+    if btnScale4.clicked then
+        SCALE = 4
         this.load()
     end
 end
@@ -55,14 +81,6 @@ end
 this.draw = function()
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.draw(Assets.titleScreen, 0, 0, 0, WIDTH / Assets.titleScreen:getWidth(), HEIGHT / Assets.titleScreen:getHeight())
-
-    love.graphics.print("Volume : " .. OPTIONS.volume, xpos, ypos - 50)
-    -- love.graphics.setColor(1, 1, 1, 1)
-    -- love.graphics.print("OPTIONS", 50, 50)
-    -- -- love.graphics.print("Enter pour jouer", 80, 120)
-
-    -- -- love.graphics.print("Espace pour générer une nouvelle map", 80, 140)
-    -- love.graphics.print("Escape pour revenir au menu", 80, 160)
 end
 
 this.keypressed = function(key)

@@ -35,8 +35,8 @@ TODO:
     ( ) screen shake when player is touch
     ( ) blood particules when monster is touched
 ( ) change level
-( ) MENUS
-( ) Sounds & music (music: BeepBox ?)
+(/) MENUS
+(/) Sounds & music (music: BeepBox ?)
 ( ) bonus: light shader
 
 ex: https://www.youtube.com/watch?v=u0GZKJGeQLY

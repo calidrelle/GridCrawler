@@ -50,8 +50,8 @@ this.draw = function()
     love.graphics.setColor(1, 1, 1)
 
     -- La map
-    local nbTilesX = PIXELLARGE / TILESIZE - 1
-    local nbTilesY = HEIGHT / TILESIZE - 1
+    local nbTilesX = math.floor(PIXELLARGE / TILESIZE) - 1
+    local nbTilesY = math.floor(HEIGHT / TILESIZE) - 1
     local xmin = math.max(1, math.floor(player.x / TILESIZE) - nbTilesX)
     local xmax = math.min(map.width, math.floor(player.x / TILESIZE) + nbTilesX)
     local ymin = math.max(1, math.floor(player.y / TILESIZE) - nbTilesY)

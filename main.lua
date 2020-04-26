@@ -4,7 +4,6 @@ love.graphics.setDefaultFilter("nearest") -- pas d'aliasing
 
 local gameScreen = require("screens.gamescreen")
 local menuScreen = require("screens.menuscreen")
-local titleScreen = require("screens.titlescreen")
 local gameQuit = require("screens.quitscreen")
 local optionsScreen = require("screens.optionsscreen")
 local screen = nil
@@ -17,14 +16,10 @@ local musicLoops = {}
 MUSICPLAYER = nil
 
 TILESIZE = 16
-SCALE = 4
 
 function love.load()
-    love.window.setMode(1280, 768)
-    love.window.setFullscreen(OPTIONS.fullscreen)
+    OPTIONS.setValues()
     love.window.setTitle("Grid Crawler (by Wile)")
-    WIDTH = love.graphics.getWidth()
-    HEIGHT = love.graphics.getHeight()
 
     require("images.assets").init()
     require("gameobjects.itemManager")
@@ -40,15 +35,13 @@ function love.load()
     MUSICPLAYER:play()
     MUSICPLAYER:setVolume(OPTIONS.volume / 100)
 
-    ScreenManager.setScreen("TITLE") -- MENU
+    ScreenManager.setScreen("MENU") -- MENU
 end
 
 ScreenManager = {}
 ScreenManager.setScreen = function(name)
     GUI.reset()
-    if name == "TITLE" then
-        screen = titleScreen
-    elseif name == "MENU" then
+    if name == "MENU" then
         screen = menuScreen
     elseif name == "GAME" then
         screen = gameScreen
@@ -66,18 +59,9 @@ local function updateMusic()
     if not MUSICPLAYER:isPlaying() then
         local n = math.random(#musicLoops)
         MUSICPLAYER = musicLoops[n]
+        MUSICPLAYER:setVolume(OPTIONS.volume / 100)
         MUSICPLAYER:play()
     end
-    -- if not musicIntro:isPlaying() and musicLoop == nil then
-    --     local n = math.random(#musicLoops)
-    --     musicLoop = musicLoops[n]
-    --     musicLoop:play()
-    -- end
-    -- if musicLoop ~= nil and not musicLoop:isPlaying() then
-    --     local n = math.random(#musicLoops)
-    --     musicLoop = musicLoops[n]
-    --     musicLoop:play()
-    -- end
 end
 
 function love.update(dt)
