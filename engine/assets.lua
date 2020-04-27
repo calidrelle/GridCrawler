@@ -19,6 +19,7 @@ Assets.init = function()
     -- CHARACTERS
     Assets.knight_idle_anim = createQuad(0, 144)
     Assets.knight_run_anim = createQuad(0, 160)
+    Assets.knight_death_anim = createQuad(288, 16)
 
     Assets.fly_anim_anim = createQuad(0, 64)
     Assets.goblin_idle_anim = createQuad(0, 80)
@@ -82,6 +83,7 @@ Assets.init = function()
     Assets.snd_opengrid = love.audio.newSource("sons/opengrid.wav", "static")
     Assets.snd_jump = love.audio.newSource("sons/jump.wav", "static")
     Assets.snd_nostamina = love.audio.newSource("sons/nostamina.wav", "static")
+    Assets.snd_deathplayer = love.audio.newSource("sons/death_player.wav", "static")
 
     print("Assets loaded")
 end

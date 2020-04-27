@@ -1,7 +1,7 @@
 local this = {}
 
 OPTIONS = {}
-OPTIONS.volume = 0
+OPTIONS.volume = 50
 OPTIONS.fullscreen = false
 SCALE = 3
 

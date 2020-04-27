@@ -54,8 +54,6 @@ ItemManager.create = function(quad, x, y)
     end
 
     item.chooseRandomDirection = function(dt)
-        -- local angle = math.random() * 2 * math.pi
-        item.blocked = false
         local nbTry = 0
         repeat
             nbTry = nbTry + 1
@@ -64,7 +62,6 @@ ItemManager.create = function(quad, x, y)
             item.dx = math.cos(angle)
             item.dy = math.sin(angle)
             if nbTry > 80 then
-                item.blocked = true
                 print("bizzare : " .. nbTry)
             end
         until not item.checkCollision(dt) or nbTry > 100
@@ -143,8 +140,10 @@ ItemManager.create = function(quad, x, y)
                 item.state = MOBSTATES.CHANGEDIR
             end
             if distToPlay < item.detectRange then
-                item.target = Player
-                item.state = MOBSTATES.SEEK
+                if Player.pv > 0 then
+                    item.target = Player
+                    item.state = MOBSTATES.SEEK
+                end
             end
             if math.random() * 100 < 2 then
                 item.state = MOBSTATES.CHANGEDIR
@@ -171,7 +170,9 @@ ItemManager.create = function(quad, x, y)
             end
 
         elseif item.state == MOBSTATES.FIGHT then
-            if distToPlay > item.atkRange then
+            if Player.pv <= 0 then
+                item.state = MOBSTATES.CHANGEDIR
+            elseif distToPlay > item.atkRange then
                 item.state = MOBSTATES.SEEK
             else
                 -- attaque du Player
@@ -243,12 +244,6 @@ ItemManager.draw = function()
     for _, item in pairs(items) do
         -- si l'item à une animation, on l'affiche, sinon, on affiche le quad de base
         love.graphics.setColor(1, 1, 1)
-        if item.blocked ~= nil then
-            if item.blocked then
-                love.graphics.setColor(1, 0, 1)
-            end
-        end
-
         if item.currentAnim ~= nil then
             item.currentAnim.draw(item, item.x, item.y, item.flip)
         else
@@ -288,6 +283,9 @@ ItemManager.doAttack = function(fighter, target)
     end
 
     if target.pv <= 0 then
+        if target == Player then
+            return true -- game over dans Player
+        end
         target.actif = false
         Assets.snd_dead:play()
 

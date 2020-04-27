@@ -1,9 +1,10 @@
 local this = {}
 
-this.createNew = function(quad, nbFrames, secPerFrame)
+this.createNew = function(quad, nbFrames, secPerFrame, loop)
     local anim = {}
     anim.quad = quad
     anim.nbFrames = nbFrames
+    anim.loop = loop
     local duration = secPerFrame
     local timer = secPerFrame
     local frame = 1
@@ -19,7 +20,11 @@ this.createNew = function(quad, nbFrames, secPerFrame)
             timer = duration
             frame = frame + 1
             if frame > anim.nbFrames then
-                frame = 1
+                if anim.loop then
+                    frame = 1
+                else
+                    frame = anim.nbFrames
+                end
             end
             quad:setViewport(qx + TILESIZE * (frame - 1), qy, qw, qh)
         end

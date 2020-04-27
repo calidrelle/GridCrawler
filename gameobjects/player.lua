@@ -21,8 +21,9 @@ this.createNew = function(x, y)
     this.bounds.y = 6
     this.bounds.width = 5
     this.bounds.height = 8
-    this.animIdle = require("engine.animation").createNew(Assets.knight_idle_anim, 6, 0.1)
-    this.animRun = require("engine.animation").createNew(Assets.knight_run_anim, 6, 0.1)
+    this.animIdle = require("engine.animation").createNew(Assets.knight_idle_anim, 6, 0.1, true)
+    this.animRun = require("engine.animation").createNew(Assets.knight_run_anim, 6, 0.1, true)
+    this.animDeath = require("engine.animation").createNew(Assets.knight_death_anim, 7, 0.3, false)
     this.currentAnim = this.animIdle
     this.gridOpened = false
 
@@ -187,6 +188,15 @@ local function jump(dt)
 end
 
 this.update = function(dt)
+    this.currentAnim.update(self, dt)
+    if this.pv <= 0 then
+        this.pv = 0
+        if this.currentAnim ~= this.animDeath then
+            Assets.snd_deathplayer:play()
+            this.currentAnim = this.animDeath
+        end
+        return
+    end
     if this.stamina < 100 then
         this.stamina = this.stamina + this.staminaRegen * dt
     else
@@ -216,7 +226,6 @@ this.update = function(dt)
     jump(dt)
     move(dt)
     shoot(dt)
-    this.currentAnim.update(self, dt)
     this.dx = this.dx * FRICTION
     this.dy = this.dy * FRICTION
 

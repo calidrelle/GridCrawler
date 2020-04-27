@@ -14,7 +14,7 @@ TODO:
 ( ) Certains donjons fait à la main
 ( ) Spawn à mob
 (/) Lors de la récupération de la 8°, informer qu'on peut ouvrir la grille
-(/) Les crédits dans l'écran "quit"
+( ) Les crédits dans l'écran "quit"
 (/) Des boutons dans les menus et une police de caractères plus grosse
 (/) key check for opening grid
 (/) fight an item
@@ -25,9 +25,7 @@ TODO:
 (/) inventory 4x4, stack
 ( ) monsters
     (/) ATK & DEF & PV
-    ( ) range detection
-    ( ) simple AI : seek the player
-    ( ) attack when in range
+    (/) range detection
     ( ) bumped when hit (to avoid spam fight)
     ( ) screen shake when player is touch
     ( ) blood particules when monster is touched
