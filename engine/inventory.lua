@@ -38,6 +38,7 @@ Inventory.draw = function()
             local i = (y - 1) * 4 + x
             local item = items[i]
             if item.name ~= nil then
+                -- on rajoute la scale car on est en après le transform.pop
                 Assets.draw(item.quad, PIXELLARGE + (x * TILESIZE) * SCALE, (y * TILESIZE) * SCALE, false, SCALE)
                 love.graphics.print(item.count, PIXELLARGE + (x * TILESIZE) * SCALE, (y * TILESIZE) * SCALE)
             end

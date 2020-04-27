@@ -77,7 +77,8 @@ ItemManager.draw = function()
         if item.currentAnim ~= nil then
             item.currentAnim.draw(item, item.x, item.y, item.flip)
         else
-            Assets.draw(item.quad, item.x, item.y)
+            -- scale = 1 car on est sur l'écran, donc le zoom est géré globalement
+            Assets.draw(item.quad, item.x, item.y, item.flip, 1, item.rotation)
         end
         -- si l'item à des PV, on les affiche
         if item.pv > 0 then

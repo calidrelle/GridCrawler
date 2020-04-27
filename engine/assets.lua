@@ -91,9 +91,13 @@ end
 Assets.draw = function(quad, x, y, flip, scale, rotation)
     rotation = rotation or 0
     if flip then
-        love.graphics.draw(sheet, quad, x + TILESIZE, y, rotation, -1, 1, 1)
+        love.graphics.draw(sheet, quad, x + TILESIZE, y, 0, -1, 1, 1)
     else
-        love.graphics.draw(sheet, quad, x, y, rotation, scale, scale)
+        if rotation == 0 then
+            love.graphics.draw(sheet, quad, x, y, 0, scale, scale)
+        else
+            love.graphics.draw(sheet, quad, x + TILESIZE / 2, y + TILESIZE / 2, rotation, scale, scale, TILESIZE / 2, TILESIZE / 2)
+        end
     end
 end
 

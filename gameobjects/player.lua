@@ -5,13 +5,11 @@ this.dx = 0
 this.dy = 0
 this.speed = 120
 this.gold = 0
-this.cd = 0.1
 
 this.flip = false
 this.bounds = {}
 this.map = {}
 this.messages = {}
-local cooldown = 0
 
 FRICTION = 0.75
 
@@ -138,19 +136,6 @@ local function canTouch(item)
     return dist2 <= (this.atkRange * this.atkRange)
 end
 
-local function checkActions(mx, my)
-    mx = (mx - (PIXELLARGE / 2)) / SCALE + this.x
-    my = (my - (HEIGHT / 2)) / SCALE + this.y
-
-    -- distance ?
-    local item = ItemManager.getItemAt(mx, my)
-    if item ~= nil then
-        if canTouch(item) then
-            item.hit(this)
-        end
-    end
-end
-
 this.addMessage = function(text, timer)
     for key, msg in pairs(this.messages) do
         if msg.text == text then
@@ -175,18 +160,17 @@ local function checkGridOpen()
     return count == MAX_PAGES
 end
 
+local firePressed = false
 local function shoot(dt)
     -- on tir
-    if cooldown >= 0 then
-        cooldown = cooldown - dt
-        if cooldown <= 0 then
-            cooldown = 0
+    if love.keyboard.isDown(OPTIONS.FIRE) then
+        if firePressed == false then
+            ItemManager.newSword(this.x, this.y, this.shootx, this.shooty)
+            Assets.snd_shoot:play()
         end
-    end
-    if love.keyboard.isDown(OPTIONS.FIRE) and cooldown == 0 then
-        ItemManager.newSword(this.x, this.y, this.shootx, this.shooty)
-        Assets.snd_shoot:play()
-        cooldown = this.cd
+        firePressed = true
+    else
+        firePressed = false
     end
 end
 
@@ -233,11 +217,5 @@ this.draw = function()
     love.graphics.setColor(1, 1, 1)
     this.currentAnim.draw(self, this.x, this.y, this.flip)
 end
-
--- function love.mousepressed(x, y, button)
---     if button == 1 then
---         checkActions(x, y)
---     end
--- end
 
 return this

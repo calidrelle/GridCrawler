@@ -28,6 +28,8 @@ ItemManager.newSword = function(tileX, tileY, dx, dy)
         item.dy = 0
     end
 
+    item.rotation = math.atan2(item.dy, item.dx) + math.pi / 4
+
     item.hit = function(other)
     end
 
