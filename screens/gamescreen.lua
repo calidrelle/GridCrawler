@@ -40,10 +40,8 @@ local function drawGui()
     love.graphics.draw(Assets.gui_bottom, WIDTH - 100 * SCALE, HEIGHT - Assets.gui_bottom:getHeight() * SCALE, 0, SCALE, SCALE)
 
     -- Catactéristiques player
-    love.graphics.setColor(0, 0.6, 1)
-    love.graphics.rectangle("fill", PIXELLARGE + 15 * SCALE, 85 * SCALE, SCALE * (50 * Player.stamina / 100), SCALE * 10)
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle("line", PIXELLARGE + 15 * SCALE, 85 * SCALE, SCALE * 50, SCALE * 10)
+    GUI.drawProgressBar(PIXELLARGE / 2 - 250, HEIGHT - 50, 200, 32, Player.pv / Player.pvMax, 1, 0.1, 0)
+    GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina / 100, 0, 0.6, 1)
 
     -- Messages
     love.graphics.setColor(0, 0, 0)

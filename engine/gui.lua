@@ -63,4 +63,15 @@ GUI.draw = function()
     end
 end
 
+GUI.drawProgressBar = function(x, y, width, height, pcentFilled, r, g, b)
+    love.graphics.setLineWidth(3)
+    love.graphics.setColor(0.2, 0.2, 0.2, 0.8)
+    love.graphics.rectangle("fill", x, y, width, height)
+    love.graphics.setColor(r, g, b, 1)
+    love.graphics.rectangle("fill", x, y, width * pcentFilled, height)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle("line", x, y, width, height)
+    love.graphics.setLineWidth(1)
+end
+
 return GUI

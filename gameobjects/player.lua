@@ -32,6 +32,7 @@ this.createNew = function(x, y)
     this.gridOpened = false
 
     this.pv = 10
+    this.pvMax = 10
     this.atkRange = 20
     this.atk = 3
     this.def = 2
