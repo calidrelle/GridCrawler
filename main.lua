@@ -2,8 +2,6 @@
 -- [Fonction mathématiques Love2D](https://love2d.org/wiki/General_math)
 love.graphics.setDefaultFilter("nearest") -- pas d'aliasing
 
-INFODEBUG = true
-
 local gameScreen = require("screens.gamescreen")
 local menuScreen = require("screens.menuscreen")
 local gameQuit = require("screens.quitscreen")
@@ -50,9 +48,7 @@ ScreenManager.setScreen = function(name)
     if name == "MENU" then
         screen = menuScreen
     elseif name == "GAME" then
-        if not INFODEBUG then
-            love.mouse.setVisible(false)
-        end
+        love.mouse.setVisible(false)
         screen = gameScreen
     elseif name == "OPTIONS" then
         screen = optionsScreen

@@ -53,23 +53,33 @@ ItemManager.create = function(quad, x, y)
         return math.sqrt((ix - px) * (ix - px) + (iy - py) * (iy - py))
     end
 
-    item.chooseRandomDirection = function()
+    item.chooseRandomDirection = function(dt)
         -- local angle = math.random() * 2 * math.pi
-        local angle = math.pi / 2 * math.random(4)
-        item.dx = math.cos(angle)
-        item.dy = math.sin(angle)
+        item.blocked = false
+        local nbTry = 0
+        repeat
+            nbTry = nbTry + 1
+            local angle = math.pi / 2 * (math.random(4) - 1)
+            -- local angle = math.random() * 2 * math.pi
+            item.dx = math.cos(angle)
+            item.dy = math.sin(angle)
+            if nbTry > 80 then
+                item.blocked = true
+                print("bizzare : " .. nbTry)
+            end
+        until not item.checkCollision(dt) or nbTry > 100
     end
 
     item.checkCollision = function(dt)
         local collision = false
-        local approx = 3 -- bounding box de l'obket
+        local approx = 4 -- bounding box de l'objet
         local tdx = item.dx * item.speed * dt
         local tdy = item.dy * item.speed * dt
 
-        local x1 = item.x + tdx + approx
-        local x2 = item.x + item.width + tdx - approx
-        local y1 = item.y + tdy + approx
-        local y2 = item.y + item.height + tdy - approx
+        local x1 = tdx + item.x + approx
+        local x2 = tdx + item.x + item.width - approx
+        local y1 = tdy + item.y + approx
+        local y2 = tdy + item.y + item.height - approx
 
         local colX
         if item.dx < 0 then
@@ -78,13 +88,13 @@ ItemManager.create = function(quad, x, y)
             colX = Map.collideAt(x2, y1) or Map.collideAt(x2, y2)
         end
         if colX then
-            tdx = -tdx
+            tdx = 0
             item.dx = 0
         end
-        x1 = item.x + tdx + approx
-        x2 = item.x + item.width + tdx - approx
-        y1 = item.y + tdy + approx
-        y2 = item.y + item.height + tdy - approx
+        x1 = tdx + item.x + approx
+        x2 = tdx + item.x + item.width - approx
+        y1 = tdy + item.y + approx
+        y2 = tdy + item.y + item.height - approx
 
         local colY
         if item.dy < 0 then
@@ -97,17 +107,14 @@ ItemManager.create = function(quad, x, y)
             item.dy = 0
         end
 
-        if colX or colY then
-            return true
-        end
+        return (colX or colY)
 
-        local px, py = item.getCenter()
-        local other = ItemManager.getItemAt(px, py)
-        if other ~= nil then
-            collision = (other ~= item)
-        end
-
-        return collision
+        -- les mobs se collisionnent entre eux ou avec les objets ?
+        -- local px, py = item.getCenter()
+        -- local other = ItemManager.getItemAt(px + tdx, py + tdy)
+        -- if other ~= nil then
+        --     collision = (other ~= item)
+        -- end
     end
 
     item.seek = function(other)
@@ -138,6 +145,9 @@ ItemManager.create = function(quad, x, y)
             if distToPlay < item.detectRange then
                 item.target = Player
                 item.state = MOBSTATES.SEEK
+            end
+            if math.random() * 100 < 2 then
+                item.state = MOBSTATES.CHANGEDIR
             end
 
         elseif item.state == MOBSTATES.SEEK then
@@ -174,7 +184,7 @@ ItemManager.create = function(quad, x, y)
             end
 
         elseif item.state == MOBSTATES.CHANGEDIR then
-            item.chooseRandomDirection()
+            item.chooseRandomDirection(dt)
             item.state = MOBSTATES.WALK
         else
             error("Etat non géré : " .. item.state)
@@ -233,12 +243,19 @@ ItemManager.draw = function()
     for _, item in pairs(items) do
         -- si l'item à une animation, on l'affiche, sinon, on affiche le quad de base
         love.graphics.setColor(1, 1, 1)
+        if item.blocked ~= nil then
+            if item.blocked then
+                love.graphics.setColor(1, 0, 1)
+            end
+        end
+
         if item.currentAnim ~= nil then
             item.currentAnim.draw(item, item.x, item.y, item.flip)
         else
             -- scale = 1 car on est sur l'écran, donc le zoom est géré globalement
             Assets.draw(item.quad, item.x, item.y, item.flip, 1, item.rotation)
         end
+
         -- si l'item à des PV, on les affiche
         if item.pv > 0 then
             love.graphics.setColor(1, 0, 0)

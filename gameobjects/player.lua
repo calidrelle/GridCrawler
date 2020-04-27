@@ -144,7 +144,10 @@ local function shoot(dt)
     if love.keyboard.isDown(OPTIONS.FIRE) then
         if firePressed == false then
             if this.stamina > STAMINA_FIRE then
-                ItemManager.newSword(this.x, this.y, this.shootx, this.shooty)
+                -- on créé l'épée en peu plus devant le joueur
+                local x = this.x + this.dx * TILESIZE
+                local y = this.y + this.dy * TILESIZE
+                ItemManager.newSword(x, y, this.shootx, this.shooty)
                 this.stamina = this.stamina - STAMINA_FIRE
                 Assets.snd_shoot:play()
             else

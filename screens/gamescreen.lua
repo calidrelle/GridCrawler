@@ -45,6 +45,7 @@ local function drawGui()
 
     -- Messages
     love.graphics.setColor(0, 0, 0)
+    love.graphics.setFont(Font20)
     if #Player.messages > 0 then
         love.graphics.printf(Player.messages[1].text, PIXELLARGE + SCALE * 16 + 6, HEIGHT - (76 * SCALE), 70 * SCALE, "left")
     end
