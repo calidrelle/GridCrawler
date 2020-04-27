@@ -29,6 +29,7 @@ function love.load()
     require("engine.itemManager")
     require("engine.inventory").init()
     require("engine.gui").init()
+    require("engine.effects").init()
 
     musicIntro = love.audio.newSource("sons/BeepBox-Song2-intro.wav", "stream")
     musicLoops[1] = love.audio.newSource("sons/BeepBox-Song2-loop1.wav", "stream")
@@ -49,7 +50,9 @@ ScreenManager.setScreen = function(name)
     if name == "MENU" then
         screen = menuScreen
     elseif name == "GAME" then
-        love.mouse.setVisible(false)
+        if not INFODEBUG then
+            love.mouse.setVisible(false)
+        end
         screen = gameScreen
     elseif name == "OPTIONS" then
         screen = optionsScreen

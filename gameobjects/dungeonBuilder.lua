@@ -2,7 +2,7 @@ local this = {}
 
 local ROOM_MIN_WIDTH = 6
 local ROOM_MAX_WIDTH = 12
-MAX_PAGES = 1
+MAX_PAGES = 8
 
 local map = {}
 local rooms = {}
@@ -180,20 +180,20 @@ local function createPagesPieces()
     end
 end
 
-local function createBarrels()
+local function createBarrels(nbTotal)
     local nb = 0
     for _, item in pairs(ItemManager.getItems()) do
         if item.name == "barrel" then
             nb = nb + 1
         end
     end
-    for _ = nb + 1, 20 do
+    for _ = nb + 1, nbTotal do
         local pos = this.getEmptyLocation()
         ItemManager.newBarrel(pos.x * TILESIZE, pos.y * TILESIZE)
     end
 end
 
-local function createSlims()
+local function createSlims(nbTotal)
     local nb = 0
     local pos
     for _, item in pairs(ItemManager.getItems()) do
@@ -201,7 +201,7 @@ local function createSlims()
             nb = nb + 1
         end
     end
-    for _ = nb + 1, 12 do
+    for _ = nb + 1, nbTotal do
         repeat
             pos = this.getEmptyLocation(0) -- monsters in rooms only
         until pos.room ~= map.spawn.room
@@ -235,8 +235,8 @@ this.build = function(width, height, seed)
 
     -- on créé les autres entités du niveau par rapport à la position du player
     createPagesPieces()
-    createBarrels()
-    createSlims()
+    createBarrels(20)
+    createSlims(12)
 
     map.collideAt = function(x, y)
         local tileX = math.floor(x / TILESIZE)

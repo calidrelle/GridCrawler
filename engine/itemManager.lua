@@ -257,6 +257,11 @@ ItemManager.doAttack = function(fighter, target)
     local damage = math.random(fighter.atk) - target.def
     if damage > 0 then
         print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
+        if target == Player then
+            Effects.createFloatingText(damage .. "", target.x, target.y, 4, 1, 0.45, 0.77)
+        else
+            Effects.createFloatingText(damage .. "", target.x, target.y, 4, 1, 1, 1)
+        end
         target.pv = target.pv - damage
         if target.pv > 0 then
             Assets.snd_hurt:play()

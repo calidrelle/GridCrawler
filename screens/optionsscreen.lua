@@ -3,7 +3,6 @@ local this = {}
 OPTIONS = {}
 OPTIONS.volume = 0
 OPTIONS.fullscreen = false
-
 SCALE = 3
 
 -- 800, 600 (4/3)

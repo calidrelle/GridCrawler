@@ -31,6 +31,7 @@ end
 this.update = function(dt)
     ItemManager.update(dt)
     Player.update(dt)
+    Effects.update(dt)
 end
 
 local function drawGui()
@@ -73,11 +74,12 @@ this.draw = function()
             tile.draw(tx, ty)
         end
     end
-
     -- les items
     ItemManager.draw()
     -- le Player
     Player.draw()
+
+    Effects.draw()
 
     love.graphics.pop()
     drawGui()
