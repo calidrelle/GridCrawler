@@ -6,8 +6,8 @@ ItemManager.newSword = function(tileX, tileY, dx, dy)
     item.solid = false -- item collide with player/mob ?
     item.initStats(0, 0, Player.atk, 0) -- pv, atkRange, atk, def (player de base: pv = 10, atkRange = 20, atk = 2, def = 2)
 
-    item.life = 0.8 -- durée de vie, donc distance
-    item.speed = 200
+    item.life = 0.4 -- durée de vie, donc distance
+    item.speed = 400
 
     dx = dx or 0
     dy = dy or 0

@@ -77,9 +77,10 @@ Assets.init = function()
     Assets.snd_error = love.audio.newSource("sons/error.wav", "static")
     Assets.snd_shoot = love.audio.newSource("sons/shoot.wav", "static")
     Assets.snd_loot = love.audio.newSource("sons/loot.wav", "static")
-    Assets.snd_dead = love.audio.newSource("sons/sfx1.wav", "static")
-    Assets.snd_hurt = love.audio.newSource("sons/sfx2.wav", "static")
+    Assets.snd_dead = love.audio.newSource("sons/dead.wav", "static")
+    Assets.snd_hurt = love.audio.newSource("sons/hurt.wav", "static")
     Assets.snd_opengrid = love.audio.newSource("sons/opengrid.wav", "static")
+    Assets.snd_jump = love.audio.newSource("sons/jump.wav", "static")
 
     print("Assets loaded")
 end

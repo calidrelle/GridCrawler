@@ -3,6 +3,7 @@ this.x = 0
 this.y = 0
 this.dx = 0
 this.dy = 0
+this.speedInit = 120
 this.speed = 120
 this.gold = 0
 
@@ -119,23 +120,6 @@ local function move(dt)
     this.dy = this.dy * FRICTION
 end
 
-local function canTouch(item)
-    local x1 = item.x + item.width / 2
-    local y1 = item.y + item.height / 2
-    local x2 = this.getCenter().x
-    local y2 = this.getCenter().y
-
-    -- distance rapide
-    if math.abs(x1 - x2) > TILESIZE * 3 then
-        return false
-    elseif math.abs(y1 - y2) > TILESIZE * 3 then
-        return false
-    end
-
-    local dist2 = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)
-    return dist2 <= (this.atkRange * this.atkRange)
-end
-
 this.addMessage = function(text, timer)
     for key, msg in pairs(this.messages) do
         if msg.text == text then
@@ -174,8 +158,30 @@ local function shoot(dt)
     end
 end
 
+local isJumping = 0
+local canJump = true
+local function jump(dt)
+    if love.keyboard.isDown(OPTIONS.JUMP) and canJump then
+        if isJumping == 0 then
+            Assets.snd_jump:play()
+            isJumping = 0.15
+            canJump = false
+        end
+    end
+    if not love.keyboard.isDown(OPTIONS.JUMP) then
+        canJump = true
+    end
+    if isJumping > 0 then
+        isJumping = isJumping - dt
+        this.speed = 300
+    else
+        isJumping = 0
+    end
+end
+
 this.update = function(dt)
     -- Déplacements
+    this.speed = this.speedInit
     if love.keyboard.isDown(OPTIONS.LEFT) then
         this.dx = -1
         this.flip = true
@@ -188,6 +194,8 @@ this.update = function(dt)
     elseif love.keyboard.isDown(OPTIONS.DOWN) then
         this.dy = 1
     end
+
+    jump(dt)
     move(dt)
     shoot(dt)
 

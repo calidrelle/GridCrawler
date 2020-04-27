@@ -5,7 +5,7 @@ OPTIONS.DOWN = "s"
 OPTIONS.LEFT = "q"
 OPTIONS.RIGHT = "d"
 OPTIONS.FIRE = "rctrl"
-OPTIONS.JUMP = "espace"
+OPTIONS.JUMP = "space"
 
 ---------------------------------------------------------
 local btnBack
