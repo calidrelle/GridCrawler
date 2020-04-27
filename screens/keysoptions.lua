@@ -100,14 +100,11 @@ this.keypressed = function(key)
     if key == "escape" then
         if selectionText == "" then
             ScreenManager.setScreen("OPTIONS")
-        else
-            this.load()
         end
     end
     if btnUp.waiting then
         if isKeyDispo(key) then
             OPTIONS.UP = key
-            this.load()
         else
             Assets.snd_error:play()
         end
@@ -115,7 +112,6 @@ this.keypressed = function(key)
     if btnDown.waiting then
         if isKeyDispo(key) then
             OPTIONS.DOWN = key
-            this.load()
         else
             Assets.snd_error:play()
         end
@@ -123,7 +119,6 @@ this.keypressed = function(key)
     if btnLeft.waiting then
         if isKeyDispo(key) then
             OPTIONS.LEFT = key
-            this.load()
         else
             Assets.snd_error:play()
         end
@@ -131,7 +126,6 @@ this.keypressed = function(key)
     if btnRight.waiting then
         if isKeyDispo(key) then
             OPTIONS.RIGHT = key
-            this.load()
         else
             Assets.snd_error:play()
         end
@@ -139,7 +133,6 @@ this.keypressed = function(key)
     if btnJump.waiting then
         if isKeyDispo(key) then
             OPTIONS.JUMP = key
-            this.load()
         else
             Assets.snd_error:play()
         end
@@ -147,11 +140,11 @@ this.keypressed = function(key)
     if btnFire.waiting then
         if isKeyDispo(key) then
             OPTIONS.FIRE = key
-            this.load()
         else
             Assets.snd_error:play()
         end
     end
+    this.load()
 end
 
 return this
