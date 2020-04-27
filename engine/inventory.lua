@@ -33,6 +33,7 @@ Inventory.addItem = function(newItem, nombre)
 end
 
 Inventory.draw = function()
+    love.graphics.setColor(1, 1, 1, 1)
     for y = 1, 4 do
         for x = 1, 4 do
             local i = (y - 1) * 4 + x

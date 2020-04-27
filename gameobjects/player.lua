@@ -5,7 +5,11 @@ this.dx = 0
 this.dy = 0
 this.speedInit = 120
 this.speed = 120
-this.gold = 0
+this.stamina = 100
+this.staminaRegen = 25 -- stamina par seconde
+
+STAMINA_JUMP = 30
+STAMINA_FIRE = 10
 
 this.flip = false
 this.bounds = {}
@@ -129,7 +133,7 @@ this.addMessage = function(text, timer)
     local msg = {}
     msg.text = text
     msg.timer = timer
-    table.insert(this.messages, msg)
+    table.insert(this.messages, 1, msg)
 end
 
 local function checkGridOpen()
@@ -149,8 +153,13 @@ local function shoot(dt)
     -- on tir
     if love.keyboard.isDown(OPTIONS.FIRE) then
         if firePressed == false then
-            ItemManager.newSword(this.x, this.y, this.shootx, this.shooty)
-            Assets.snd_shoot:play()
+            if this.stamina > STAMINA_FIRE then
+                ItemManager.newSword(this.x, this.y, this.shootx, this.shooty)
+                this.stamina = this.stamina - STAMINA_FIRE
+                Assets.snd_shoot:play()
+            else
+                Assets.snd_nostamina:play()
+            end
         end
         firePressed = true
     else
@@ -163,9 +172,14 @@ local canJump = true
 local function jump(dt)
     if love.keyboard.isDown(OPTIONS.JUMP) and canJump then
         if isJumping == 0 then
-            Assets.snd_jump:play()
-            isJumping = 0.15
-            canJump = false
+            if this.stamina > STAMINA_JUMP then
+                Assets.snd_jump:play()
+                isJumping = 0.15
+                this.stamina = this.stamina - STAMINA_JUMP
+                canJump = false
+            else
+                Assets.snd_nostamina:play()
+            end
         end
     end
     if not love.keyboard.isDown(OPTIONS.JUMP) then
@@ -180,6 +194,11 @@ local function jump(dt)
 end
 
 this.update = function(dt)
+    if this.stamina < 100 then
+        this.stamina = this.stamina + this.staminaRegen * dt
+    else
+        this.stamina = 100
+    end
     -- Déplacements
     this.speed = this.speedInit
     if love.keyboard.isDown(OPTIONS.LEFT) then
@@ -212,11 +231,11 @@ this.update = function(dt)
         end
     end
 
-    -- les messages
-    for i = #this.messages, 1, -1 do
-        this.messages[i].timer = this.messages[i].timer - dt
-        if this.messages[i].timer <= 0 then
-            table.remove(this.messages, i)
+    -- les messages : on ne décompte que le temps du message affiché (le dernier entré)
+    if #this.messages > 0 then
+        this.messages[1].timer = this.messages[1].timer - dt
+        if this.messages[1].timer <= 0 then
+            table.remove(this.messages, 1)
         end
     end
 end
@@ -224,6 +243,12 @@ end
 this.draw = function()
     love.graphics.setColor(1, 1, 1)
     this.currentAnim.draw(self, this.x, this.y, this.flip)
+
+    -- love.graphics.setColor(0, 0.6, 1)
+    -- love.graphics.rectangle("fill", this.x, this.y + TILESIZE + 3, TILESIZE * this.stamina / 100, 3)
+    -- love.graphics.setColor(0, 0, 0)
+    -- love.graphics.rectangle("line", this.x, this.y + TILESIZE + 3, TILESIZE, 3)
+
 end
 
 return this

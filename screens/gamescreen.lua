@@ -35,11 +35,17 @@ this.update = function(dt)
 end
 
 local function drawGui()
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.draw(Assets.gui, WIDTH - 100 * SCALE, 0, 0, SCALE, SCALE)
     love.graphics.draw(Assets.gui_bottom, WIDTH - 100 * SCALE, HEIGHT - Assets.gui_bottom:getHeight() * SCALE, 0, SCALE, SCALE)
-end
 
-local function drawMessages()
+    -- Catactéristiques player
+    love.graphics.setColor(0, 0.6, 1)
+    love.graphics.rectangle("fill", PIXELLARGE + 15 * SCALE, 85 * SCALE, SCALE * (50 * Player.stamina / 100), SCALE * 10)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle("line", PIXELLARGE + 15 * SCALE, 85 * SCALE, SCALE * 50, SCALE * 10)
+
+    -- Messages
     love.graphics.setColor(0, 0, 0)
     if #Player.messages > 0 then
         love.graphics.printf(Player.messages[1].text, PIXELLARGE + SCALE * 16 + 6, HEIGHT - (76 * SCALE), 70 * SCALE, "left")
@@ -73,14 +79,12 @@ this.draw = function()
 
     -- les items
     ItemManager.draw()
-
     -- le Player
     Player.draw()
 
     love.graphics.pop()
     drawGui()
     Inventory.draw()
-    drawMessages()
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.print("FPS: " .. love.timer.getFPS(), 10, 10)
 end
