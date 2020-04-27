@@ -193,12 +193,6 @@ local function createBarrels()
     end
 end
 
--- local function distanceToPlayer(item)
---     local dx = item.x - map.spawn.x
---     local dy = item.y - map.spawn.y
---     return math.sqrt(dx * dx + dy * dy)
--- end
-
 local function createSlims()
     local nb = 0
     local pos
@@ -244,7 +238,7 @@ this.build = function(width, height, seed)
     createBarrels()
     createSlims()
 
-    function map:collideAt(x, y)
+    map.collideAt = function(x, y)
         local tileX = math.floor(x / TILESIZE)
         local tileY = math.floor(y / TILESIZE)
 

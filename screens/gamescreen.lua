@@ -1,13 +1,13 @@
 local this = {}
 
 local seed = 1
-local map = nil
+Map = nil
 Player = nil
 
 this.reset = function()
     Assets.init()
     seed = nil
-    map = nil
+    Map = nil
     ItemManager.reset()
     Player.resetAnims()
     Player = nil
@@ -16,13 +16,12 @@ end
 
 this.load = function()
     print("load game")
-    if (map == nil) then
+    if (Map == nil) then
         print("init map")
         local mapBuilder = require("gameobjects.dungeonBuilder")
-        map = mapBuilder.build(60, 60, seed)
+        Map = mapBuilder.build(60, 60, seed)
         Player = require("gameobjects.player")
-        Player.createNew(map.spawn.x * TILESIZE, map.spawn.y * TILESIZE)
-        Player.setMap(map)
+        Player.createNew(Map.spawn.x * TILESIZE, Map.spawn.y * TILESIZE)
     end
 
     -- Calcul de la zone de jeu
@@ -62,13 +61,13 @@ this.draw = function()
     local nbTilesX = math.floor(PIXELLARGE / TILESIZE) - 1
     local nbTilesY = math.floor(HEIGHT / TILESIZE) - 1
     local xmin = math.max(1, math.floor(Player.x / TILESIZE) - nbTilesX)
-    local xmax = math.min(map.width, math.floor(Player.x / TILESIZE) + nbTilesX)
+    local xmax = math.min(Map.width, math.floor(Player.x / TILESIZE) + nbTilesX)
     local ymin = math.max(1, math.floor(Player.y / TILESIZE) - nbTilesY)
-    local ymax = math.min(map.height, math.floor(Player.y / TILESIZE) + nbTilesY)
+    local ymax = math.min(Map.height, math.floor(Player.y / TILESIZE) + nbTilesY)
 
     for x = xmin, xmax do
         for y = ymin, ymax do
-            local tile = map[x][y]
+            local tile = Map[x][y]
             local tx = x * TILESIZE
             local ty = y * TILESIZE
             tile.draw(tx, ty)
@@ -85,6 +84,7 @@ this.draw = function()
     Inventory.draw()
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.print("FPS: " .. love.timer.getFPS(), 10, 10)
+    love.graphics.print("Items: " .. #ItemManager.getItems(), 10, 32)
 end
 
 this.keypressed = function(key)

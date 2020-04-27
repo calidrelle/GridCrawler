@@ -11,6 +11,13 @@ require("gameobjects.sword")
 -- mobs
 require("gameobjects.slim")
 
+MOBSTATES = {}
+MOBSTATES.NONE = ""
+MOBSTATES.WALK = "walk"
+MOBSTATES.SEEK = "seek"
+MOBSTATES.FIGHT = "fight"
+MOBSTATES.CHANGEDIR = "change"
+
 ItemManager.create = function(quad, x, y)
     local item = {}
     item.quad = quad
@@ -18,15 +25,160 @@ ItemManager.create = function(quad, x, y)
     item.y = y
     item.width = TILESIZE
     item.height = TILESIZE
+    item.dx = 0
+    item.dy = 0
     item.solid = false
     item.actif = true
+    item.state = MOBSTATES.NONE
+    item.cooldown = 0
 
-    item.initStats = function(pv, atkRange, atk, def)
+    item.initStats = function(pv, atkRange, atk, def, detectRange, speed, atkSpeed)
         item.pv = pv
         item.pvMax = pv
         item.atkRange = atkRange
         item.atk = atk
         item.def = def
+        item.detectRange = detectRange
+        item.speed = speed
+        item.atkSpeed = atkSpeed
+    end
+
+    item.getCenter = function()
+        return item.x + item.width / 2, item.y + item.height / 2
+    end
+
+    item.distanceToOther = function(other)
+        local ix, iy = item.getCenter()
+        local px, py = other.getCenter()
+        return math.sqrt((ix - px) * (ix - px) + (iy - py) * (iy - py))
+    end
+
+    item.chooseRandomDirection = function()
+        -- local angle = math.random() * 2 * math.pi
+        local angle = math.pi / 2 * math.random(4)
+        item.dx = math.cos(angle)
+        item.dy = math.sin(angle)
+    end
+
+    item.checkCollision = function(dt)
+        local collision = false
+        local approx = 3 -- bounding box de l'obket
+        local tdx = item.dx * item.speed * dt
+        local tdy = item.dy * item.speed * dt
+
+        local x1 = item.x + tdx + approx
+        local x2 = item.x + item.width + tdx - approx
+        local y1 = item.y + tdy + approx
+        local y2 = item.y + item.height + tdy - approx
+
+        local colX
+        if item.dx < 0 then
+            colX = Map.collideAt(x1, y1) or Map.collideAt(x1, y2)
+        elseif item.dx > 0 then
+            colX = Map.collideAt(x2, y1) or Map.collideAt(x2, y2)
+        end
+        if colX then
+            tdx = -tdx
+            item.dx = 0
+        end
+        x1 = item.x + tdx + approx
+        x2 = item.x + item.width + tdx - approx
+        y1 = item.y + tdy + approx
+        y2 = item.y + item.height + tdy - approx
+
+        local colY
+        if item.dy < 0 then
+            colY = Map.collideAt(x1, y1) or Map.collideAt(x2, y1)
+        elseif item.dy > 0 then
+            colY = Map.collideAt(x1, y2) or Map.collideAt(x2, y2)
+        end
+        if colY then
+            tdy = 0
+            item.dy = 0
+        end
+
+        if colX or colY then
+            return true
+        end
+
+        local px, py = item.getCenter()
+        local other = ItemManager.getItemAt(px, py)
+        if other ~= nil then
+            collision = (other ~= item)
+        end
+
+        return collision
+    end
+
+    item.seek = function(other)
+        local ox, oy = other.getCenter()
+        local ix, iy = item.getCenter()
+        if ox > ix then
+            item.dx = 1
+        elseif ox < ix then
+            item.dx = -1
+        end
+        if oy < iy then
+            item.dy = -1
+        elseif oy > iy then
+            item.dy = 1
+        end
+    end
+
+    -- certains items comme les mobs, on une AI
+    item.updateState = function(dt)
+        local distToPlay = item.distanceToOther(Player)
+        if item.state == MOBSTATES.NONE then
+            item.state = MOBSTATES.CHANGEDIR
+
+        elseif item.state == MOBSTATES.WALK then
+            if item.checkCollision(dt) then
+                item.state = MOBSTATES.CHANGEDIR
+            end
+            if distToPlay < item.detectRange then
+                item.target = Player
+                item.state = MOBSTATES.SEEK
+            end
+
+        elseif item.state == MOBSTATES.SEEK then
+            if item.target == nil then
+                item.state = MOBSTATES.CHANGEDIR
+            elseif distToPlay > item.detectRange then
+                item.target = nil
+                item.state = MOBSTATES.CHANGEDIR
+            elseif distToPlay < item.atkRange then
+                -- Attaque de la target
+                item.state = MOBSTATES.FIGHT
+                item.dx = 0
+                item.dy = 0
+            else
+                -- poursuite du Player
+                item.seek(Player)
+                if item.checkCollision(dt) then
+                    item.state = MOBSTATES.CHANGEDIR
+                    return
+                end
+            end
+
+        elseif item.state == MOBSTATES.FIGHT then
+            if distToPlay > item.atkRange then
+                item.state = MOBSTATES.SEEK
+            else
+                -- attaque du Player
+                if item.cooldown <= 0 then
+                    ItemManager.doAttack(item, Player)
+                    item.cooldown = item.atkSpeed
+                else
+                    item.cooldown = item.cooldown - dt
+                end
+            end
+
+        elseif item.state == MOBSTATES.CHANGEDIR then
+            item.chooseRandomDirection()
+            item.state = MOBSTATES.WALK
+        else
+            error("Etat non géré : " .. item.state)
+        end
     end
 
     table.insert(items, item)
@@ -40,6 +192,13 @@ end
 ItemManager.update = function(dt)
     for _, item in pairs(items) do
         item.update(dt)
+        -- Déplacement des items (mobs) qui peuvent se dépacer
+        if item.speed ~= nil then
+            if item.state ~= MOBSTATES.CHANGEDIR then
+                item.x = item.x + item.dx * item.speed * dt
+                item.y = item.y + item.dy * item.speed * dt
+            end
+        end
     end
     for i = #items, 1, -1 do
         if items[i].actif == false then
@@ -50,14 +209,14 @@ end
 
 ItemManager.getItemAt = function(x, y)
     for _, item in pairs(items) do
-        if item.x <= x and item.x + TILESIZE >= x and item.y <= y and item.y + TILESIZE > y then
+        if item.x <= x and item.x + TILESIZE >= x and item.y <= y and item.y + TILESIZE >= y then
             return item
         end
     end
     return nil
 end
 
-ItemManager.isItemAt = function(x, y)
+ItemManager.isItemSolidAt = function(x, y)
     local item = ItemManager.getItemAt(x, y)
     if item == nil then
         return false
@@ -87,12 +246,6 @@ ItemManager.draw = function()
             love.graphics.setColor(0, 0, 0)
             love.graphics.rectangle("line", item.x, item.y, TILESIZE, 3) -- La barre de vie à la taille d'une tile
         end
-        if INFODEBUG then
-            if item.loot ~= nil then
-                love.graphics.print(item.loot, item.x, item.y)
-            end
-            -- love.graphics.rectangle("line", item.x, item.y, 2, 2)
-        end
     end
 end
 
@@ -103,13 +256,13 @@ ItemManager.doAttack = function(fighter, target)
 
     local damage = math.random(fighter.atk) - target.def
     if damage > 0 then
-        print(fighter.name .. " hit " .. target.name .. " and deals " .. damage .. " damages")
+        print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
         target.pv = target.pv - damage
         if target.pv > 0 then
             Assets.snd_hurt:play()
         end
     else
-        print(fighter.name .. " missed")
+        print(fighter.name .. " missed " .. target.name)
     end
 
     if target.pv <= 0 then

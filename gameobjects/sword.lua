@@ -6,8 +6,8 @@ ItemManager.newSword = function(tileX, tileY, dx, dy)
     item.solid = false -- item collide with player/mob ?
     item.initStats(0, 0, Player.atk, 0) -- pv, atkRange, atk, def (player de base: pv = 10, atkRange = 20, atk = 2, def = 2)
 
-    item.life = 0.4 -- durée de vie, donc distance
-    item.speed = 400
+    item.life = 0.3 -- durée de vie, donc distance
+    item.speed = 300
 
     dx = dx or 0
     dy = dy or 0
@@ -36,9 +36,10 @@ ItemManager.newSword = function(tileX, tileY, dx, dy)
     item.walkOver = function(other)
     end
 
-    item.getCenter = function()
-        return item.x + item.width / 2, item.y + item.height / 2
-    end
+    -- déplacé dans ItemManager
+    -- item.getCenter = function()
+    --     return item.x + item.width / 2, item.y + item.height / 2
+    -- end
 
     item.update = function(dt)
         item.life = item.life - dt
@@ -56,7 +57,7 @@ ItemManager.newSword = function(tileX, tileY, dx, dy)
             end
         end
 
-        if Player.map.collideAt(self, item.getCenter()) then
+        if Map.collideAt(item.getCenter()) then
             item.actif = false
         end
     end

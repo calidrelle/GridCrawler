@@ -3,20 +3,15 @@ this.x = 0
 this.y = 0
 this.dx = 0
 this.dy = 0
-this.speedInit = 120
-this.speed = 120
-this.stamina = 100
-this.staminaRegen = 25 -- stamina par seconde
 
 STAMINA_JUMP = 30
 STAMINA_FIRE = 10
 
 this.flip = false
 this.bounds = {}
-this.map = {}
 this.messages = {}
 
-FRICTION = 0.75
+FRICTION = 0.55
 
 this.createNew = function(x, y)
     this.name = "player"
@@ -34,21 +29,22 @@ this.createNew = function(x, y)
     this.pv = 10
     this.pvMax = 10
     this.atkRange = 20
-    this.atk = 3
+    this.atk = 4
     this.def = 2
+    this.speedInit = 120
+    this.speed = 120
+    this.stamina = 100
+    this.staminaRegen = 25 -- stamina par seconde
+    this.regenPv = 0.5
 end
 
 this.getCenter = function()
-    return {x = this.x + this.bounds.x + this.bounds.width / 2, y = this.y + this.bounds.y + this.bounds.height / 2}
+    return this.x + this.bounds.x + this.bounds.width / 2, this.y + this.bounds.y + this.bounds.height / 2
 end
 
 this.resetAnims = function()
     this.animIdle.reset()
     this.animRun.reset()
-end
-
-this.setMap = function(map)
-    this.map = map
 end
 
 local function move(dt)
@@ -64,8 +60,7 @@ local function move(dt)
         py1 = this.y + this.bounds.y
         py2 = this.y + this.bounds.y + this.bounds.height
 
-        if this.map.collideAt(self, px1, py1) or this.map.collideAt(self, px1, py2) or ItemManager.isItemAt(px1, py1) or
-            ItemManager.isItemAt(px1, py2) then
+        if Map.collideAt(px1, py1) or Map.collideAt(px1, py2) or ItemManager.isItemSolidAt(px1, py1) or ItemManager.isItemSolidAt(px1, py2) then
             this.dx = 0
             tdx = 0
         end
@@ -74,8 +69,7 @@ local function move(dt)
         px1 = this.x + this.bounds.x + this.bounds.width + tdx
         py1 = this.y + this.bounds.y
         py2 = this.y + this.bounds.y + this.bounds.height
-        if this.map.collideAt(self, px1, py1) or this.map.collideAt(self, px1, py2) or ItemManager.isItemAt(px1, py1) or
-            ItemManager.isItemAt(px1, py2) then
+        if Map.collideAt(px1, py1) or Map.collideAt(px1, py2) or ItemManager.isItemSolidAt(px1, py1) or ItemManager.isItemSolidAt(px1, py2) then
             this.dx = 0
             tdx = 0
         end
@@ -85,8 +79,7 @@ local function move(dt)
         px1 = this.x + this.bounds.x
         py1 = this.y + this.bounds.y + tdy
         px2 = this.x + this.bounds.x + this.bounds.width
-        if this.map.collideAt(self, px1, py1) or this.map.collideAt(self, px2, py1) or ItemManager.isItemAt(px1, py1) or
-            ItemManager.isItemAt(px2, py1) then
+        if Map.collideAt(px1, py1) or Map.collideAt(px2, py1) or ItemManager.isItemSolidAt(px1, py1) or ItemManager.isItemSolidAt(px2, py1) then
             this.dy = 0
             tdy = 0
         end
@@ -96,8 +89,7 @@ local function move(dt)
         px1 = this.x + this.bounds.x
         py1 = this.y + this.bounds.y + this.bounds.height + tdy
         px2 = this.x + this.bounds.x + this.bounds.width
-        if this.map.collideAt(self, px1, py1) or this.map.collideAt(self, px2, py1) or ItemManager.isItemAt(px1, py1) or
-            ItemManager.isItemAt(px2, py1) then
+        if Map.collideAt(px1, py1) or Map.collideAt(px2, py1) or ItemManager.isItemSolidAt(px1, py1) or ItemManager.isItemSolidAt(px2, py1) then
             this.dy = 0
             tdy = 0
         end
@@ -120,9 +112,6 @@ local function move(dt)
         this.shootx = this.dx
         this.shooty = this.dy
     end
-    this.currentAnim.update(self, dt)
-    this.dx = this.dx * FRICTION
-    this.dy = this.dy * FRICTION
 end
 
 this.addMessage = function(text, timer)
@@ -215,12 +204,21 @@ this.update = function(dt)
         this.dy = 1
     end
 
+    if this.stamina == 100 then
+        if this.pv < this.pvMax then
+            this.pv = this.pv + this.regenPv * dt
+        end
+    end
+
     jump(dt)
     move(dt)
     shoot(dt)
+    this.currentAnim.update(self, dt)
+    this.dx = this.dx * FRICTION
+    this.dy = this.dy * FRICTION
 
     -- on marche sur un truc
-    local item = ItemManager.getItemAt(this.getCenter().x, this.getCenter().y)
+    local item = ItemManager.getItemAt(this.getCenter())
     if item ~= nil then
         item.walkOver(this)
         if checkGridOpen() then
