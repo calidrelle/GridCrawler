@@ -21,6 +21,8 @@ GameOver = {}
 GameOver.status = false
 GameOver.timer = 0
 
+Player = nil
+
 function DevMode()
     return love.filesystem.getInfo("README.md") ~= nil
 end
@@ -34,6 +36,9 @@ function love.load()
     require("engine.inventory").init()
     require("engine.gui").init()
     require("engine.effects").init()
+
+    Player = require("gameobjects.player")
+    Player.createNew()
 
     musicIntro = love.audio.newSource("sons/BeepBox-Song2-intro.mp3", "stream")
     musicLoops[1] = love.audio.newSource("sons/BeepBox-Song2-loop1.mp3", "stream")
@@ -56,13 +61,16 @@ ScreenManager.setScreen = function(name)
     elseif name == "GAME" then
         love.mouse.setVisible(false)
         screen = gameScreen
+    elseif name == "NEXTLEVEL" then
+        gameScreen.startNewLevel()
+        screen = gameScreen
     elseif name == "OPTIONS" then
         screen = optionsScreen
     elseif name == "KEYS" then
         screen = keysOptionsScreen
     elseif name == "QUIT" then
         screen = gameQuit
-    elseif name == "NEXTLEVEL" then
+    elseif name == "VENDOR" then
         screen = nextLevelScreen
     else
         error("L'écran " .. name .. " n'existe pas")

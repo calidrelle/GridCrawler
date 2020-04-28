@@ -13,10 +13,10 @@ this.messages = {}
 
 FRICTION = 0.55
 
-this.createNew = function(x, y)
+this.createNew = function()
     this.name = "player"
-    this.x = x
-    this.y = y
+    this.x = 0
+    this.y = 0
     this.bounds.x = 6
     this.bounds.y = 6
     this.bounds.width = 5
@@ -37,6 +37,11 @@ this.createNew = function(x, y)
     this.stamina = 100
     this.staminaRegen = 25 -- stamina par seconde
     this.regenPv = 0.5
+end
+
+this.setPosition = function(x, y)
+    this.x = x
+    this.y = y
 end
 
 this.getCenter = function()
@@ -125,18 +130,6 @@ this.addMessage = function(text, timer)
     msg.text = text
     msg.timer = timer
     table.insert(this.messages, 1, msg)
-end
-
-local function checkGridOpen()
-    local count = 0
-    for _, item in pairs(Inventory.getItems()) do
-        if item.name ~= nil then
-            if item.name:sub(1, 4) == "page" then
-                count = count + 1
-            end
-        end
-    end
-    return count == MAX_PAGES
 end
 
 local firePressed = false
@@ -238,7 +231,7 @@ this.update = function(dt)
     local item = ItemManager.getItemAt(this.getCenter())
     if item ~= nil then
         item.walkOver(this)
-        if checkGridOpen() then
+        if Inventory.getNombrePages() == MAX_PAGES then
             if not this.gridOpened then
                 this.gridOpened = true
                 Assets.snd_opengrid:play()

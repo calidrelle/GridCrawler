@@ -3,17 +3,15 @@ local this = {}
 local seed = 1
 
 Map = nil
-Player = nil
 local btnRestart = nil
 
-this.reset = function()
+this.startNewLevel = function()
     Assets.init()
     seed = nil
     Map = nil
     ItemManager.reset()
-    Inventory.init()
     Player.resetAnims()
-    Player = nil
+    Player.gridOpened = false
     GameOver.status = false
     GameOver.timer = 0
     this.load()
@@ -26,8 +24,7 @@ this.load = function()
         print("init map")
         local mapBuilder = require("gameobjects.dungeonBuilder")
         Map = mapBuilder.build(60, 60, seed)
-        Player = require("gameobjects.player")
-        Player.createNew(Map.spawn.x * TILESIZE, Map.spawn.y * TILESIZE)
+        Player.setPosition(Map.spawn.x * TILESIZE, Map.spawn.y * TILESIZE)
     end
     -- Calcul de la zone de jeu
     PIXELLARGE = (WIDTH - 100 * SCALE)
@@ -37,7 +34,7 @@ end
 
 this.update = function(dt)
     if btnRestart.clicked then
-        this.reset()
+        this.startNewLevel()
     end
     ItemManager.update(dt)
     Player.update(dt)
@@ -161,16 +158,13 @@ this.keypressed = function(key)
         ScreenManager.setScreen("MENU")
     end
     if key == "return" and btnRestart.visible then
-        this.reset()
+        this.startNewLevel()
     end
     if DevMode() then
-        if key == "f5" then
-            this.reset()
-        elseif key == "f10" then
-            GameOver.status = not GameOver.status
-            if GameOver.status then
-                GameOver.timer = 0
-            end
+        if key == "f10" then
+            Player.pv = -1
+        elseif key == "f11" then
+
         else
             print("gamescreen key : " .. key)
         end

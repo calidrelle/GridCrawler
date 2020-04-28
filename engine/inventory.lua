@@ -12,6 +12,28 @@ Inventory.init = function()
     end
 end
 
+Inventory.removePages = function()
+    for i = 1, nbItems do
+        if items[i].name ~= nil then
+            if items[i].name:sub(1, 4) == "page" then
+                items[i] = {}
+            end
+        end
+    end
+end
+
+Inventory.getNombrePages = function()
+    local count = 0
+    for _, item in pairs(items) do
+        if item.name ~= nil then
+            if item.name:sub(1, 4) == "page" then
+                count = count + 1
+            end
+        end
+    end
+    return count
+end
+
 local function lootSound(item)
     if item.name:sub(1, 4) == "page" then
         Assets.snd_lootpage:play()

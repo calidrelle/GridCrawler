@@ -11,7 +11,7 @@ ItemManager.newExitGrid = function(tileX, tileY)
     item.walkOver = function(other)
         if other.name == "player" then
             if Player.gridOpened then
-                ScreenManager.setScreen("NEXTLEVEL")
+                ScreenManager.setScreen("VENDOR")
             else
                 other.addMessage(
                     "Pour ouvrir la grille, il te faut le grimoire complet. Les monstres ont volé les 8 pages et en ont caché dans les bariques et les caisses du donjon. Trouve les 8 pages !",
