@@ -29,10 +29,10 @@ function love.load()
     require("engine.gui").init()
     require("engine.effects").init()
 
-    musicIntro = love.audio.newSource("sons/BeepBox-Song2-intro.wav", "stream")
-    musicLoops[1] = love.audio.newSource("sons/BeepBox-Song2-loop1.wav", "stream")
-    musicLoops[2] = love.audio.newSource("sons/BeepBox-Song2-loop2.wav", "stream")
-    musicLoops[3] = love.audio.newSource("sons/BeepBox-Song2-loop3.wav", "stream")
+    musicIntro = love.audio.newSource("sons/BeepBox-Song2-intro.mp3", "stream")
+    musicLoops[1] = love.audio.newSource("sons/BeepBox-Song2-loop1.mp3", "stream")
+    musicLoops[2] = love.audio.newSource("sons/BeepBox-Song2-loop2.mp3", "stream")
+    musicLoops[3] = love.audio.newSource("sons/BeepBox-Song2-loop3.mp3", "stream")
 
     MUSICPLAYER = musicIntro
     MUSICPLAYER:play()
