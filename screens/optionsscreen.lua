@@ -4,6 +4,7 @@ OPTIONS = {}
 OPTIONS.volume = 50
 OPTIONS.fullscreen = false
 SCALE = 3
+OPTIONS.SPAWN_AT_GRID = false
 
 -- 800, 600 (4/3)
 -- 1024 x 576 (16/9)

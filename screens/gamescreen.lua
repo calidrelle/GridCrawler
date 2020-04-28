@@ -70,6 +70,42 @@ local function drawGui()
     end
 end
 
+local function drawMinimap()
+    local scale = 3
+    local xoff = PIXELLARGE - Map.width * scale - TILESIZE
+    local yoff = 20
+    love.graphics.setLineWidth(3)
+    love.graphics.setColor(0, 0, 0, 1)
+    love.graphics.rectangle("line", xoff, yoff, Map.width * scale, Map.height * scale)
+    love.graphics.setLineWidth(1)
+    love.graphics.setColor(.5, .5, .5, 0.6)
+    love.graphics.rectangle("fill", xoff, yoff, Map.width * scale, Map.height * scale)
+
+    for x = 1, Map.width do
+        for y = 1, Map.height do
+            local tile = Map[x][y]
+            if tile.visited then
+                if tile.type == FLOOR or tile.type == CORRIDOR then
+                    love.graphics.setColor(0.6, 0.4, 0.3)
+                    love.graphics.rectangle("fill", xoff + x * scale, yoff + y * scale, scale, scale)
+                elseif tile.type == WALL then
+                    love.graphics.setColor(0.2, 0.2, 0.4)
+                    love.graphics.rectangle("fill", xoff + x * scale, yoff + y * scale, scale, scale)
+                end
+            end
+        end
+    end
+    -- Grille
+    if Map[Map.grid.x][Map.grid.y].visited then
+        love.graphics.setColor(0, 1, 0)
+        love.graphics.rectangle("fill", xoff + Map.grid.x * scale, yoff + Map.grid.y * scale, scale, scale)
+    end
+
+    -- Player
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.rectangle("fill", xoff + (Player.x / TILESIZE) * scale, yoff + (Player.y / TILESIZE) * scale, scale, scale)
+end
+
 this.draw = function()
     love.graphics.push()
     love.graphics.scale(SCALE)
@@ -79,12 +115,12 @@ this.draw = function()
     love.graphics.setColor(1, 1, 1)
 
     -- La map
-    local nbTilesX = math.floor(PIXELLARGE / TILESIZE) - 1
-    local nbTilesY = math.floor(HEIGHT / TILESIZE) - 1
-    local xmin = math.max(1, math.floor(Player.x / TILESIZE) - nbTilesX)
-    local xmax = math.min(Map.width, math.floor(Player.x / TILESIZE) + nbTilesX)
-    local ymin = math.max(1, math.floor(Player.y / TILESIZE) - nbTilesY)
-    local ymax = math.min(Map.height, math.floor(Player.y / TILESIZE) + nbTilesY)
+    local nbTilesX = math.floor((PIXELLARGE / TILESIZE) / SCALE)
+    local nbTilesY = math.floor((HEIGHT / TILESIZE) / SCALE)
+    local xmin = math.max(1, math.floor(Player.x / TILESIZE - nbTilesX / 2))
+    local xmax = math.min(Map.width, math.floor(Player.x / TILESIZE + nbTilesX / 2))
+    local ymin = math.max(1, math.floor(Player.y / TILESIZE - nbTilesY / 2))
+    local ymax = math.min(Map.height, math.floor(Player.y / TILESIZE + nbTilesY / 2))
 
     for x = xmin, xmax do
         for y = ymin, ymax do
@@ -92,6 +128,7 @@ this.draw = function()
             local tx = x * TILESIZE
             local ty = y * TILESIZE
             tile.draw(tx, ty)
+            tile.visited = true
         end
     end
     -- les items
@@ -101,8 +138,10 @@ this.draw = function()
     Effects.draw()
 
     love.graphics.pop()
+
     drawGui()
     Inventory.draw()
+    drawMinimap()
 
     if GameOver then
         love.graphics.setColor(1, 1, 1, GameOver.timer)
@@ -120,8 +159,9 @@ end
 this.keypressed = function(key)
     if key == "escape" then
         ScreenManager.setScreen("MENU")
-        -- else
-        --     print("gamescreen key : " .. key)
+    end
+    if key == "return" and btnRestart.visible then
+        this.reset()
     end
     if DevMode() then
         if key == "f5" then

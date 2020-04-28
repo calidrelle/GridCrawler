@@ -3,7 +3,6 @@ local factory = {}
 WALL = 1
 FLOOR = 2
 CORRIDOR = 3
-GRID = 4
 
 factory.create = function(type, quad)
     local this = {}
@@ -22,6 +21,8 @@ factory.create = function(type, quad)
     if quad ~= nil then
         this.quad = quad
     end
+
+    this.visited = false
 
     this.draw = function(x, y)
         Assets.draw(this.quad, x, y)

@@ -230,8 +230,12 @@ this.build = function(width, height, seed)
     map.spawn = this.getEmptyLocation(0) -- forcément dans une pièce
 
     -- Création de la grille de sortie
-    local pos = this.getEmptyLocation(map.spawn.room)
-    ItemManager.newExitGrid(pos.x * TILESIZE, pos.y * TILESIZE)
+    if OPTIONS.SPAWN_AT_GRID then
+        map.grid = this.getEmptyLocation(map.spawn.room)
+    else
+        map.grid = this.getEmptyLocation(0)
+    end
+    ItemManager.newExitGrid(map.grid.x * TILESIZE, map.grid.y * TILESIZE)
 
     -- on créé les autres entités du niveau par rapport à la position du player
     createPagesPieces()
