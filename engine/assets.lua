@@ -1,5 +1,7 @@
 Assets = {}
 
+TILESIZE = 16
+
 local sheet = nil
 
 local createQuad = function(x, y)
@@ -9,9 +11,9 @@ end
 Assets.init = function()
     Assets.titleScreen = love.graphics.newImage("images/EcranTitre.png")
     Assets.button = love.graphics.newImage("images/button.png")
-
     Assets.gui = love.graphics.newImage("images/gui.png")
     Assets.gui_bottom = love.graphics.newImage("images/gui_bottom.png")
+    Assets.GameOver = love.graphics.newImage("images/gameover.png")
 
     -- Chargement de la spritesheet
     sheet = love.graphics.newImage("images/SpriteSheet.png")
@@ -84,6 +86,7 @@ Assets.init = function()
     Assets.snd_jump = love.audio.newSource("sons/jump.wav", "static")
     Assets.snd_nostamina = love.audio.newSource("sons/nostamina.wav", "static")
     Assets.snd_deathplayer = love.audio.newSource("sons/death_player.wav", "static")
+    Assets.snd_lootpage = love.audio.newSource("sons/loot_page.wav", "static")
 
     print("Assets loaded")
 end

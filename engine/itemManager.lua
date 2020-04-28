@@ -270,7 +270,7 @@ ItemManager.doAttack = function(fighter, target)
     if damage > 0 then
         print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
         if target == Player then
-            Effects.createFloatingText(damage .. "", target.x, target.y, 4, 1, 0.45, 0.77)
+            Effects.createFloatingText(damage .. "", target.x, target.y, 4, 1, 0.7, 0)
         else
             Effects.createFloatingText(damage .. "", target.x, target.y, 4, 1, 1, 1)
         end

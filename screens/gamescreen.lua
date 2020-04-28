@@ -1,21 +1,27 @@
 local this = {}
 
 local seed = 1
+
 Map = nil
 Player = nil
+local btnRestart = nil
 
 this.reset = function()
     Assets.init()
     seed = nil
     Map = nil
     ItemManager.reset()
+    Inventory.init()
     Player.resetAnims()
     Player = nil
+    GameOver.status = false
+    GameOver.timer = 0
     this.load()
 end
 
 this.load = function()
     print("load game")
+    GUI.reset()
     if (Map == nil) then
         print("init map")
         local mapBuilder = require("gameobjects.dungeonBuilder")
@@ -23,15 +29,28 @@ this.load = function()
         Player = require("gameobjects.player")
         Player.createNew(Map.spawn.x * TILESIZE, Map.spawn.y * TILESIZE)
     end
-
     -- Calcul de la zone de jeu
     PIXELLARGE = (WIDTH - 100 * SCALE)
+    btnRestart = GUI.addButton("Rejouer", PIXELLARGE / 2 - 40 * SCALE, HEIGHT / 2 + 8 * SCALE, 64 * SCALE)
+    btnRestart.visible = false
 end
 
 this.update = function(dt)
+    if btnRestart.clicked then
+        this.reset()
+    end
     ItemManager.update(dt)
     Player.update(dt)
     Effects.update(dt)
+    if GameOver.status then
+        if GameOver.timer < 1 then
+            GameOver.timer = GameOver.timer + dt / 2
+        else
+            GameOver.timer = 1
+            love.mouse.setVisible(true)
+            btnRestart.visible = true
+        end
+    end
 end
 
 local function drawGui()
@@ -79,15 +98,23 @@ this.draw = function()
     ItemManager.draw()
     -- le Player
     Player.draw()
-
     Effects.draw()
 
     love.graphics.pop()
     drawGui()
     Inventory.draw()
+
+    if GameOver then
+        love.graphics.setColor(1, 1, 1, GameOver.timer)
+        love.graphics.draw(Assets.GameOver, (PIXELLARGE - Assets.GameOver:getWidth()) / 2, (HEIGHT - Assets.GameOver:getHeight()) / 2)
+    end
+
     love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.print("FPS: " .. love.timer.getFPS(), 10, 10)
-    love.graphics.print("Items: " .. #ItemManager.getItems(), 10, 32)
+
+    if DevMode() then
+        love.graphics.print("FPS: " .. love.timer.getFPS(), 10, 10)
+        love.graphics.print("Items: " .. #ItemManager.getItems(), 10, 32)
+    end
 end
 
 this.keypressed = function(key)
@@ -96,9 +123,18 @@ this.keypressed = function(key)
         -- else
         --     print("gamescreen key : " .. key)
     end
-    -- if key == "r" then
-    --     this.reset()
-    -- end
+    if DevMode() then
+        if key == "f5" then
+            this.reset()
+        elseif key == "f10" then
+            GameOver.status = not GameOver.status
+            if GameOver.status then
+                GameOver.timer = 0
+            end
+        else
+            print("gamescreen key : " .. key)
+        end
+    end
 end
 
 return this

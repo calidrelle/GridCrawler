@@ -10,6 +10,7 @@ GUI.addButton = function(text, x, y, width)
     local btn = {}
     btn.clicked = false
     btn.hover = false
+    btn.visible = true
     btn.text = text
     btn.x = x
     btn.y = y
@@ -21,6 +22,9 @@ GUI.addButton = function(text, x, y, width)
     btn.textHeight = btn.drText:getHeight()
 
     btn.draw = function()
+        if not btn.visible then
+            return
+        end
         if btn.hover then
             love.graphics.setColor(1, 1, 1, 1)
         else
@@ -31,6 +35,9 @@ GUI.addButton = function(text, x, y, width)
     end
 
     btn.update = function(dt, mx, my)
+        if not btn.visible then
+            return
+        end
         if mx < btn.x or mx > btn.x + btn.width or my < btn.y or my > btn.y + btn.height then
             btn.hover = false
             return

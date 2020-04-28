@@ -191,7 +191,12 @@ this.update = function(dt)
     this.currentAnim.update(self, dt)
     if this.pv <= 0 then
         this.pv = 0
-        if this.currentAnim ~= this.animDeath then
+
+        if this.currentAnim == this.animDeath then
+            if not this.currentAnim.isPlaying then
+                GameOver.status = true
+            end
+        else
             Assets.snd_deathplayer:play()
             this.currentAnim = this.animDeath
         end

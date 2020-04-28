@@ -17,7 +17,13 @@ local musicIntro
 local musicLoops = {}
 MUSICPLAYER = nil
 
-TILESIZE = 16
+GameOver = {}
+GameOver.status = false
+GameOver.timer = 0
+
+function DevMode()
+    return love.filesystem.getInfo("README.md") ~= nil
+end
 
 function love.load()
     OPTIONS.setValues()
@@ -74,6 +80,7 @@ local function updateMusic()
 end
 
 function love.update(dt)
+    dt = math.min(dt, 1 / 60)
     updateMusic()
     GUI.update(dt)
     screen.update(dt)
@@ -87,5 +94,4 @@ end
 
 function love.keypressed(key)
     screen.keypressed(key)
-    -- if key=="escape" then love.event.quit() end
 end

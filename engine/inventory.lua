@@ -12,11 +12,20 @@ Inventory.init = function()
     end
 end
 
+local function lootSound(item)
+    if item.name:sub(1, 4) == "page" then
+        Assets.snd_lootpage:play()
+    else
+        Assets.snd_loot:play()
+    end
+end
+
 Inventory.addItem = function(newItem, nombre)
+
     for i = 1, nbItems do
         if items[i].name == newItem.name then
             items[i].count = items[i].count + nombre
-            Assets.snd_loot:play()
+            lootSound(newItem)
             return
         end
     end
@@ -25,7 +34,7 @@ Inventory.addItem = function(newItem, nombre)
         if items[i].name == nil then
             items[i] = newItem
             items[i].count = nombre
-            Assets.snd_loot:play()
+            lootSound(newItem)
             return
         end
     end
