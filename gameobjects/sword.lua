@@ -4,7 +4,7 @@ ItemManager.newSword = function(tileX, tileY, dx, dy)
     local item = ItemManager.create(Assets.weapon_sword, tileX, tileY)
     item.name = "sword"
     item.solid = false -- item collide with player/mob ?
-    item.initStats(0, 0, Player.atk, 0) -- pv, atkRange, atk, def (player de base: pv = 10, atkRange = 20, atk = 2, def = 2)
+    item.initStats(0, Player.atk)
 
     item.life = 0.2 -- durée de vie, donc distance
     item.speed = 40

@@ -22,7 +22,7 @@ this.load = function()
     GUI.reset()
     if (Map == nil) then
         print("init map")
-        local mapBuilder = require("gameobjects.dungeonBuilder")
+        local mapBuilder = require("engine.dungeonBuilder")
         Map = mapBuilder.build(60, 60, seed)
         Player.setPosition(Map.spawn.x * TILESIZE, Map.spawn.y * TILESIZE)
     end

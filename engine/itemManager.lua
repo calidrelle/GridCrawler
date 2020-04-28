@@ -32,7 +32,7 @@ ItemManager.create = function(quad, x, y)
     item.state = MOBSTATES.NONE
     item.cooldown = 0
 
-    item.initStats = function(pv, atkRange, atk, def, detectRange, speed, atkSpeed)
+    item.initStats = function(pv, atk, def, atkRange, detectRange, speed, atkSpeed)
         item.pv = pv
         item.pvMax = pv
         item.atkRange = atkRange
