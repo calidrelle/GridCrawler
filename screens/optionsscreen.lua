@@ -1,7 +1,7 @@
 local this = {}
 
 OPTIONS = {}
-OPTIONS.volume = 0
+OPTIONS.volume = 40
 OPTIONS.fullscreen = false
 SCALE = 3
 OPTIONS.SPAWN_AT_GRID = false
