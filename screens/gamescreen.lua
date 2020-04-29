@@ -72,8 +72,14 @@ local function drawFichePerso()
     table.insert(stats, {"REG ENDU", Player.regenStamina})
 
     for i = 1, #stats do
-        love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos + math.floor((i - 1) / 3) * 8 * TILESIZE,
-                            TILESIZE + ypos + 24 * ((i - 1) % 3))
+        if SCALE == 4 then
+            love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos + math.floor((i - 1) / 3) * 8 * TILESIZE,
+                                TILESIZE + ypos + 24 * ((i - 1) % 3))
+        elseif SCALE == 3 then
+            love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos, TILESIZE + ypos + 24 * (i - 1))
+        else
+            error("Cette SCALE n'est pas gérée : [" .. SCALE .. "]")
+        end
     end
 end
 
