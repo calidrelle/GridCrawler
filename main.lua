@@ -2,6 +2,14 @@
 -- [Fonction mathématiques Love2D](https://love2d.org/wiki/General_math)
 love.graphics.setDefaultFilter("nearest") -- pas d'aliasing
 
+function DevMode()
+    return love.filesystem.getInfo("README.md") ~= nil
+end
+
+function trim(s)
+    return (s:gsub("^%s*(.-)%s*$", "%1"))
+end
+
 local gameScreen = require("screens.gamescreen")
 local menuScreen = require("screens.menuscreen")
 local gameQuit = require("screens.quitscreen")
@@ -25,10 +33,6 @@ GameOver.status = false
 GameOver.timer = 0
 
 Player = nil
-
-function DevMode()
-    return love.filesystem.getInfo("README.md") ~= nil
-end
 
 function love.load()
     OPTIONS.setValues()

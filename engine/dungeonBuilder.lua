@@ -217,6 +217,8 @@ this.build = function(width, height, seed)
     if (seed ~= nil) then
         print("seeding : " .. seed)
         love.math.setRandomSeed(seed)
+    else
+        love.math.setRandomSeed(t0)
     end
     map.width = width
     map.height = height
@@ -284,6 +286,35 @@ this.getEmptyLocation = function(roomNumber)
         ty = love.math.random(ymin, ymax)
     until map[tx][ty].type == FLOOR or nbTry > 200
     return {x = tx, y = ty, room = roomNumber}
+end
+
+-- Map vide, chez le marchand par exemple
+this.createEmptyMap = function(width, height)
+    map = {}
+    map.width = width
+    map.height = height
+    for x = 1, map.width do
+        map[x] = {}
+        for y = 1, map.height do
+            if x == 1 or y == 1 or x == map.width or y == map.height then
+                map[x][y] = tileFactory.create(WALL, Assets.empty_brown)
+            else
+                map[x][y] = tileFactory.create(FLOOR)
+            end
+        end
+    end
+
+    map.collideAt = function(x, y)
+        local tileX = math.floor(x / TILESIZE)
+        local tileY = math.floor(y / TILESIZE)
+
+        if tileX < 1 or tileY < 1 or tileX > width or tileY > height then
+            return true
+        else
+            return (map[tileX][tileY].type == WALL)
+        end
+    end
+    return map
 end
 
 return this

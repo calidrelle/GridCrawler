@@ -1,7 +1,11 @@
 local this = {}
 
 OPTIONS = {}
-OPTIONS.volume = 40
+if DevMode() then
+    OPTIONS.volume = 0
+else
+    OPTIONS.volume = 40
+end
 OPTIONS.fullscreen = false
 SCALE = 3
 OPTIONS.SPAWN_AT_GRID = false

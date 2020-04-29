@@ -2,6 +2,7 @@ local this = {}
 
 local stats = {}
 local mx, my = 0, 0
+local animDone = false
 local vendor
 local staires
 local selectedItem = nil
@@ -20,16 +21,23 @@ this.load = function()
 
     Inventory.removePages() -- On vide les pages de l'inventaire
     ItemManager.reset()
+    local mapBuilder = require("engine.dungeonBuilder")
+    Map = mapBuilder.createEmptyMap(12, 11)
 
     --- SCENERY    
+    Player.currentAnim = Player.animRun
+    Player.setPosition(6.5 * TILESIZE, 10 * TILESIZE)
+
     vendor = ItemManager.newVendor(6.5 * TILESIZE, 5 * TILESIZE)
-    staires = ItemManager.newDownstairs(112, 64)
+    staires = ItemManager.newDownstairs(7 * TILESIZE, 3 * TILESIZE)
     ItemManager.newTorch(4 * TILESIZE, 1 * TILESIZE)
     ItemManager.newTorch(9 * TILESIZE, 1 * TILESIZE)
+    ItemManager.newBigTable(6 * TILESIZE, 6 * TILESIZE)
+    ItemManager.newBarrel(2 * TILESIZE, 3 * TILESIZE)
+    ItemManager.newBarrel(2 * TILESIZE, 10 * TILESIZE)
+    ItemManager.newBarrel(10 * TILESIZE, 10 * TILESIZE)
 
-    Player.currentAnim = Player.animRun
-    Player.setPosition(6.5 * TILESIZE, 16 * TILESIZE)
-
+    -- Les stats
     addStat(1, "Vie max +1", 60, Player.pvMax, ItemManager.newTable(3 * TILESIZE, 5 * TILESIZE))
     addStat(2, "Attaque +1", 60, Player.atk, ItemManager.newTable(3 * TILESIZE, 7 * TILESIZE))
     addStat(3, "Défense +1", 80, Player.def, ItemManager.newTable(3 * TILESIZE, 9 * TILESIZE))
@@ -84,27 +92,35 @@ end
 
 this.update = function(dt)
     -- on n'update que l'animation du Player
-    if Player.y > 7 * TILESIZE then
-        Player.y = Player.y - Player.speed / 2 * dt
-    else
-        Player.currentAnim = Player.animIdle
+    if not animDone then
+        Player.dy = -1
+        if Player.y < 7 * TILESIZE then
+            animDone = true
+        end
+        Player.update(dt)
+        return
     end
-    Player.currentAnim.update(Player, dt)
+
     ItemManager.update(dt)
 
-    local item = ItemManager.getItemAt(mx, my)
-    if item ~= nil then
-        item.isHover = true
-    end
+    mx, my = Player.getCenter()
+    mx = mx + TILESIZE * Player.lastdx
+    my = my + TILESIZE * Player.lastdy
 
-    if love.mouse.isDown(1) then
-        selectedItem = item
-    else
-        if selectedItem ~= nil then
-            doSelect()
-            selectedItem = nil
+    selectedItem = ItemManager.getItemAt(mx, my)
+    local itemHovered = ItemManager.getItemAt(Player.getCenter())
+    staires.isHover = false
+    if itemHovered ~= nil then
+        if itemHovered == staires then
+            staires.isHover = true
         end
     end
+
+    Player.update(dt)
+    if Player.selectItem then
+        doSelect()
+    end
+
 end
 
 this.drawHover = function(text)
@@ -115,6 +131,18 @@ this.drawHover = function(text)
     love.graphics.printf(text, (WIDTH - large) / 2, 56, large, "center")
 end
 
+local function drawMap()
+    -- La map
+    for x = 1, Map.width do
+        for y = 1, Map.height do
+            local tile = Map[x][y]
+            local tx = x * TILESIZE
+            local ty = y * TILESIZE
+            tile.draw(tx, ty)
+        end
+    end
+end
+
 this.draw = function()
     love.graphics.push()
     love.graphics.scale(SCALE)
@@ -123,32 +151,31 @@ this.draw = function()
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setFont(FontVendor12)
 
-    love.graphics.draw(Assets.shop)
-
+    drawMap()
+    love.graphics.draw(Assets.shop, 0, 0)
     ItemManager.draw()
+
     Player.draw()
     Assets.draw(Assets.vendor_topdoor, TILESIZE * 6, TILESIZE * 11)
 
     love.graphics.setColor(0.867, 0.835, 0.251)
     love.graphics.print(Inventory.getPo() .. " po", 96, 160)
 
-    local x, y = love.mouse.getPosition()
-    love.graphics.setColor(1, 1, 1, 1)
-    mx, my = love.graphics.inverseTransformPoint(x, y)
-    love.graphics.rectangle("fill", mx, my, 2, 2)
-
     love.graphics.pop() -------------------------------------
 
     love.graphics.setFont(FontVendor32)
-    if vendor.isHover then
-        this.drawHover(
-            "Bonjour Aventurier, fait ton choix sur les tables, et prends les escaliers derrière moi pour continuer ton aventure.")
+    if selectedItem ~= nil then
+        if selectedItem.name == "bigtable" then
+            this.drawHover(
+                "Bonjour Aventurier, fait ton choix sur les tables, et prends les escaliers derrière moi pour continuer ton aventure.")
+        end
     end
+
     if staires.isHover then
         this.drawHover("Si tu as fait tous tes choix, tu peux descendre à l'étage inférieur.")
     end
     for i, stat in pairs(stats) do
-        if stat.item.isHover then
+        if stat.item == selectedItem then
             this.drawHover(stat.name .. "=" .. stat.cost .. " po\nValeur actuelle : " .. stat.value)
         end
     end

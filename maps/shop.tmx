@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="14" height="14" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="1">
+ <editorsettings>
+  <export target="vendor.lua" format="lua"/>
+ </editorsettings>
+ <tileset firstgid="1" name="SpriteSheet" tilewidth="16" tileheight="16" tilecount="364" columns="28">
+  <image source="../images/SpriteSheet.png" width="448" height="208"/>
+ </tileset>
+ <layer id="1" name="Sol" width="14" height="14">
+  <data encoding="base64" compression="zlib">
+   eJxtUsERwyAMY4Q0c7RZAJs1gO4/SOAq3am6PHS2cWQp4FZK+QJNcj97im/gg/haOBZOqdk7wdmIhbHQAa0n8gC6aFb0iV0nwDkpoM/ETPIDOTUrYqJHXrfzFH/KH+j5/6VopmhNmRnCmzIvRMdzzlGfnDdl7jAfrkcvrkPOsPfgTvAeevn3rG+oHvRe6L2aDr+npyq8vT9X+e0Td4k6F8CdO4Tne9ys9xRvegM06g==
+  </data>
+ </layer>
+ <layer id="2" name="WallsToDraw" width="14" height="14">
+  <data encoding="base64" compression="zlib">
+   eJxjYGBgcAbiBCKxOwMCCAGxHhALArEOEAsg8QWgYrpQviCSPk0G4oHWqL5hoy+eATM9sTIyMLAxYoonI+kDpSPkdAZKd4pAPUqMEHE9qBgsDVICANpxDfQ=
+  </data>
+ </layer>
+ <layer id="4" name="DecoMurs" width="14" height="14">
+  <data encoding="base64" compression="zlib">
+   eJxjYCAfaKLxWZDYrEhsRSDWosCeUTAK6AUAV3cAfg==
+  </data>
+ </layer>
+ <layer id="3" name="Objets" width="14" height="14">
+  <data encoding="base64" compression="zlib">
+   eJxjYBg4wIyEsYlNxqKHCY3vAMRhtHAcElAiUw4ZyAKxHB3tIwUQss8Bizh6PJAqP1gBALqkAok=
+  </data>
+ </layer>
+</map>

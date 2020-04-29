@@ -68,6 +68,8 @@ end
 local function move(dt)
     local tdx = this.dx * this.speed * dt
     local tdy = this.dy * this.speed * dt
+    this.lastdx = this.dx
+    this.lastdy = this.dy
 
     local px1
     local px2
@@ -144,21 +146,33 @@ this.addMessage = function(text, timer)
     table.insert(this.messages, 1, msg)
 end
 
+local function doShoot(dt)
+    if this.stamina > STAMINA_FIRE then
+        -- on créé l'épée en peu plus devant le joueur
+        local x = this.x + this.dx * TILESIZE
+        local y = this.y + this.dy * TILESIZE
+        local sword = ItemManager.newSword(x, y, this.shootx, this.shooty)
+        sword.initStats(0, Player.atk, 0, 0, 0, Player.atkRange, 0)
+        this.stamina = this.stamina - STAMINA_FIRE
+        Assets.snd_shoot:play()
+    else
+        Assets.snd_nostamina:play()
+    end
+end
+
+local function doSelectItem(dt)
+    this.selectItem = true
+end
+
 local firePressed = false
-local function shoot(dt)
-    -- on tir
+local function checkAction(dt)
+    this.selectItem = false
     if love.keyboard.isDown(OPTIONS.FIRE) then
         if firePressed == false then
-            if this.stamina > STAMINA_FIRE then
-                -- on créé l'épée en peu plus devant le joueur
-                local x = this.x + this.dx * TILESIZE
-                local y = this.y + this.dy * TILESIZE
-                local sword = ItemManager.newSword(x, y, this.shootx, this.shooty)
-                sword.initStats(0, Player.atk, 0, 0, 0, Player.atkRange, 0)
-                this.stamina = this.stamina - STAMINA_FIRE
-                Assets.snd_shoot:play()
+            if not Player.inTheShop then
+                doShoot(dt)
             else
-                Assets.snd_nostamina:play()
+                doSelectItem(dt)
             end
         end
         firePressed = true
@@ -236,7 +250,8 @@ this.update = function(dt)
 
     jump(dt)
     move(dt)
-    shoot(dt)
+    checkAction(dt)
+
     this.dx = this.dx * FRICTION
     this.dy = this.dy * FRICTION
 

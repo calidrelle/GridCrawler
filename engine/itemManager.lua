@@ -11,6 +11,7 @@ require("gameobjects.vendor")
 require("gameobjects.torch")
 require("gameobjects.table")
 require("gameobjects.downstairs")
+require("gameobjects.bigtable")
 
 -- mobs
 require("gameobjects.slim")
@@ -22,13 +23,15 @@ MOBSTATES.SEEK = "seek"
 MOBSTATES.FIGHT = "fight"
 MOBSTATES.CHANGEDIR = "change"
 
-ItemManager.create = function(quad, x, y)
+ItemManager.create = function(quad, x, y, width, height)
     local item = {}
     item.quad = quad
     item.x = x
     item.y = y
-    item.width = TILESIZE
-    item.height = TILESIZE
+    width = width or TILESIZE
+    height = height or TILESIZE
+    item.width = width
+    item.height = height
     item.dx = 0
     item.dy = 0
     item.solid = false
@@ -229,7 +232,7 @@ end
 
 ItemManager.getItemAt = function(x, y)
     for _, item in pairs(items) do
-        if item.x <= x and item.x + TILESIZE >= x and item.y <= y and item.y + TILESIZE >= y then
+        if item.x <= x and item.x + item.width >= x and item.y <= y and item.y + item.height >= y then
             return item
         end
     end

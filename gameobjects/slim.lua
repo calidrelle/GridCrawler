@@ -22,6 +22,5 @@ ItemManager.newSlim = function(tileX, tileY)
         item.currentAnim:update(dt)
     end
 
-    print("slim created")
     return item
 end

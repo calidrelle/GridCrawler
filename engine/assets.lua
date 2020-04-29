@@ -60,6 +60,7 @@ Assets.init = function()
     Assets.floor_grid = createQuad(112, 32) -- EXIT
     Assets.downstairs = createQuad(16, 48)
     Assets.table = createQuad(80, 16)
+    Assets.bigTable = createQuad(0, 16, 32, 16)
 
     Assets.corridor = {}
     Assets.corridor[1] = createQuad(80, 32)
