@@ -29,7 +29,7 @@ TODO:
     ( ) bumped when hit (to avoid spam fight)
     ( ) screen shake when player is touch
     ( ) blood particules when monster is touched
-( ) change level
+(/) change level
 (/) MENUS
 (/) Sounds & music (music: BeepBox ?)
 ( ) bonus: light shader
