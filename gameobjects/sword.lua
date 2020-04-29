@@ -4,7 +4,6 @@ ItemManager.newSword = function(tileX, tileY, dx, dy)
     local item = ItemManager.create(Assets.weapon_sword, tileX, tileY)
     item.name = "sword"
     item.solid = false -- item collide with player/mob ?
-    item.initStats(0, Player.atk)
 
     item.life = 0.2 -- durée de vie, donc distance
     item.speed = 40
@@ -35,11 +34,6 @@ ItemManager.newSword = function(tileX, tileY, dx, dy)
 
     item.walkOver = function(other)
     end
-
-    -- déplacé dans ItemManager
-    -- item.getCenter = function()
-    --     return item.x + item.width / 2, item.y + item.height / 2
-    -- end
 
     item.update = function(dt)
         item.life = item.life - dt

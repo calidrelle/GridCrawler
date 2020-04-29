@@ -7,12 +7,15 @@ local menuScreen = require("screens.menuscreen")
 local gameQuit = require("screens.quitscreen")
 local optionsScreen = require("screens.optionsscreen")
 local keysOptionsScreen = require("screens.keysoptions")
-local nextLevelScreen = require("screens.nextlevel")
+local shopScreen = require("screens.shopscreen")
 local screen = nil
 
 Font20 = love.graphics.newFont("fonts/decterm.ttf", 20)
 Font32 = love.graphics.newFont("fonts/decterm.ttf", 32)
+Font16 = love.graphics.newFont("fonts/decterm.ttf", 16)
 Font8 = love.graphics.newFont("fonts/decterm.ttf", 8)
+FontVendor12 = love.graphics.newFont("fonts/Pixellari.ttf", 12)
+FontVendor32 = love.graphics.newFont("fonts/Pixellari.ttf", 32)
 local musicIntro
 local musicLoops = {}
 MUSICPLAYER = nil
@@ -56,6 +59,7 @@ ScreenManager = {}
 ScreenManager.setScreen = function(name)
     GUI.reset()
     love.mouse.setVisible(true)
+    Player.inTheShop = false
     if name == "MENU" then
         screen = menuScreen
     elseif name == "GAME" then
@@ -71,7 +75,9 @@ ScreenManager.setScreen = function(name)
     elseif name == "QUIT" then
         screen = gameQuit
     elseif name == "VENDOR" then
-        screen = nextLevelScreen
+        Player.inTheShop = true
+        love.mouse.setVisible(false)
+        screen = shopScreen
     else
         error("L'écran " .. name .. " n'existe pas")
     end

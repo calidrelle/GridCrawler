@@ -34,6 +34,33 @@ Inventory.getNombrePages = function()
     return count
 end
 
+Inventory.getPo = function()
+    for _, item in pairs(items) do
+        if item.name ~= nil then
+            if item.name == "gold" then
+                return item.count
+            end
+        end
+    end
+    return 0
+end
+
+Inventory.removePo = function(amount)
+    for _, item in pairs(items) do
+        if item.name ~= nil then
+            if item.name == "gold" then
+                if item.count >= amount then
+                    item.count = item.count - amount
+                    return true
+                else
+                    return false
+                end
+            end
+        end
+    end
+    return false
+end
+
 local function lootSound(item)
     if item.name:sub(1, 4) == "page" then
         Assets.snd_lootpage:play()

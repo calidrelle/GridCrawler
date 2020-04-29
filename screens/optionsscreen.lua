@@ -1,9 +1,9 @@
 local this = {}
 
 OPTIONS = {}
-OPTIONS.volume = 50
+OPTIONS.volume = 0
 OPTIONS.fullscreen = false
-SCALE = 3
+SCALE = 4
 OPTIONS.SPAWN_AT_GRID = false
 
 -- 800, 600 (4/3)

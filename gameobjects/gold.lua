@@ -2,7 +2,7 @@ ItemManager.newGold = function(tileX, tileY)
     local item = ItemManager.create(Assets.gold, tileX, tileY)
     item.name = "gold"
     item.solid = false
-    item.initStats(0, 0, 0, 0)
+    -- item.initStats(0, 0, 0, 0)
 
     item.hit = function(other)
     end

@@ -7,6 +7,10 @@ require("gameobjects.gold")
 require("gameobjects.exitGrid")
 require("gameobjects.page")
 require("gameobjects.sword")
+require("gameobjects.vendor")
+require("gameobjects.torch")
+require("gameobjects.table")
+require("gameobjects.downstairs")
 
 -- mobs
 require("gameobjects.slim")
@@ -31,6 +35,17 @@ ItemManager.create = function(quad, x, y)
     item.actif = true
     item.state = MOBSTATES.NONE
     item.cooldown = 0
+    -- item.mouseOver = false
+    item.click = false
+
+    item.pv = 0
+    item.pvMax = 0
+    item.atkRange = 0
+    item.atk = 0
+    item.def = 0
+    item.detectRange = 0
+    item.speed = 0
+    item.atkSpeed = 0
 
     item.initStats = function(pv, atk, def, atkRange, detectRange, speed, atkSpeed)
         item.pv = pv
@@ -105,13 +120,6 @@ ItemManager.create = function(quad, x, y)
         end
 
         return (colX or colY)
-
-        -- les mobs se collisionnent entre eux ou avec les objets ?
-        -- local px, py = item.getCenter()
-        -- local other = ItemManager.getItemAt(px + tdx, py + tdy)
-        -- if other ~= nil then
-        --     collision = (other ~= item)
-        -- end
     end
 
     item.seek = function(other)
@@ -202,9 +210,10 @@ end
 
 ItemManager.update = function(dt)
     for _, item in pairs(items) do
+        item.isHover = false
         item.update(dt)
         -- Déplacement des items (mobs) qui peuvent se dépacer
-        if item.speed ~= nil then
+        if item.speed ~= nil and item.speed ~= 0 then
             if item.state ~= MOBSTATES.CHANGEDIR then
                 item.x = item.x + item.dx * item.speed * dt
                 item.y = item.y + item.dy * item.speed * dt
@@ -247,7 +256,6 @@ ItemManager.draw = function()
         if item.currentAnim ~= nil then
             item.currentAnim.draw(item, item.x, item.y, item.flip)
         else
-            -- scale = 1 car on est sur l'écran, donc le zoom est géré globalement
             Assets.draw(item.quad, item.x, item.y, item.flip, 1, item.rotation)
         end
 

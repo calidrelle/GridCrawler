@@ -3,7 +3,7 @@
 ItemManager.newSlim = function(tileX, tileY)
     local item = ItemManager.create(Assets.slime_idle_anim, tileX, tileY)
     item.name = "slim"
-    item.solid = true -- item collide with player/mob ?
+    item.solid = true
 
     item.initStats(5, 4, 1, 20, 100, 25, 0.2) -- pv, atkRange, atk, def, detectRange, speed
     item.animIdle = require("engine.animation").createNew(Assets.slime_idle_anim, 6, 0.1, true)
@@ -22,5 +22,6 @@ ItemManager.newSlim = function(tileX, tileY)
         item.currentAnim:update(dt)
     end
 
+    print("slim created")
     return item
 end

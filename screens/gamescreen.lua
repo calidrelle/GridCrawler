@@ -5,12 +5,19 @@ local seed = 1
 Map = nil
 local btnRestart = nil
 
+this.restartGame = function()
+    -- Après un gameover, on recréé un perso tout neuf
+    Assets.init()
+    Player.createNew()
+    this.startNewLevel()
+end
+
 this.startNewLevel = function()
     Assets.init()
     seed = nil
     Map = nil
-    ItemManager.reset()
     Player.resetAnims()
+    ItemManager.reset()
     Player.gridOpened = false
     GameOver.status = false
     GameOver.timer = 0
@@ -34,7 +41,7 @@ end
 
 this.update = function(dt)
     if btnRestart.clicked then
-        this.startNewLevel()
+        this.restartGame()
     end
     ItemManager.update(dt)
     Player.update(dt)
@@ -50,14 +57,35 @@ this.update = function(dt)
     end
 end
 
+local function drawFichePerso()
+    local xpos = PIXELLARGE + 20 * SCALE
+    local ypos = 80 * SCALE
+    love.graphics.setFont(Font20)
+    love.graphics.setColor(1, 1, 1, 1)
+
+    local stats = {}
+    table.insert(stats, {"MAX VIE ", Player.pvMax})
+    table.insert(stats, {"ATK     ", Player.atk})
+    table.insert(stats, {"DEF     ", Player.def})
+    -- table.insert(stats, {"SPD    ", Player.speedInit})
+    table.insert(stats, {"DIST ATK", Player.atkRange})
+    table.insert(stats, {"REG VIE ", Player.regenPv})
+    table.insert(stats, {"REG ENDU", Player.regenStamina})
+
+    for i = 1, #stats do
+        love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos, ypos + 24 * i)
+    end
+end
+
 local function drawGui()
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.draw(Assets.gui, WIDTH - 100 * SCALE, 0, 0, SCALE, SCALE)
     love.graphics.draw(Assets.gui_bottom, WIDTH - 100 * SCALE, HEIGHT - Assets.gui_bottom:getHeight() * SCALE, 0, SCALE, SCALE)
 
     -- Catactéristiques player
-    GUI.drawProgressBar(PIXELLARGE / 2 - 250, HEIGHT - 50, 200, 32, Player.pv / Player.pvMax, 1, 0.1, 0)
-    GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina / 100, 0, 0.6, 1)
+    GUI.drawProgressBar(PIXELLARGE / 2 - 250, HEIGHT - 50, 200, 32, Player.pv, Player.pvMax, 1, 0.1, 0, true)
+    GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina, 100, 0, 0.6, 1, true)
+    drawFichePerso()
 
     -- Messages
     love.graphics.setColor(0, 0, 0)
@@ -158,15 +186,21 @@ this.keypressed = function(key)
         ScreenManager.setScreen("MENU")
     end
     if key == "return" and btnRestart.visible then
-        this.startNewLevel()
+        this.restartGame()
     end
     if DevMode() then
         if key == "f10" then
             Player.pv = -1
         elseif key == "f11" then
-
+            Player.gridOpened = true
+            Inventory.addItem(ItemManager.newGold(0, 0), 400)
+            ScreenManager.setScreen("VENDOR")
+        elseif key == "kp+" then
+            Player.atkRange = Player.atkRange + 5
+        elseif key == "kp-" then
+            Player.atkRange = Player.atkRange - 5
         else
-            print("gamescreen key : " .. key)
+            -- print("gamescreen key : " .. key)
         end
     end
 end

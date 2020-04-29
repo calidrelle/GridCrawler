@@ -5,7 +5,7 @@ ItemManager.newPage = function(tileX, tileY, num)
     item.name = "page" .. num
     item.numPage = num
     item.solid = false -- item collide with player/mob ?
-    item.initStats(0, 0, 0, 0) -- pv, atkRange, atk, def (player de base: pv = 10, atkRange = 20, atk = 2, def = 2)
+    -- item.initStats(0, 0, 0, 0) -- pv, atkRange, atk, def (player de base: pv = 10, atkRange = 20, atk = 2, def = 2)
 
     item.hit = function(other)
     end

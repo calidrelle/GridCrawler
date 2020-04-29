@@ -10,6 +10,8 @@ goblin_run_anim 0, 96, 16, 16, 6
 slime_idle_anim 0, 112, 16, 16, 6
 slime_run_anim 0, 128, 16, 16, 6
 
+priest_idle1 288, 32, 16, 16, 4
+
 empty_gray 144, 0
 empty_brown 160, 0
 
@@ -39,3 +41,6 @@ parch_8 400, 0
 
 corridor_1 80, 32
 corridor_2 80, 48
+
+vendor_door 128, 144, 32, 32
+

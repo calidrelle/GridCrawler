@@ -4,8 +4,10 @@ TILESIZE = 16
 
 local sheet = nil
 
-local createQuad = function(x, y)
-    return love.graphics.newQuad(x, y, TILESIZE, TILESIZE, sheet:getDimensions())
+local createQuad = function(x, y, w, h)
+    w = w or TILESIZE
+    h = h or TILESIZE
+    return love.graphics.newQuad(x, y, w, h, sheet:getDimensions())
 end
 
 Assets.init = function()
@@ -15,6 +17,8 @@ Assets.init = function()
     Assets.gui_bottom = love.graphics.newImage("images/gui_bottom.png")
     Assets.GameOver = love.graphics.newImage("images/gameover.png")
 
+    Assets.shop = love.graphics.newImage("images/shop.png")
+
     -- Chargement de la spritesheet
     sheet = love.graphics.newImage("images/SpriteSheet.png")
 
@@ -22,6 +26,9 @@ Assets.init = function()
     Assets.knight_idle_anim = createQuad(0, 144)
     Assets.knight_run_anim = createQuad(0, 160)
     Assets.knight_death_anim = createQuad(288, 16)
+
+    Assets.vendor_idle_anim = createQuad(288, 32)
+    Assets.torch = createQuad(96, 112)
 
     Assets.fly_anim_anim = createQuad(0, 64)
     Assets.goblin_idle_anim = createQuad(0, 80)
@@ -51,11 +58,14 @@ Assets.init = function()
     Assets.floor[7] = createQuad(128, 48)
 
     Assets.floor_grid = createQuad(112, 32) -- EXIT
-    Assets.stairs = createQuad(16, 48)
+    Assets.downstairs = createQuad(16, 48)
+    Assets.table = createQuad(80, 16)
 
     Assets.corridor = {}
     Assets.corridor[1] = createQuad(80, 32)
     Assets.corridor[2] = createQuad(80, 48)
+
+    Assets.vendor_topdoor = createQuad(128, 144, 32)
 
     -- Parchemins
     Assets.page = {}

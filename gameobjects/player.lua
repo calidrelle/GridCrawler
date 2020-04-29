@@ -15,6 +15,7 @@ FRICTION = 0.55
 
 this.createNew = function()
     this.name = "player"
+    this.level = 1 -- seed ?
     this.x = 0
     this.y = 0
     this.bounds.x = 6
@@ -29,14 +30,25 @@ this.createNew = function()
 
     this.pv = 10
     this.pvMax = 10
-    this.atkRange = 20
+    this.atkRange = 40
     this.atk = 4
     this.def = 2
     this.speedInit = 120
     this.speed = 120
     this.stamina = 100
-    this.staminaRegen = 25 -- stamina par seconde
+    this.regenStamina = 25
     this.regenPv = 0.5
+    Inventory.init()
+end
+
+this.initStats = function(pvMax, atk, def, atkRange, regenPv, regenStamina)
+    this.pv = pvMax
+    this.pvMax = pvMax
+    this.atk = atk
+    this.def = def
+    this.atkRange = atkRange
+    this.regenPv = regenPv
+    this.regenStamina = regenStamina
 end
 
 this.setPosition = function(x, y)
@@ -141,7 +153,8 @@ local function shoot(dt)
                 -- on créé l'épée en peu plus devant le joueur
                 local x = this.x + this.dx * TILESIZE
                 local y = this.y + this.dy * TILESIZE
-                ItemManager.newSword(x, y, this.shootx, this.shooty)
+                local sword = ItemManager.newSword(x, y, this.shootx, this.shooty)
+                sword.initStats(0, Player.atk, 0, 0, 0, Player.atkRange, 0)
                 this.stamina = this.stamina - STAMINA_FIRE
                 Assets.snd_shoot:play()
             else
@@ -196,7 +209,7 @@ this.update = function(dt)
         return
     end
     if this.stamina < 100 then
-        this.stamina = this.stamina + this.staminaRegen * dt
+        this.stamina = this.stamina + this.regenStamina * dt
     else
         this.stamina = 100
     end
@@ -252,12 +265,6 @@ end
 this.draw = function()
     love.graphics.setColor(1, 1, 1)
     this.currentAnim.draw(self, this.x, this.y, this.flip)
-
-    -- love.graphics.setColor(0, 0.6, 1)
-    -- love.graphics.rectangle("fill", this.x, this.y + TILESIZE + 3, TILESIZE * this.stamina / 100, 3)
-    -- love.graphics.setColor(0, 0, 0)
-    -- love.graphics.rectangle("line", this.x, this.y + TILESIZE + 3, TILESIZE, 3)
-
 end
 
 return this

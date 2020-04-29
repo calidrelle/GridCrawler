@@ -3,7 +3,7 @@ ItemManager.newExitGrid = function(tileX, tileY)
     local item = ItemManager.create(Assets.floor_grid, tileX, tileY)
     item.name = "exit"
     item.solid = false
-    item.initStats(0, 0, 0, 0) -- pv, atkRange, atk, def
+    -- item.initStats(0, 0, 0, 0) -- pv, atkRange, atk, def
 
     item.hit = function(other)
     end
