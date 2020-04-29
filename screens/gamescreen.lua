@@ -143,6 +143,7 @@ this.draw = function()
     love.graphics.push()
     love.graphics.scale(SCALE)
     love.graphics.translate((-Player.x + (PIXELLARGE / SCALE) / 2), (-Player.y + (HEIGHT / SCALE) / 2))
+    Effects.preRender()
 
     love.graphics.clear(0.297, 0.223, 0.254)
     love.graphics.setColor(1, 1, 1)

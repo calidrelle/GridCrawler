@@ -283,6 +283,7 @@ ItemManager.doAttack = function(fighter, target)
         print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
         if target == Player then
             Effects.createFloatingText(damage .. "", target.x, target.y, 4, 1, 0.7, 0)
+            Effects.createCamShake(0.1, 10)
         else
             Effects.createFloatingText(damage .. "", target.x, target.y, 4, 1, 1, 1)
         end
