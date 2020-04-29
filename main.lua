@@ -36,7 +36,7 @@ function love.load()
 
     require("engine.assets").init()
     require("engine.itemManager")
-    require("engine.inventory").init()
+    require("engine.inventory")
     require("engine.gui").init()
     require("engine.effects").init()
 

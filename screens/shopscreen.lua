@@ -30,12 +30,12 @@ this.load = function()
     Player.currentAnim = Player.animRun
     Player.setPosition(6.5 * TILESIZE, 16 * TILESIZE)
 
-    addStat(1, "Vie max +1", 30, Player.pvMax, ItemManager.newTable(3 * TILESIZE, 5 * TILESIZE))
-    addStat(2, "Attaque +1", 30, Player.atk, ItemManager.newTable(3 * TILESIZE, 7 * TILESIZE))
-    addStat(3, "Défense +1", 30, Player.def, ItemManager.newTable(3 * TILESIZE, 9 * TILESIZE))
-    addStat(4, "Distance d'attaque +5%", 30, Player.atkRange, ItemManager.newTable(10 * TILESIZE, 5 * TILESIZE))
-    addStat(5, "Régénération de vie +5%", 30, Player.regenPv, ItemManager.newTable(10 * TILESIZE, 7 * TILESIZE))
-    addStat(6, "Régénération d'endurence +5%", 30, Player.regenStamina, ItemManager.newTable(10 * TILESIZE, 9 * TILESIZE))
+    addStat(1, "Vie max +1", 60, Player.pvMax, ItemManager.newTable(3 * TILESIZE, 5 * TILESIZE))
+    addStat(2, "Attaque +1", 60, Player.atk, ItemManager.newTable(3 * TILESIZE, 7 * TILESIZE))
+    addStat(3, "Défense +1", 80, Player.def, ItemManager.newTable(3 * TILESIZE, 9 * TILESIZE))
+    addStat(4, "Distance d'attaque +5%", 60, Player.atkRange, ItemManager.newTable(10 * TILESIZE, 5 * TILESIZE))
+    addStat(5, "Régénération de vie +5%", 50, Player.regenPv, ItemManager.newTable(10 * TILESIZE, 7 * TILESIZE))
+    addStat(6, "Régénération d'endurence +5%", 50, Player.regenStamina, ItemManager.newTable(10 * TILESIZE, 9 * TILESIZE))
 end
 
 local function doSelect()

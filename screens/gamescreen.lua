@@ -67,13 +67,13 @@ local function drawFichePerso()
     table.insert(stats, {"MAX VIE ", Player.pvMax})
     table.insert(stats, {"ATK     ", Player.atk})
     table.insert(stats, {"DEF     ", Player.def})
-    -- table.insert(stats, {"SPD    ", Player.speedInit})
     table.insert(stats, {"DIST ATK", Player.atkRange})
     table.insert(stats, {"REG VIE ", Player.regenPv})
     table.insert(stats, {"REG ENDU", Player.regenStamina})
 
     for i = 1, #stats do
-        love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos, ypos + 24 * i)
+        love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos + math.floor((i - 1) / 3) * 8 * TILESIZE,
+                            TILESIZE + ypos + 24 * ((i - 1) % 3))
     end
 end
 
@@ -127,8 +127,11 @@ local function drawMinimap()
     end
 
     -- Player
-    love.graphics.setColor(1, 1, 1)
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.rectangle("fill", xoff + (Player.x / TILESIZE) * scale, yoff + (Player.y / TILESIZE) * scale, scale, scale)
+
+    love.graphics.setFont(Font16)
+    love.graphics.print("Niv. " .. Player.level, xoff, yoff)
 end
 
 this.draw = function()
