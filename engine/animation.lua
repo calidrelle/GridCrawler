@@ -2,17 +2,20 @@ local this = {}
 
 this.createNew = function(quad, nbFrames, secPerFrame, loop)
     local anim = {}
-    anim.quad = quad
+    anim.quads = {}
+    local qx, qy, qw, qh = quad:getViewport()
+    for i = 0, nbFrames - 1 do
+        table.insert(anim.quads, love.graphics.newQuad(qx + i * qw, qy, qw, qh, Assets.getSheet():getDimensions()))
+    end
     anim.nbFrames = nbFrames
     anim.loop = loop
     anim.isPlaying = true
     local duration = secPerFrame
     local timer = secPerFrame
-    local frame = 1
-    local qx, qy, qw, qh = quad:getViewport() -- si on recréé le player, le viewport se décale
+    local frame = math.random(nbFrames)
 
     function anim:reset()
-        quad:setViewport(qx, qy, qw, qh)
+        frame = 1
     end
 
     function anim:update(dt)
@@ -28,15 +31,14 @@ this.createNew = function(quad, nbFrames, secPerFrame, loop)
                     anim.isPlaying = false
                 end
             end
-            quad:setViewport(qx + TILESIZE * (frame - 1), qy, qw, qh)
         end
     end
 
     function anim:draw(x, y, flip)
         if flip then
-            love.graphics.draw(Assets.getSheet(), quad, x + TILESIZE, y, 0, -1, 1, 1)
+            love.graphics.draw(Assets.getSheet(), anim.quads[frame], x + TILESIZE, y, 0, -1, 1, 1)
         else
-            love.graphics.draw(Assets.getSheet(), quad, x, y)
+            love.graphics.draw(Assets.getSheet(), anim.quads[frame], x, y)
         end
     end
 

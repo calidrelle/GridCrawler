@@ -83,7 +83,7 @@ GUI.drawProgressBar = function(x, y, width, height, value, valuemax, r, g, b, di
     if displayValues then
         love.graphics.setColor(1, 1, 1)
         love.graphics.setFont(Font20)
-        love.graphics.printf(math.floor(value) .. "/" .. math.floor(valuemax), x + 4, y + 6, width - 4, "center")
+        love.graphics.printf(math.ceil(value) .. "/" .. math.ceil(valuemax), x + 4, y + 6, width - 4, "center")
     end
 end
 

@@ -14,6 +14,7 @@ require("gameobjects.downstairs")
 require("gameobjects.bigtable")
 require("gameobjects.books")
 require("gameobjects.chest")
+require("gameobjects.pics")
 
 -- mobs
 require("gameobjects.slim")
@@ -278,7 +279,7 @@ ItemManager.doAttack = function(fighter, target)
         return false
     end
 
-    local damage = math.random(fighter.atk) - target.def
+    local damage = math.floor(math.random() * (fighter.atk - target.def + 1))
     if damage > 0 then
         print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
         if target == Player then

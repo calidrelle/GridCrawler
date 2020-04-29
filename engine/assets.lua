@@ -28,7 +28,6 @@ Assets.init = function()
     Assets.knight_death_anim = createQuad(288, 16)
 
     Assets.vendor_idle_anim = createQuad(288, 32)
-    Assets.torch = createQuad(96, 112)
 
     Assets.fly_anim_anim = createQuad(0, 64)
     Assets.goblin_idle_anim = createQuad(0, 80)
@@ -57,13 +56,6 @@ Assets.init = function()
     Assets.floor[6] = createQuad(96, 48)
     Assets.floor[7] = createQuad(128, 48)
 
-    Assets.floor_grid = createQuad(112, 32) -- EXIT
-    Assets.downstairs = createQuad(16, 48)
-    Assets.table = createQuad(80, 16)
-    Assets.bigTable = createQuad(0, 16, 32, 16)
-    Assets.books = createQuad(32, 0)
-    Assets.chest = createQuad(96, 80)
-
     Assets.corridor = {}
     Assets.corridor[1] = createQuad(80, 32)
     Assets.corridor[2] = createQuad(80, 48)
@@ -85,6 +77,14 @@ Assets.init = function()
     Assets.gold = createQuad(0, 0)
     Assets.barrel = createQuad(16, 0)
     Assets.key = createQuad(80, 0)
+    Assets.floor_grid = createQuad(112, 32) -- EXIT
+    Assets.downstairs = createQuad(16, 48)
+    Assets.table = createQuad(80, 16)
+    Assets.bigTable = createQuad(0, 16, 32, 16)
+    Assets.books = createQuad(32, 0)
+    Assets.chest = createQuad(96, 80)
+    Assets.torch = createQuad(96, 112)
+    Assets.pics = createQuad(96, 128)
 
     Assets.weapon_sword = createQuad(224, 64)
     Assets.goblin_knife = createQuad(240, 64)

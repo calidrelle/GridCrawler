@@ -136,6 +136,9 @@ local function createCorridors()
     for _, value in pairs(corridors) do
         if map[value[1]][value[2]].type == WALL then
             map[value[1]][value[2]] = tileFactory.create(CORRIDOR)
+            if love.math.random(100) < 3 then
+                ItemManager.newPics(value[1] * TILESIZE, value[2] * TILESIZE)
+            end
         end
     end
 end
@@ -204,7 +207,7 @@ local function createSlims(nbTotal)
     for _ = nb + 1, nbTotal do
         repeat
             pos = this.getEmptyLocation(0) -- monsters in rooms only
-        until pos.room ~= map.spawn.room
+        until pos.room ~= map.spawn.room -- pas dans monstre dans la pièce du spawn
         ItemManager.newSlim(pos.x * TILESIZE, pos.y * TILESIZE)
     end
 end
@@ -280,11 +283,17 @@ this.getEmptyLocation = function(roomNumber)
 
     local tx, ty
     local nbTry = 0
+    local onSpawn = false
     repeat
         nbTry = nbTry + 1
         tx = love.math.random(xmin, xmax)
         ty = love.math.random(ymin, ymax)
-    until map[tx][ty].type == FLOOR or nbTry > 200
+        if map.spawn == nil then
+            onSpawn = false
+        else
+            onSpawn = map.spawn.x == tx and map.spawn.y == tx
+        end
+    until map[tx][ty].type == FLOOR and not onSpawn or nbTry > 200
     return {x = tx, y = ty, room = roomNumber}
 end
 

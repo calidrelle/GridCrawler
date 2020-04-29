@@ -2,7 +2,7 @@ local this = {}
 
 OPTIONS = {}
 if DevMode() then
-    OPTIONS.volume = 40
+    OPTIONS.volume = 0
 else
     OPTIONS.volume = 50
 end

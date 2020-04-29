@@ -27,6 +27,7 @@ this.createNew = function()
     this.animDeath = require("engine.animation").createNew(Assets.knight_death_anim, 7, 0.3, false)
     this.currentAnim = this.animIdle
     this.gridOpened = false
+    this.jumpingTimer = 0
 
     this.pv = 10
     this.pvMax = 10
@@ -181,14 +182,13 @@ local function checkAction(dt)
     end
 end
 
-local isJumping = 0
 local canJump = true
 local function jump(dt)
     if love.keyboard.isDown(OPTIONS.JUMP) and canJump then
-        if isJumping == 0 then
+        if this.jumpingTimer == 0 then
             if this.stamina > STAMINA_JUMP then
                 Assets.snd_jump:play()
-                isJumping = 0.15
+                this.jumpingTimer = 0.15
                 this.stamina = this.stamina - STAMINA_JUMP
                 canJump = false
             else
@@ -199,11 +199,11 @@ local function jump(dt)
     if not love.keyboard.isDown(OPTIONS.JUMP) then
         canJump = true
     end
-    if isJumping > 0 then
-        isJumping = isJumping - dt
+    if this.jumpingTimer > 0 then
+        this.jumpingTimer = this.jumpingTimer - dt
         this.speed = 300
     else
-        isJumping = 0
+        this.jumpingTimer = 0
     end
 end
 
