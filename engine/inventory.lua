@@ -51,8 +51,10 @@ Inventory.removePo = function(amount)
             if item.name == "gold" then
                 if item.count >= amount then
                     item.count = item.count - amount
+                    Assets.snd_pay:play()
                     return true
                 else
+                    Assets.snd_error:play()
                     return false
                 end
             end

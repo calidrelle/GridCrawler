@@ -61,6 +61,8 @@ Assets.init = function()
     Assets.downstairs = createQuad(16, 48)
     Assets.table = createQuad(80, 16)
     Assets.bigTable = createQuad(0, 16, 32, 16)
+    Assets.books = createQuad(32, 0)
+    Assets.chest = createQuad(96, 80)
 
     Assets.corridor = {}
     Assets.corridor[1] = createQuad(80, 32)
@@ -98,6 +100,7 @@ Assets.init = function()
     Assets.snd_nostamina = love.audio.newSource("sons/nostamina.wav", "static")
     Assets.snd_deathplayer = love.audio.newSource("sons/death_player.wav", "static")
     Assets.snd_lootpage = love.audio.newSource("sons/loot_page.wav", "static")
+    Assets.snd_pay = love.audio.newSource("sons/pay.wav", "static")
 
     print("Assets loaded")
 end

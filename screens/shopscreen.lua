@@ -2,8 +2,6 @@ local this = {}
 
 local stats = {}
 local mx, my = 0, 0
-local animDone = false
-local vendor
 local staires
 local selectedItem = nil
 
@@ -24,11 +22,11 @@ this.load = function()
     local mapBuilder = require("engine.dungeonBuilder")
     Map = mapBuilder.createEmptyMap(12, 11)
 
-    --- SCENERY    
+    --- SCENERY
     Player.currentAnim = Player.animRun
-    Player.setPosition(6.5 * TILESIZE, 10 * TILESIZE)
+    Player.setPosition(6.5 * TILESIZE, 8 * TILESIZE)
 
-    vendor = ItemManager.newVendor(6.5 * TILESIZE, 5 * TILESIZE)
+    ItemManager.newVendor(6.5 * TILESIZE, 5 * TILESIZE)
     staires = ItemManager.newDownstairs(7 * TILESIZE, 3 * TILESIZE)
     ItemManager.newTorch(4 * TILESIZE, 1 * TILESIZE)
     ItemManager.newTorch(9 * TILESIZE, 1 * TILESIZE)
@@ -37,6 +35,14 @@ this.load = function()
     ItemManager.newBarrel(2 * TILESIZE, 10 * TILESIZE)
     ItemManager.newBarrel(10 * TILESIZE, 10 * TILESIZE)
 
+    ItemManager.newBooks(3 * TILESIZE, 2 * TILESIZE)
+    ItemManager.newBooks(4 * TILESIZE, 2 * TILESIZE)
+    ItemManager.newBooks(5 * TILESIZE, 2 * TILESIZE)
+    ItemManager.newBooks(8 * TILESIZE, 2 * TILESIZE)
+    ItemManager.newBooks(9 * TILESIZE, 2 * TILESIZE)
+    ItemManager.newBooks(10 * TILESIZE, 2 * TILESIZE)
+    ItemManager.newChest(11 * TILESIZE, 2 * TILESIZE)
+
     -- Les stats
     addStat(1, "Vie max +1", 60, Player.pvMax, ItemManager.newTable(3 * TILESIZE, 5 * TILESIZE))
     addStat(2, "Attaque +1", 60, Player.atk, ItemManager.newTable(3 * TILESIZE, 7 * TILESIZE))
@@ -44,6 +50,11 @@ this.load = function()
     addStat(4, "Distance d'attaque +5%", 60, Player.atkRange, ItemManager.newTable(10 * TILESIZE, 5 * TILESIZE))
     addStat(5, "Régénération de vie +5%", 50, Player.regenPv, ItemManager.newTable(10 * TILESIZE, 7 * TILESIZE))
     addStat(6, "Régénération d'endurence +5%", 50, Player.regenStamina, ItemManager.newTable(10 * TILESIZE, 9 * TILESIZE))
+
+    MUSICPLAYER:stop()
+    MUSICPLAYER = love.audio.newSource("sons/24_v2.mp3", "stream")
+    MUSICPLAYER:setVolume(OPTIONS.volume / 100)
+    MUSICPLAYER:play()
 end
 
 local function doSelect()
@@ -82,7 +93,6 @@ local function doSelect()
                     end
                 else
                     this.drawHover("Pas assez d'argent")
-                    Assets.snd_error:play()
                 end
             end
         end
@@ -91,16 +101,6 @@ local function doSelect()
 end
 
 this.update = function(dt)
-    -- on n'update que l'animation du Player
-    if not animDone then
-        Player.dy = -1
-        if Player.y < 7 * TILESIZE then
-            animDone = true
-        end
-        Player.update(dt)
-        return
-    end
-
     ItemManager.update(dt)
 
     mx, my = Player.getCenter()
@@ -154,6 +154,8 @@ this.draw = function()
     drawMap()
     love.graphics.draw(Assets.shop, 0, 0)
     ItemManager.draw()
+    Assets.draw(Assets.floor_grid, 6 * TILESIZE, 3 * TILESIZE)
+    Assets.draw(Assets.floor_grid, 11 * TILESIZE, 9 * TILESIZE)
 
     Player.draw()
     Assets.draw(Assets.vendor_topdoor, TILESIZE * 6, TILESIZE * 11)
@@ -176,7 +178,7 @@ this.draw = function()
     end
     for i, stat in pairs(stats) do
         if stat.item == selectedItem then
-            this.drawHover(stat.name .. "=" .. stat.cost .. " po\nValeur actuelle : " .. stat.value)
+            this.drawHover(stat.name .. " = " .. stat.cost .. " po\nValeur actuelle : " .. math.floor(stat.value * 100) / 100)
         end
     end
 end

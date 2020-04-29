@@ -2,18 +2,13 @@ local this = {}
 
 OPTIONS = {}
 if DevMode() then
-    OPTIONS.volume = 0
-else
     OPTIONS.volume = 40
+else
+    OPTIONS.volume = 50
 end
 OPTIONS.fullscreen = false
 SCALE = 3
 OPTIONS.SPAWN_AT_GRID = false
-
--- 800, 600 (4/3)
--- 1024 x 576 (16/9)
--- 1024 x 768 (4/3)
--- 1600 x 900 (16/9)
 
 love.window.setMode(1280, 768)
 

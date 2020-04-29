@@ -12,6 +12,8 @@ require("gameobjects.torch")
 require("gameobjects.table")
 require("gameobjects.downstairs")
 require("gameobjects.bigtable")
+require("gameobjects.books")
+require("gameobjects.chest")
 
 -- mobs
 require("gameobjects.slim")
@@ -38,7 +40,6 @@ ItemManager.create = function(quad, x, y, width, height)
     item.actif = true
     item.state = MOBSTATES.NONE
     item.cooldown = 0
-    -- item.mouseOver = false
     item.click = false
 
     item.pv = 0

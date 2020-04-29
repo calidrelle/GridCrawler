@@ -70,6 +70,9 @@ ScreenManager.setScreen = function(name)
         love.mouse.setVisible(false)
         screen = gameScreen
     elseif name == "NEXTLEVEL" then
+        MUSICPLAYER:stop()
+        MUSICPLAYER = musicIntro
+        MUSICPLAYER:play()
         gameScreen.startNewLevel()
         screen = gameScreen
     elseif name == "OPTIONS" then

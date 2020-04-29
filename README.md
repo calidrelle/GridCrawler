@@ -40,3 +40,7 @@ Binary Space Partitionning dungeon : https://www.youtube.com/watch?v=W_E93kXmHVc
 
 For later ideas :
 4 or 6 color palette for gfx : https://youtu.be/YeNlbLdNxyo?t=202
+
+
+CREDITS:
+Musique shop : https://yujiboy.itch.io/game-musics (n°24)
