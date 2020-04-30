@@ -11,6 +11,7 @@ local createQuad = function(x, y, w, h)
 end
 
 Assets.init = function()
+    -- IMAGES
     Assets.titleScreen = love.graphics.newImage("images/EcranTitre.png")
     Assets.button = love.graphics.newImage("images/button.png")
     Assets.gui = love.graphics.newImage("images/gui.png")
@@ -19,14 +20,13 @@ Assets.init = function()
     Assets.outside = love.graphics.newImage("images/outside.png")
     Assets.shop = love.graphics.newImage("images/shop.png")
 
-    -- Chargement de la spritesheet
+    -- SPRITESHEET
     sheet = love.graphics.newImage("images/SpriteSheet.png")
 
     -- CHARACTERS
     Assets.knight_idle_anim = createQuad(0, 144)
     Assets.knight_run_anim = createQuad(0, 160)
     Assets.knight_death_anim = createQuad(288, 16)
-
     Assets.vendor_idle_anim = createQuad(288, 32)
 
     -- MOBS
@@ -89,7 +89,6 @@ Assets.init = function()
     Assets.chest_open = createQuad(224, 80)
     Assets.torch = createQuad(96, 112)
     Assets.pics = createQuad(96, 128)
-
     Assets.weapon_sword = createQuad(224, 64)
     Assets.goblin_knife = createQuad(240, 64)
 
@@ -105,6 +104,7 @@ Assets.init = function()
     Assets.snd_deathplayer = love.audio.newSource("sons/death_player.wav", "static")
     Assets.snd_lootpage = love.audio.newSource("sons/loot_page.wav", "static")
     Assets.snd_pay = love.audio.newSource("sons/pay.wav", "static")
+    Assets.snd_pics = love.audio.newSource("sons/pics.wav", "static")
 
     print("Assets loaded")
 end

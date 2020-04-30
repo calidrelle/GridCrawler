@@ -16,6 +16,7 @@ ItemManager.newPics = function(tileX, tileY)
         if other == Player then
             item.currentAnim = item.animRun
             if item.timer == 0 then
+                Assets.snd_pics:play()
                 item.timer = 2
                 if Player.jumpingTimer == 0 then
                     ItemManager.doAttack(item, Player)
