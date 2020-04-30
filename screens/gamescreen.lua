@@ -36,6 +36,8 @@ this.load = function()
     PIXELLARGE = (WIDTH - 100 * SCALE)
     btnRestart = GUI.addButton("Rejouer", PIXELLARGE / 2 - 40 * SCALE, HEIGHT / 2 + 8 * SCALE, 64 * SCALE)
     btnRestart.visible = false
+    GUI.addInfoBull("Bienvenue au niveau " .. Player.level .. " de GridCrawler.\nTrouve les " .. MAX_PAGES ..
+                        " pages pour reconstituer le grimoire d'ouverture de la grille.")
 end
 
 this.update = function(dt)

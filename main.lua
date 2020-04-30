@@ -36,7 +36,7 @@ Player = nil
 
 function love.load()
     OPTIONS.setValues()
-    love.window.setTitle("Grid Crawler (v0.2 by Wile)")
+    love.window.setTitle("Grid Crawler (v0.3 by Wile)")
 
     require("engine.assets").init()
     require("engine.itemManager")

@@ -18,6 +18,7 @@ require("gameobjects.pics")
 
 -- mobs
 require("gameobjects.slim")
+require("gameobjects.goblin")
 
 MOBSTATES = {}
 MOBSTATES.NONE = ""
@@ -236,6 +237,15 @@ end
 ItemManager.getItemAt = function(x, y)
     for _, item in pairs(items) do
         if item.x <= x and item.x + item.width >= x and item.y <= y and item.y + item.height >= y then
+            return item
+        end
+    end
+    return nil
+end
+
+ItemManager.getItemAroundPlayer = function(radius)
+    for _, item in pairs(items) do
+        if item.distanceToOther(Player) < radius then
             return item
         end
     end

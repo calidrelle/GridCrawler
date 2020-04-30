@@ -4,6 +4,7 @@ local stats = {}
 local mx, my = 0, 0
 local staires
 local selectedItem = nil
+local raduisSelection = 20
 
 local function addStat(id, name, cost, value, item)
     local stat = {}
@@ -16,7 +17,6 @@ local function addStat(id, name, cost, value, item)
 end
 
 this.load = function()
-
     Inventory.removePages() -- On vide les pages de l'inventaire
     ItemManager.reset()
     local mapBuilder = require("engine.dungeonBuilder")
@@ -24,7 +24,7 @@ this.load = function()
 
     --- SCENERY
     Player.currentAnim = Player.animRun
-    Player.setPosition(6.5 * TILESIZE, 8 * TILESIZE)
+    Player.setPosition(6.5 * TILESIZE, 10 * TILESIZE)
 
     ItemManager.newVendor(6.5 * TILESIZE, 5 * TILESIZE)
     staires = ItemManager.newDownstairs(7 * TILESIZE, 3 * TILESIZE)
@@ -55,6 +55,8 @@ this.load = function()
     MUSICPLAYER = love.audio.newSource("sons/24_v2.mp3", "stream")
     MUSICPLAYER:setVolume(OPTIONS.volume / 100)
     MUSICPLAYER:play()
+
+    GUI.addInfoBull("Bonjour Aventurier ! Approche toi, j'ai des informations à te donner !", 6)
 end
 
 local function doSelect()
@@ -92,7 +94,7 @@ local function doSelect()
                         print("Amélioration inconnue !!!")
                     end
                 else
-                    this.drawHover("Pas assez d'argent")
+                    GUI.addInfoBull("Pas assez d'argent")
                 end
             end
         end
@@ -107,7 +109,8 @@ this.update = function(dt)
     mx = mx + TILESIZE * Player.lastdx
     my = my + TILESIZE * Player.lastdy
 
-    selectedItem = ItemManager.getItemAt(mx, my)
+    -- selectedItem = ItemManager.getItemAt(mx, my)
+    selectedItem = ItemManager.getItemAroundPlayer(raduisSelection)
     local itemHovered = ItemManager.getItemAt(Player.getCenter())
     staires.isHover = false
     if itemHovered ~= nil then
@@ -117,18 +120,9 @@ this.update = function(dt)
     end
 
     Player.update(dt)
-    if Player.selectItem then
+    if Player.hasItemSelected then
         doSelect()
     end
-
-end
-
-this.drawHover = function(text)
-    local large = WIDTH / 2
-    love.graphics.setColor(0.2, 0.2, 0.2, 0.8)
-    love.graphics.rectangle("fill", (WIDTH - large) / 2, 50, large, 140)
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.printf(text, (WIDTH - large) / 2, 56, large, "center")
 end
 
 local function drawMap()
@@ -168,23 +162,23 @@ this.draw = function()
     love.graphics.setFont(FontVendor32)
     if selectedItem ~= nil then
         if selectedItem.name == "bigtable" then
-            this.drawHover(
-                "Bonjour Aventurier, fait ton choix sur les tables, et prends les escaliers derrière moi pour continuer ton aventure.")
+            GUI.addInfoBull(
+                "Fait ton choix sur les 6 petites tables rouges. Tes courses terminées, prends les escaliers derrière moi pour continuer ton aventure !",
+                6)
         end
     end
 
     if staires.isHover then
-        this.drawHover("Si tu as fait tous tes choix, tu peux descendre à l'étage inférieur.")
+        GUI.addInfoBull("Si tu as fait tous tes choix, tu peux descendre à l'étage inférieur.")
     end
     for i, stat in pairs(stats) do
         if stat.item == selectedItem then
-            this.drawHover(stat.name .. " = " .. stat.cost .. " po\nValeur actuelle : " .. math.floor(stat.value * 100) / 100)
+            GUI.addInfoBull(stat.name .. " = " .. stat.cost .. " po\nValeur actuelle : " .. math.floor(stat.value * 100) / 100, 3)
         end
     end
 end
 
 this.keypressed = function(key)
-
 end
 
 return this

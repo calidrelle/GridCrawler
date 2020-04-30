@@ -163,12 +163,12 @@ local function doShoot(dt)
 end
 
 local function doSelectItem(dt)
-    this.selectItem = true
+    this.hasItemSelected = true
 end
 
 local firePressed = false
 local function checkAction(dt)
-    this.selectItem = false
+    this.hasItemSelected = false
     if love.keyboard.isDown(OPTIONS.FIRE) then
         if firePressed == false then
             if not Player.inTheShop then
