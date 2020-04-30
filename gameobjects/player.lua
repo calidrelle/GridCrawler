@@ -29,6 +29,7 @@ this.createNew = function()
     this.gridOpened = false
     this.jumpingTimer = 0
 
+    this.canBeAttacked = true -- le player peut se faire taper
     this.pv = 10
     this.pvMax = 10
     this.atkRange = 40

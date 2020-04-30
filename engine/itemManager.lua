@@ -51,6 +51,7 @@ ItemManager.create = function(quad, x, y, width, height)
     item.detectRange = 0
     item.speed = 0
     item.atkSpeed = 0
+    item.canBeAttacked = false
 
     item.initStats = function(pv, atk, def, atkRange, detectRange, speed, atkSpeed)
         item.pv = pv
@@ -275,7 +276,7 @@ ItemManager.draw = function()
 end
 
 ItemManager.doAttack = function(fighter, target)
-    if target.name == "exit" or target.name == "sword" or target.name == "gold" or target.name:sub(1, 4) == "page" then
+    if not target.canBeAttacked then
         return false
     end
 
