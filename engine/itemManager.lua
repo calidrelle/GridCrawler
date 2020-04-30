@@ -19,6 +19,7 @@ require("gameobjects.pics")
 -- mobs
 require("gameobjects.slim")
 require("gameobjects.goblin")
+require("gameobjects.zombie")
 
 MOBSTATES = {}
 MOBSTATES.NONE = ""
@@ -53,6 +54,8 @@ ItemManager.create = function(quad, x, y, width, height)
     item.speed = 0
     item.atkSpeed = 0
     item.canBeAttacked = false
+    item.canDropPage = false
+    item.lootTable = {}
 
     item.initStats = function(pv, atk, def, atkRange, detectRange, speed, atkSpeed)
         item.pv = pv
@@ -63,6 +66,10 @@ ItemManager.create = function(quad, x, y, width, height)
         item.detectRange = detectRange
         item.speed = speed
         item.atkSpeed = atkSpeed
+    end
+
+    item.initMobStats = function(mobData)
+        item.initStats(mobData.pv, mobData.atk, mobData.def, mobData.atkRange, mobData.detectRange, mobData.speed, mobData.atkSpeed)
     end
 
     item.getCenter = function()
@@ -217,13 +224,15 @@ end
 
 ItemManager.update = function(dt)
     for _, item in pairs(items) do
-        item.isHover = false
-        item.update(dt)
-        -- Déplacement des items (mobs) qui peuvent se dépacer
-        if item.speed ~= nil and item.speed ~= 0 then
-            if item.state ~= MOBSTATES.CHANGEDIR then
-                item.x = item.x + item.dx * item.speed * dt
-                item.y = item.y + item.dy * item.speed * dt
+        if item.x > -1 then
+            item.isHover = false
+            item.update(dt)
+            -- Déplacement des items (mobs) qui peuvent se dépacer
+            if item.speed ~= nil and item.speed ~= 0 then
+                if item.state ~= MOBSTATES.CHANGEDIR then
+                    item.x = item.x + item.dx * item.speed * dt
+                    item.y = item.y + item.dy * item.speed * dt
+                end
             end
         end
     end
@@ -265,22 +274,29 @@ ItemManager.getItems = function()
     return items
 end
 
+ItemManager.getRandomItem = function()
+    local r = love.math.random(#items)
+    return items[r]
+end
+
 ItemManager.draw = function()
     for _, item in pairs(items) do
-        -- si l'item à une animation, on l'affiche, sinon, on affiche le quad de base
-        love.graphics.setColor(1, 1, 1)
-        if item.currentAnim ~= nil then
-            item.currentAnim.draw(item, item.x, item.y, item.flip)
-        else
-            Assets.draw(item.quad, item.x, item.y, item.flip, 1, item.rotation)
-        end
+        if item.x > -1 then
+            -- si l'item à une animation, on l'affiche, sinon, on affiche le quad de base
+            love.graphics.setColor(1, 1, 1)
+            if item.currentAnim ~= nil then
+                item.currentAnim.draw(item, item.x, item.y, item.flip)
+            else
+                Assets.draw(item.quad, item.x, item.y, item.flip, 1, item.rotation)
+            end
 
-        -- si l'item à des PV, on les affiche
-        if item.pv > 0 then
-            love.graphics.setColor(1, 0, 0)
-            love.graphics.rectangle("fill", item.x, item.y, TILESIZE * item.pv / item.pvMax, 3) -- La barre de vie à la taille d'une tile
-            love.graphics.setColor(0, 0, 0)
-            love.graphics.rectangle("line", item.x, item.y, TILESIZE, 3) -- La barre de vie à la taille d'une tile
+            -- si l'item à des PV, on les affiche
+            if item.pv > 0 then
+                love.graphics.setColor(1, 0, 0)
+                love.graphics.rectangle("fill", item.x, item.y - 1, TILESIZE * item.pv / item.pvMax, 3) -- La barre de vie à la taille d'une tile
+                love.graphics.setColor(0, 0, 0)
+                love.graphics.rectangle("line", item.x, item.y - 1, TILESIZE, 3) -- La barre de vie à la taille d'une tile
+            end
         end
     end
 end
@@ -319,12 +335,10 @@ ItemManager.doAttack = function(fighter, target)
         target.actif = false
         Assets.snd_dead:play()
 
-        if target.loot == nil then
-            ItemManager.newGold(target.x, target.y)
-        else
-            if string.sub(target.loot, 1, 4) == "page" then
-                ItemManager.newPage(target.x, target.y, string.sub(target.loot, 5) + 0)
-            end
+        -- drop du loot
+        for _, loot in pairs(target.lootTable) do
+            loot.x = target.x
+            loot.y = target.y
         end
     end
     return true

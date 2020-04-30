@@ -164,14 +164,14 @@ local function removeWalls()
     end
 end
 
-local function createPagesPieces()
-    -- key in 9 parts : in monsters and in createBarrels
+local function createPagesPieces() -- remplacé par deployPages
+    -- key in 8 parts : in monsters and in createBarrels
     local split = math.floor(love.math.random(MAX_PAGES / 3, MAX_PAGES / 3 * 2))
     local pos
     for i = 1, split do
         pos = this.getEmptyLocation()
-        local barel = ItemManager.newBarrel(pos.x * TILESIZE, pos.y * TILESIZE)
-        barel.loot = "page" .. i
+        local barrel = ItemManager.newBarrel(pos.x * TILESIZE, pos.y * TILESIZE)
+        table.insert(barrel.lootTable, ItemManager.newPage(-1, -1, i))
     end
     for i = split + 1, MAX_PAGES do
         repeat
@@ -179,7 +179,17 @@ local function createPagesPieces()
         until pos.room ~= map.spawn.room -- pas de slim dans la pièce du spanw
 
         local slim = ItemManager.newSlim(pos.x * TILESIZE, pos.y * TILESIZE)
-        slim.loot = "page" .. i
+        table.insert(slim.lootTable, ItemManager.newPage(-1, -1, i))
+    end
+end
+
+local function deployPages()
+    for i = 1, MAX_PAGES do
+        local item
+        repeat
+            item = ItemManager.getRandomItem()
+        until item.canDropPage
+        table.insert(item.lootTable, ItemManager.newPage(-1, -1, i))
     end
 end
 
@@ -209,6 +219,38 @@ local function createSlims(nbTotal)
             pos = this.getEmptyLocation(0) -- monsters in rooms only
         until pos.room ~= map.spawn.room -- pas dans monstre dans la pièce du spawn
         ItemManager.newSlim(pos.x * TILESIZE, pos.y * TILESIZE)
+    end
+end
+
+local function createGoblins(nbTotal)
+    local nb = 0
+    local pos
+    for _, item in pairs(ItemManager.getItems()) do
+        if item.name == "goblin" then
+            nb = nb + 1
+        end
+    end
+    for _ = nb + 1, nbTotal do
+        repeat
+            pos = this.getEmptyLocation(0) -- monsters in rooms only
+        until pos.room ~= map.spawn.room -- pas dans monstre dans la pièce du spawn
+        ItemManager.newGoblin(pos.x * TILESIZE, pos.y * TILESIZE)
+    end
+end
+
+local function createZombies(nbTotal)
+    local nb = 0
+    local pos
+    for _, item in pairs(ItemManager.getItems()) do
+        if item.name == "zombie" then
+            nb = nb + 1
+        end
+    end
+    for _ = nb + 1, nbTotal do
+        repeat
+            pos = this.getEmptyLocation(0) -- monsters in rooms only
+        until pos.room ~= map.spawn.room -- pas dans monstre dans la pièce du spawn
+        ItemManager.newZombie(pos.x * TILESIZE, pos.y * TILESIZE)
     end
 end
 
@@ -243,9 +285,13 @@ this.build = function(width, height, seed)
     ItemManager.newExitGrid(map.grid.x * TILESIZE, map.grid.y * TILESIZE)
 
     -- on créé les autres entités du niveau par rapport à la position du player
-    createPagesPieces()
-    createBarrels(20)
-    createSlims(12)
+    -- Items présents : les pics et la sortie
+    -- createPagesPieces()
+    createBarrels(love.math.random(15, 25))
+    createSlims(DATA.slim.mobLevel[Player.level])
+    createGoblins(DATA.gobelin.mobLevel[Player.level])
+    createZombies(DATA.zombie.mobLevel[Player.level])
+    deployPages()
 
     map.collideAt = function(x, y)
         local tileX = math.floor(x / TILESIZE)

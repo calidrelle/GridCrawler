@@ -5,6 +5,7 @@ ItemManager.newXXX = function(tileX, tileY)
     item.name = "XXX"
     item.solid = false -- item collide with player/mob ?
     item.canBeAttacked = false -- peut-on taper dessus
+    item.canDropPage = false
     item.initStats(0, 0, 0, 0) -- pv, atkRange, atk, def (player de base: pv = 10, atkRange = 20, atk = 2, def = 2)
 
     item.hit = function(other)

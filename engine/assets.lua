@@ -29,11 +29,14 @@ Assets.init = function()
 
     Assets.vendor_idle_anim = createQuad(288, 32)
 
+    -- MOBS
     Assets.fly_anim_anim = createQuad(0, 64)
     Assets.goblin_idle_anim = createQuad(0, 80)
     Assets.goblin_run_anim = createQuad(0, 96)
     Assets.slime_idle_anim = createQuad(0, 112)
     Assets.slime_run_anim = createQuad(0, 128)
+    Assets.zombie_idle_anim = createQuad(288, 48)
+    Assets.zombie_run_anim = createQuad(288, 64)
 
     -- DONJONS
     Assets.empty_gray = createQuad(144, 0)

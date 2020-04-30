@@ -3,6 +3,8 @@ ItemManager.newBarrel = function(x, y)
     item.name = "barrel"
     item.solid = true
     item.canBeAttacked = true
+    item.canDropPage = true
+    table.insert(item.lootTable, ItemManager.newGold(-1, -1, math.random(1, 5)))
 
     item.hit = function(other)
         ItemManager.doAttack(other, item)
