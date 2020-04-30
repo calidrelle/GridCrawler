@@ -301,6 +301,10 @@ ItemManager.draw = function()
     end
 end
 
+ItemManager.getRandomPoNumber = function(objData)
+    return math.random(objData.lootPoMin, objData.lootPoMax)
+end
+
 ItemManager.doAttack = function(fighter, target)
     if not target.canBeAttacked then
         return false

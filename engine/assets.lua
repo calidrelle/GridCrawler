@@ -86,6 +86,7 @@ Assets.init = function()
     Assets.bigTable = createQuad(0, 16, 32, 16)
     Assets.books = createQuad(32, 0)
     Assets.chest = createQuad(96, 80)
+    Assets.chest_open = createQuad(224, 80)
     Assets.torch = createQuad(96, 112)
     Assets.pics = createQuad(96, 128)
 

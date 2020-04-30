@@ -6,7 +6,7 @@ ItemManager.newZombie = function(tileX, tileY)
     item.solid = true
     item.canBeAttacked = true
     item.canDropPage = true
-    table.insert(item.lootTable, ItemManager.newGold(-1, -1, math.random(8, 16)))
+    table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.zombie)))
 
     item.initMobStats(DATA.zombie)
     item.animIdle = require("engine.animation").createNew(Assets.zombie_idle_anim, 4, 0.18, true)

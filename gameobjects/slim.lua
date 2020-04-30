@@ -6,7 +6,7 @@ ItemManager.newSlim = function(tileX, tileY)
     item.solid = true
     item.canBeAttacked = true
     item.canDropPage = true
-    table.insert(item.lootTable, ItemManager.newGold(-1, -1, math.random(1, 5)))
+    table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.slim)))
 
     item.initMobStats(DATA.slim)
     item.animIdle = require("engine.animation").createNew(Assets.slime_idle_anim, 6, 0.1, true)

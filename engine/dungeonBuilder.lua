@@ -136,7 +136,7 @@ local function createCorridors()
     for _, value in pairs(corridors) do
         if map[value[1]][value[2]].type == WALL then
             map[value[1]][value[2]] = tileFactory.create(CORRIDOR)
-            if love.math.random(100) < 3 then
+            if love.math.random(100) < math.ceil((Player.level * 1.5) + 2) then
                 ItemManager.newPics(value[1] * TILESIZE, value[2] * TILESIZE)
             end
         end
@@ -164,25 +164,6 @@ local function removeWalls()
     end
 end
 
-local function createPagesPieces() -- remplacé par deployPages
-    -- key in 8 parts : in monsters and in createBarrels
-    local split = math.floor(love.math.random(MAX_PAGES / 3, MAX_PAGES / 3 * 2))
-    local pos
-    for i = 1, split do
-        pos = this.getEmptyLocation()
-        local barrel = ItemManager.newBarrel(pos.x * TILESIZE, pos.y * TILESIZE)
-        table.insert(barrel.lootTable, ItemManager.newPage(-1, -1, i))
-    end
-    for i = split + 1, MAX_PAGES do
-        repeat
-            pos = this.getEmptyLocation(0)
-        until pos.room ~= map.spawn.room -- pas de slim dans la pièce du spanw
-
-        local slim = ItemManager.newSlim(pos.x * TILESIZE, pos.y * TILESIZE)
-        table.insert(slim.lootTable, ItemManager.newPage(-1, -1, i))
-    end
-end
-
 local function deployPages()
     for i = 1, MAX_PAGES do
         local item
@@ -194,27 +175,36 @@ local function deployPages()
 end
 
 local function createBarrels(nbTotal)
-    local nb = 0
-    for _, item in pairs(ItemManager.getItems()) do
-        if item.name == "barrel" then
-            nb = nb + 1
-        end
-    end
-    for _ = nb + 1, nbTotal do
+    for _ = 1, nbTotal do
         local pos = this.getEmptyLocation()
         ItemManager.newBarrel(pos.x * TILESIZE, pos.y * TILESIZE)
     end
 end
 
-local function createSlims(nbTotal)
-    local nb = 0
-    local pos
-    for _, item in pairs(ItemManager.getItems()) do
-        if item.name == "slim" then
-            nb = nb + 1
+this.nearWall = function(pos)
+    for x = -1, 1 do
+        for y = -1, 1 do
+            if map[pos.x + x][pos.y + y].type == WALL then
+                return true
+            end
         end
     end
-    for _ = nb + 1, nbTotal do
+    return false
+end
+
+local function createChests(nbTotal)
+    local pos
+    for _ = 1, nbTotal do
+        repeat
+            pos = this.getEmptyLocation(0)
+        until this.nearWall(pos)
+        ItemManager.newChest(pos.x * TILESIZE, pos.y * TILESIZE)
+    end
+end
+
+local function createSlims(nbTotal)
+    local pos
+    for _ = 1, nbTotal do
         repeat
             pos = this.getEmptyLocation(0) -- monsters in rooms only
         until pos.room ~= map.spawn.room -- pas dans monstre dans la pièce du spawn
@@ -223,14 +213,8 @@ local function createSlims(nbTotal)
 end
 
 local function createGoblins(nbTotal)
-    local nb = 0
     local pos
-    for _, item in pairs(ItemManager.getItems()) do
-        if item.name == "goblin" then
-            nb = nb + 1
-        end
-    end
-    for _ = nb + 1, nbTotal do
+    for _ = 1, nbTotal do
         repeat
             pos = this.getEmptyLocation(0) -- monsters in rooms only
         until pos.room ~= map.spawn.room -- pas dans monstre dans la pièce du spawn
@@ -239,14 +223,8 @@ local function createGoblins(nbTotal)
 end
 
 local function createZombies(nbTotal)
-    local nb = 0
     local pos
-    for _, item in pairs(ItemManager.getItems()) do
-        if item.name == "zombie" then
-            nb = nb + 1
-        end
-    end
-    for _ = nb + 1, nbTotal do
+    for _ = 1, nbTotal do
         repeat
             pos = this.getEmptyLocation(0) -- monsters in rooms only
         until pos.room ~= map.spawn.room -- pas dans monstre dans la pièce du spawn
@@ -288,6 +266,7 @@ this.build = function(width, height, seed)
     -- Items présents : les pics et la sortie
     -- createPagesPieces()
     createBarrels(love.math.random(15, 25))
+    createChests(love.math.random(1, 3))
     createSlims(DATA.slim.mobLevel[Player.level])
     createGoblins(DATA.gobelin.mobLevel[Player.level])
     createZombies(DATA.zombie.mobLevel[Player.level])

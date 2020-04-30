@@ -6,7 +6,7 @@ ItemManager.newGoblin = function(tileX, tileY)
     item.solid = true
     item.canBeAttacked = true
     item.canDropPage = true
-    table.insert(item.lootTable, ItemManager.newGold(-1, -1, math.random(4, 10)))
+    table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.gobelin)))
 
     item.initMobStats(DATA.gobelin)
     item.animIdle = require("engine.animation").createNew(Assets.goblin_idle_anim, 6, 0.1, true)
