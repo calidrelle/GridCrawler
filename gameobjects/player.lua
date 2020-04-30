@@ -28,6 +28,8 @@ this.createNew = function()
     this.currentAnim = this.animIdle
     this.gridOpened = false
     this.jumpingTimer = 0
+    this.shootx = 0
+    this.shooty = 0
 
     this.canBeAttacked = true -- le player peut se faire taper
     this.pv = 10
@@ -73,7 +75,6 @@ local function move(dt)
         py2 = this.y + this.bounds.y + this.bounds.height
 
         if Map.collideAt(px1, py1) or Map.collideAt(px1, py2) or ItemManager.isItemSolidAt(px1, py1) or ItemManager.isItemSolidAt(px1, py2) then
-            this.dx = 0
             tdx = 0
         end
     end
@@ -82,7 +83,6 @@ local function move(dt)
         py1 = this.y + this.bounds.y
         py2 = this.y + this.bounds.y + this.bounds.height
         if Map.collideAt(px1, py1) or Map.collideAt(px1, py2) or ItemManager.isItemSolidAt(px1, py1) or ItemManager.isItemSolidAt(px1, py2) then
-            this.dx = 0
             tdx = 0
         end
     end
@@ -92,7 +92,6 @@ local function move(dt)
         py1 = this.y + this.bounds.y + tdy
         px2 = this.x + this.bounds.x + this.bounds.width
         if Map.collideAt(px1, py1) or Map.collideAt(px2, py1) or ItemManager.isItemSolidAt(px1, py1) or ItemManager.isItemSolidAt(px2, py1) then
-            this.dy = 0
             tdy = 0
         end
     end
@@ -102,7 +101,6 @@ local function move(dt)
         py1 = this.y + this.bounds.y + this.bounds.height + tdy
         px2 = this.x + this.bounds.x + this.bounds.width
         if Map.collideAt(px1, py1) or Map.collideAt(px2, py1) or ItemManager.isItemSolidAt(px1, py1) or ItemManager.isItemSolidAt(px2, py1) then
-            this.dy = 0
             tdy = 0
         end
     end
@@ -141,8 +139,8 @@ end
 local function doShoot(dt)
     if this.stamina > STAMINA_FIRE then
         -- on créé l'épée en peu plus devant le joueur
-        local x = this.x + this.dx * TILESIZE
-        local y = this.y + this.dy * TILESIZE
+        local x = this.x + this.shootx * TILESIZE
+        local y = this.y + this.shooty * TILESIZE
         local sword = ItemManager.newSword(x, y, this.shootx, this.shooty)
         sword.initStats(0, Player.atk, 0, 0, 0, Player.atkRange, 0)
         this.stamina = this.stamina - STAMINA_FIRE
