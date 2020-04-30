@@ -14,7 +14,7 @@ Ces 9 parties sont disséminées dans les tonneaux ou sur des monstres
 TODO:
 (/) Complètement au clavier
 ( ) Manque de challenge, porte et clef ?
-( ) Certains donjons fait à la main
+( ) Certains niveaux fait à la main
 ( ) Spawn à mob
 (/) Lors de la récupération de la 8°, informer qu'on peut ouvrir la grille
 ( ) Les crédits dans l'écran "quit"

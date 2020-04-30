@@ -16,7 +16,7 @@ Assets.init = function()
     Assets.gui = love.graphics.newImage("images/gui.png")
     Assets.gui_bottom = love.graphics.newImage("images/gui_bottom.png")
     Assets.GameOver = love.graphics.newImage("images/gameover.png")
-
+    Assets.outside = love.graphics.newImage("images/outside.png")
     Assets.shop = love.graphics.newImage("images/shop.png")
 
     -- Chargement de la spritesheet

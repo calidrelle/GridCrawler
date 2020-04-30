@@ -185,11 +185,6 @@ this.draw = function()
     end
 
     love.graphics.setColor(1, 1, 1, 1)
-
-    if DevMode() then
-        love.graphics.print("FPS: " .. love.timer.getFPS(), 10, 10)
-        love.graphics.print("Items: " .. #ItemManager.getItems(), 10, 32)
-    end
 end
 
 this.keypressed = function(key)
@@ -206,8 +201,12 @@ this.keypressed = function(key)
             Player.gridOpened = true
             Inventory.addItem(ItemManager.newGold(0, 0), 400)
             ScreenManager.setScreen("VENDOR")
+        elseif key == "f12" then
+            Player.gridOpened = true
+            Inventory.addItem(ItemManager.newGold(0, 0), 400)
+            ScreenManager.setScreen("OUTSIDE")
         elseif key == "kp+" then
-            Player.atkRange = Player.atkRange + 5
+            Player.level = Player.level + 1
         elseif key == "kp-" then
             Player.atkRange = Player.atkRange - 5
         else

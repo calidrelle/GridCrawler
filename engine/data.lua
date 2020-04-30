@@ -2,6 +2,7 @@ DATA = {}
 
 DATA.barrel = {lootPoMin = 1, lootPoMax = 5}
 DATA.chest = {lootPoMin = 5, lootPoMax = 15}
+LEVELMAX = 9 -- rajouter des mobLevel si ça change
 
 ---- SLIM
 DATA.slim = {

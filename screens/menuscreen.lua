@@ -20,6 +20,10 @@ this.load = function()
     btnQuit = GUI.addButton("Quitter", x, y + 120, 100 * SCALE)
 end
 
+this.resetStarted = function()
+    started = false
+end
+
 this.update = function(dt)
     if btnPlay.clicked then
         ScreenManager.setScreen("GAME")

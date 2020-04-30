@@ -18,8 +18,8 @@ copy "c:\program files\love\*.ico" .
 copy /b love.exe+game.love GridCrawler.exe
 del game.love
 del love.exe
-jar -cMf d:\temp\GridCrawler.zip .
+jar -cMf d:\dev\GridCrawler.zip .
 echo --------------------------
-echo Build dispo dans d:\temp\GridCrawler.zip
+echo Build dispo dans d:\dev\GridCrawler.zip
 echo --------------------------
 

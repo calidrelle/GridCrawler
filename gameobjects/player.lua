@@ -43,16 +43,6 @@ this.createNew = function()
     Inventory.init()
 end
 
-this.initStats = function(pvMax, atk, def, atkRange, regenPv, regenStamina)
-    this.pv = pvMax
-    this.pvMax = pvMax
-    this.atk = atk
-    this.def = def
-    this.atkRange = atkRange
-    this.regenPv = regenPv
-    this.regenStamina = regenStamina
-end
-
 this.setPosition = function(x, y)
     this.x = x
     this.y = y

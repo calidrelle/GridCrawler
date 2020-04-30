@@ -16,6 +16,7 @@ local gameQuit = require("screens.quitscreen")
 local optionsScreen = require("screens.optionsscreen")
 local keysOptionsScreen = require("screens.keysoptions")
 local shopScreen = require("screens.shopscreen")
+local outsideScreen = require("screens.outside")
 local screen = nil
 
 Font20 = love.graphics.newFont("fonts/decterm.ttf", 20)
@@ -57,20 +58,29 @@ function love.load()
     MUSICPLAYER:play()
     MUSICPLAYER:setVolume(OPTIONS.volume / 100)
 
-    ScreenManager.setScreen("MENU") -- MENU
+    ScreenManager.setScreen("MENU")
 end
 
 ScreenManager = {}
 ScreenManager.setScreen = function(name)
     GUI.reset()
     love.mouse.setVisible(true)
+
     Player.inTheShop = false
     if name == "MENU" then
         screen = menuScreen
     elseif name == "GAME" then
         love.mouse.setVisible(false)
         screen = gameScreen
+    elseif name == "NEWGAME" then
+        gameScreen.restartGame()
+        menuScreen.resetStarted()
+        MUSICPLAYER:stop()
+        MUSICPLAYER = musicIntro
+        MUSICPLAYER:play()
+        screen = menuScreen
     elseif name == "NEXTLEVEL" then
+        love.mouse.setVisible(false)
         MUSICPLAYER:stop()
         MUSICPLAYER = musicIntro
         MUSICPLAYER:play()
@@ -86,6 +96,8 @@ ScreenManager.setScreen = function(name)
         Player.inTheShop = true
         love.mouse.setVisible(false)
         screen = shopScreen
+    elseif name == "OUTSIDE" then
+        screen = outsideScreen
     else
         error("L'écran " .. name .. " n'existe pas")
     end
@@ -112,6 +124,12 @@ function love.draw()
     love.graphics.setFont(Font20)
     screen.draw()
     GUI.draw()
+    if DevMode() then
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.setFont(Font16)
+        love.graphics.print("FPS: " .. love.timer.getFPS(), 10, 10)
+        love.graphics.print("Items: " .. #ItemManager.getItems(), 10, 28)
+    end
 end
 
 function love.keypressed(key)

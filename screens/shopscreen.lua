@@ -52,11 +52,11 @@ this.load = function()
     addStat(6, "Régénération d'endurence +5%", 50, Player.regenStamina, ItemManager.newTable(10 * TILESIZE, 9 * TILESIZE))
 
     MUSICPLAYER:stop()
-    MUSICPLAYER = love.audio.newSource("sons/24_v2.mp3", "stream")
+    MUSICPLAYER = love.audio.newSource("sons/16.mp3", "stream")
     MUSICPLAYER:setVolume(OPTIONS.volume / 100)
     MUSICPLAYER:play()
 
-    GUI.addInfoBull("Bonjour Aventurier ! Approche toi, j'ai des informations à te donner !", 6)
+    GUI.addInfoBull("Bonjour Aventurier ! Approche-toi, j'ai des informations à te donner !", 6)
 end
 
 local function doSelect()

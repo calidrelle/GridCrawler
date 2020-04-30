@@ -36,7 +36,7 @@ GUI.addInfoBull = function(text, duree)
     this.draw = function()
         love.graphics.setFont(FontVendor32)
         love.graphics.setColor(0.2, 0.2, 0.2, 0.8 * this.alpha)
-        love.graphics.rectangle("fill", (WIDTH - this.large) / 2, 50, this.large, #this.wrappedtext * 32 + 10)
+        love.graphics.rectangle("fill", (WIDTH - this.large) / 2, 50, this.large, #this.wrappedtext * 32 + 12)
         love.graphics.setColor(1, 1, 1, this.alpha)
         love.graphics.printf(this.text, (WIDTH - this.large) / 2, 56, this.large, "center")
     end

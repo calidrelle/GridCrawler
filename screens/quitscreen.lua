@@ -5,9 +5,10 @@ table.insert(credits, "Merci d'avoir joué à GridCrawler !!!")
 table.insert(credits, "Ce jeu a été développé pour la participation à la Game Jam #24 de GameCodeur")
 table.insert(credits, "https://www.gamecodeur.fr")
 table.insert(credits, "")
-table.insert(credits, "CREDITS:")
-table.insert(credits, "Musique shop : yujiboy https://yujiboy.itch.io")
-table.insert(credits, "Sprites : o-lobster https://o-lobster.itch.io")
+table.insert(credits, "     CREDITS:")
+table.insert(credits, "Sprites              : o-lobster  https://o-lobster.itch.io")
+table.insert(credits, "Sprites écran de fin : jestan     https://jestan.itch.io/classic-rpg")
+table.insert(credits, "Musique shop et fin  : yujiboy    https://yujiboy.itch.io")
 
 local btnPlay
 local btnQuit
