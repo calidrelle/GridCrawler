@@ -91,6 +91,7 @@ Assets.init = function()
     Assets.pics = createQuad(96, 128)
     Assets.weapon_sword = createQuad(224, 64)
     Assets.goblin_knife = createQuad(240, 64)
+    Assets.smoke = createQuad(96, 96)
 
     ---------- SONDS
     Assets.snd_error = love.audio.newSource("sons/error.wav", "static")

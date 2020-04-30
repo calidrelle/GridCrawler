@@ -179,6 +179,7 @@ local function jump(dt)
         if this.jumpingTimer == 0 then
             if this.stamina > STAMINA_JUMP then
                 Assets.snd_jump:play()
+                ItemManager.newSmoke(Player.x - Player.dx, Player.y - Player.dy)
                 this.jumpingTimer = 0.15
                 this.stamina = this.stamina - STAMINA_JUMP
                 canJump = false

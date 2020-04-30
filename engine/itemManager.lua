@@ -15,6 +15,7 @@ require("gameobjects.bigtable")
 require("gameobjects.books")
 require("gameobjects.chest")
 require("gameobjects.pics")
+require("gameobjects.smoke")
 
 -- mobs
 require("gameobjects.slim")
