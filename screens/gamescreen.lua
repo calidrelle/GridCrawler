@@ -68,9 +68,9 @@ local function drawFichePerso()
     table.insert(stats, {"MAX VIE ", Player.pvMax})
     table.insert(stats, {"ATK     ", Player.atk})
     table.insert(stats, {"DEF     ", Player.def})
-    table.insert(stats, {"DIST ATK", Player.atkRange})
-    table.insert(stats, {"REG VIE ", Player.regenPv})
-    table.insert(stats, {"REG ENDU", Player.regenStamina})
+    table.insert(stats, {"DIST ATK", wile.display2decimale(Player.atkRange)})
+    table.insert(stats, {"REG VIE ", wile.display2decimale(Player.regenPv)})
+    table.insert(stats, {"REG ENDU", wile.display2decimale(Player.regenStamina)})
 
     for i = 1, #stats do
         if SCALE == 4 then
@@ -199,7 +199,7 @@ this.keypressed = function(key)
             Player.pv = -1
         elseif key == "f11" then
             Player.gridOpened = true
-            Inventory.addItem(ItemManager.newGold(0, 0), 400)
+            Inventory.addItem(ItemManager.newGold(0, 0), 10000)
             ScreenManager.setScreen("VENDOR")
         elseif key == "f12" then
             Player.gridOpened = true

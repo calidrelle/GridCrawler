@@ -124,8 +124,9 @@ local function move(dt)
         this.currentAnim = this.animIdle
     else
         this.currentAnim = this.animRun
-        this.shootx = this.dx
-        this.shooty = this.dy
+        this.shootx = math.sign(this.dx) * 0.7
+        this.shooty = math.sign(this.dy) * 0.7
+        print(this.shootx, this.shooty)
     end
 end
 
@@ -144,6 +145,9 @@ end
 local function doShoot(dt)
     if this.stamina > STAMINA_FIRE then
         -- on créé l'épée en peu plus devant le joueur
+        if this.shootx == 0 and this.shooty == 0 then
+            this.shootx = 1
+        end
         local x = this.x + this.shootx * TILESIZE
         local y = this.y + this.shooty * TILESIZE
         local sword = ItemManager.newSword(x, y, this.shootx, this.shooty)

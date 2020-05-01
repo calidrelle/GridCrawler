@@ -173,7 +173,7 @@ this.draw = function()
     end
     for i, stat in pairs(stats) do
         if stat.item == selectedItem then
-            GUI.addInfoBull(stat.name .. " = " .. stat.cost .. " po\nValeur actuelle : " .. math.floor(stat.value * 100) / 100, 3)
+            GUI.addInfoBull(stat.name .. " = " .. stat.cost .. " po\nValeur actuelle : " .. wile.display2decimale(stat.value), 3)
         end
     end
 end

@@ -30,6 +30,19 @@ end
 function math.dist(x1, y1, x2, y2)
     return ((x2 - x1) ^ 2 + (y2 - y1) ^ 2) ^ 0.5
 end
+
+function math.sign(value)
+    if value == 0 then
+        return 0
+    else
+        return math.abs(value) / value
+    end
+end
+
+wile = {}
+function wile.display2decimale(value)
+    return math.floor(value * 100) / 100
+end
 -------------------[[ GLOBAL FUNCTIONS ]]
 
 local gameScreen = require("screens.gamescreen")
