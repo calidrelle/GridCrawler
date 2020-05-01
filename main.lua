@@ -71,7 +71,7 @@ GameOver.timer = 0
 Player = nil
 
 function love.load()
-    OPTIONS.setValues()
+    OPTIONS.applyValues()
     love.window.setTitle("Grid Crawler (v0.3 by Wile)")
 
     require("engine.data")

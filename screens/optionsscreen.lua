@@ -2,13 +2,13 @@ local this = {}
 
 OPTIONS = {}
 OPTIONS.volume = 50
-OPTIONS.fullscreen = false
-SCALE = 3
+OPTIONS.fullscreen = true
+SCALE = 4
 OPTIONS.SPAWN_AT_GRID = false
 
 love.window.setMode(1280, 768)
 
-OPTIONS.setValues = function()
+OPTIONS.applyValues = function()
     love.window.setFullscreen(OPTIONS.fullscreen)
     WIDTH = love.graphics.getWidth()
     HEIGHT = love.graphics.getHeight()
@@ -27,7 +27,8 @@ local ypos
 
 this.load = function()
     GUI.reset()
-    xpos = WIDTH / 3
+    xpos = (WIDTH - 140 * SCALE) / 2
+    print(xpos)
     ypos = HEIGHT / 3
     btnVolDec = GUI.addButton("Volume -", xpos, ypos)
     btnVolInc = GUI.addButton("Volume +", xpos + 80 * SCALE, ypos)
@@ -63,7 +64,7 @@ this.update = function(dt)
 
     if btnFullscreen.clicked then
         OPTIONS.fullscreen = not OPTIONS.fullscreen
-        OPTIONS.setValues()
+        OPTIONS.applyValues()
         this.load()
     end
 
@@ -84,6 +85,7 @@ end
 this.draw = function()
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.draw(Assets.titleScreen, 0, 0, 0, WIDTH / Assets.titleScreen:getWidth(), HEIGHT / Assets.titleScreen:getHeight())
+    GUI.drawProgressBar(xpos, ypos - 30, SCALE * 140, 20, OPTIONS.volume, 100, 0.8, 0.1, 0.1)
 end
 
 this.keypressed = function(key)

@@ -152,10 +152,10 @@ this.draw = function()
     -- La map
     local nbTilesX = math.floor((PIXELLARGE / TILESIZE) / SCALE)
     local nbTilesY = math.floor((HEIGHT / TILESIZE) / SCALE)
-    local xmin = math.max(1, math.floor(Player.x / TILESIZE - nbTilesX / 2))
-    local xmax = math.min(Map.width, math.floor(Player.x / TILESIZE + nbTilesX / 2))
-    local ymin = math.max(1, math.floor(Player.y / TILESIZE - nbTilesY / 2))
-    local ymax = math.min(Map.height, math.floor(Player.y / TILESIZE + nbTilesY / 2))
+    local xmin = math.max(1, math.floor(Player.x / TILESIZE - nbTilesX / 2) - 1)
+    local xmax = math.min(Map.width, math.floor(Player.x / TILESIZE + nbTilesX / 2) + 1)
+    local ymin = math.max(1, math.floor(Player.y / TILESIZE - nbTilesY / 2) - 1)
+    local ymax = math.min(Map.height, math.floor(Player.y / TILESIZE + nbTilesY / 2) + 1)
 
     for x = xmin, xmax do
         for y = ymin, ymax do
