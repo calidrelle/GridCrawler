@@ -93,9 +93,7 @@ GUI.addButton = function(text, x, y, width)
 end
 
 GUI.reset = function()
-    while #buttons > 0 do
-        table.remove(buttons, 1)
-    end
+    table.removeAll(buttons)
 end
 
 GUI.update = function(dt)

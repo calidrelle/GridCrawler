@@ -9,6 +9,8 @@ local rooms = {}
 local corridors = {}
 
 local tileFactory = require("engine.tile")
+-- pathfinder
+local pathfinder = require("engine.pathfinder")
 
 local function initWalls()
     for x = 1, map.width do
@@ -283,6 +285,7 @@ this.build = function(width, height, seed)
         end
     end
 
+    map.pathfinder = pathfinder.create(map)
     print("Map created in " .. love.timer.getTime() - t0)
     return map
 end

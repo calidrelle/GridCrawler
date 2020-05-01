@@ -2,6 +2,7 @@
 -- [Fonction mathématiques Love2D](https://love2d.org/wiki/General_math)
 love.graphics.setDefaultFilter("nearest") -- pas d'aliasing
 
+-------------------[[ GLOBAL FUNCTIONS ]]
 function DevMode()
     return love.filesystem.getInfo("README.md") ~= nil
 end
@@ -9,6 +10,27 @@ end
 function trim(s)
     return (s:gsub("^%s*(.-)%s*$", "%1"))
 end
+
+function table.contains(tab, item)
+    for key, value in pairs(tab) do
+        if value == item then
+            return true
+        end
+    end
+    return false
+end
+
+function table.removeAll(tab)
+    while #tab > 0 do
+        tab[1] = {}
+        table.remove(tab, 1)
+    end
+end
+
+function math.dist(x1, y1, x2, y2)
+    return ((x2 - x1) ^ 2 + (y2 - y1) ^ 2) ^ 0.5
+end
+-------------------[[ GLOBAL FUNCTIONS ]]
 
 local gameScreen = require("screens.gamescreen")
 local menuScreen = require("screens.menuscreen")

@@ -57,6 +57,7 @@ ItemManager.create = function(quad, x, y, width, height)
     item.canBeAttacked = false
     item.canDropPage = false
     item.lootTable = {}
+    item.path = nil
 
     item.initStats = function(pv, atk, def, atkRange, detectRange, speed, atkSpeed)
         item.pv = pv
@@ -75,6 +76,11 @@ ItemManager.create = function(quad, x, y, width, height)
 
     item.getCenter = function()
         return item.x + item.width / 2, item.y + item.height / 2
+    end
+
+    item.getMapCell = function()
+        local cx, cy = item.getCenter()
+        return math.floor(cx / TILESIZE), math.floor(cy / TILESIZE)
     end
 
     item.distanceToOther = function(other)
@@ -98,7 +104,6 @@ ItemManager.create = function(quad, x, y, width, height)
     end
 
     item.checkCollision = function(dt)
-        local collision = false
         local approx = 4 -- bounding box de l'objet
         local tdx = item.dx * item.speed * dt
         local tdy = item.dy * item.speed * dt
@@ -138,18 +143,34 @@ ItemManager.create = function(quad, x, y, width, height)
     end
 
     item.seek = function(other)
-        local ox, oy = other.getCenter()
-        local ix, iy = item.getCenter()
-        if ox > ix then
-            item.dx = 1
-        elseif ox < ix then
-            item.dx = -1
+        local ox, oy = other.getMapCell()
+        local ix, iy = item.getMapCell()
+        item.path = Map.pathfinder.getPath(ix, iy, ox, oy)
+        if item.path == nil then
+            print("déplacement à l'ancienne")
+            if ox > ix then
+                item.dx = 1
+            elseif ox < ix then
+                item.dx = -1
+            end
+            if oy < iy then
+                item.dy = -1
+            elseif oy > iy then
+                item.dy = 1
+            end
+        else
+            local dist = #item.path.path
+            if dist > 1 then
+                local px = item.path.path[dist - 1].x * TILESIZE
+                local py = item.path.path[dist - 1].y * TILESIZE
+                item.dx = (px - item.x) / math.abs(px - item.x)
+                item.dy = (py - item.y) / math.abs(py - item.y)
+            else
+                -- on est sur le Player
+                print("pas de déplacement nécessaire")
+            end
         end
-        if oy < iy then
-            item.dy = -1
-        elseif oy > iy then
-            item.dy = 1
-        end
+
     end
 
     -- certains items comme les mobs, on une AI
@@ -174,20 +195,23 @@ ItemManager.create = function(quad, x, y, width, height)
 
         elseif item.state == MOBSTATES.SEEK then
             if item.target == nil then
+                item.path = nil
                 item.state = MOBSTATES.CHANGEDIR
-            elseif distToPlay > item.detectRange then
+            elseif distToPlay > (item.detectRange * 2) then
                 item.target = nil
+                item.path = nil
                 item.state = MOBSTATES.CHANGEDIR
             elseif distToPlay < item.atkRange then
                 -- Attaque de la target
                 item.state = MOBSTATES.FIGHT
+                item.path = nil
                 item.dx = 0
                 item.dy = 0
             else
                 -- poursuite du Player
                 item.seek(Player)
                 if item.checkCollision(dt) then
-                    item.state = MOBSTATES.CHANGEDIR
+                    -- item.state = MOBSTATES.CHANGEDIR
                     return
                 end
             end
@@ -284,7 +308,11 @@ ItemManager.draw = function()
     for _, item in pairs(items) do
         if item.x > -1 then
             -- si l'item à une animation, on l'affiche, sinon, on affiche le quad de base
+            -- if item.state == MOBSTATES.SEEK then
+            --     love.graphics.setColor(1, 0.5, 0.5)
+            -- else
             love.graphics.setColor(1, 1, 1)
+            -- end
             if item.currentAnim ~= nil then
                 item.currentAnim.draw(item, item.x, item.y, item.flip)
             else
@@ -297,6 +325,11 @@ ItemManager.draw = function()
                 love.graphics.rectangle("fill", item.x, item.y - 1, TILESIZE * item.pv / item.pvMax, 3) -- La barre de vie à la taille d'une tile
                 love.graphics.setColor(0, 0, 0)
                 love.graphics.rectangle("line", item.x, item.y - 1, TILESIZE, 3) -- La barre de vie à la taille d'une tile
+            end
+            if DevMode() then
+                if item.path ~= nil then
+                    -- Map.pathfinder.draw(item.path)
+                end
             end
         end
     end

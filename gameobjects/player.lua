@@ -54,6 +54,11 @@ this.getCenter = function()
     return this.x + this.bounds.x + this.bounds.width / 2, this.y + this.bounds.y + this.bounds.height / 2
 end
 
+this.getMapCell = function()
+    local cx, cy = this.getCenter()
+    return math.floor(cx / TILESIZE), math.floor(cy / TILESIZE)
+end
+
 this.resetAnims = function()
     this.animIdle.reset()
     this.animRun.reset()
