@@ -89,6 +89,8 @@ function love.load()
     musicLoops[2] = love.audio.newSource("sons/BeepBox-Song2-loop2.mp3", "stream")
     musicLoops[3] = love.audio.newSource("sons/BeepBox-Song2-loop3.mp3", "stream")
 
+    OPTIONS.load()
+
     MUSICPLAYER = musicIntro
     MUSICPLAYER:play()
     MUSICPLAYER:setVolume(OPTIONS.volume / 100)

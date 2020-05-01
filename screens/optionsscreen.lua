@@ -13,6 +13,55 @@ OPTIONS.applyValues = function()
     WIDTH = love.graphics.getWidth()
     HEIGHT = love.graphics.getHeight()
 end
+
+OPTIONS.save = function()
+    local strOptions = ""
+    local add = function(value)
+        strOptions = strOptions .. value .. "\n"
+    end
+    local boolToStr = function(value)
+        if value then
+            return 1
+        else
+            return 0
+        end
+    end
+    add(OPTIONS.volume)
+    add(boolToStr(OPTIONS.fullscreen))
+    add(SCALE)
+    add(OPTIONS.UP)
+    add(OPTIONS.DOWN)
+    add(OPTIONS.LEFT)
+    add(OPTIONS.RIGHT)
+    add(OPTIONS.JUMP)
+    add(OPTIONS.FIRE)
+
+    local success, message = love.filesystem.write("options.sav", strOptions)
+    print(success, message)
+end
+
+OPTIONS.load = function()
+    local info = love.filesystem.getInfo("options.sav")
+    if info == nil then
+        return
+    end
+
+    local opt = {}
+    for line in love.filesystem.lines("options.sav") do
+        table.insert(opt, line)
+    end
+    OPTIONS.volume = opt[1] + 0
+    OPTIONS.fullscreen = (opt[2] == "1")
+    SCALE = opt[3] + 0
+    OPTIONS.UP = opt[4]
+    OPTIONS.DOWN = opt[5]
+    OPTIONS.LEFT = opt[6]
+    OPTIONS.RIGHT = opt[7]
+    OPTIONS.JUMP = opt[8]
+    OPTIONS.FIRE = opt[9]
+    OPTIONS.applyValues()
+end
+
 ---------------------------------------------------------
 local btnBack
 local btnVolInc
@@ -45,6 +94,7 @@ end
 
 this.update = function(dt)
     if btnBack.clicked then
+        OPTIONS.save()
         ScreenManager.setScreen("MENU")
     end
 
