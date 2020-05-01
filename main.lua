@@ -72,7 +72,7 @@ Player = nil
 
 function love.load()
     OPTIONS.applyValues()
-    love.window.setTitle("Grid Crawler (v0.3 by Wile)")
+    love.window.setTitle("Grid Crawler (v0.4 by Wile)")
 
     require("engine.data")
     require("engine.assets").init()
