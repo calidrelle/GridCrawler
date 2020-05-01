@@ -36,8 +36,7 @@ OPTIONS.save = function()
     add(OPTIONS.JUMP)
     add(OPTIONS.FIRE)
 
-    local success, message = love.filesystem.write("options.sav", strOptions)
-    print(success, message)
+    love.filesystem.write("options.sav", strOptions)
 end
 
 OPTIONS.load = function()
@@ -77,7 +76,6 @@ local ypos
 this.load = function()
     GUI.reset()
     xpos = (WIDTH - 140 * SCALE) / 2
-    print(xpos)
     ypos = HEIGHT / 3
     btnVolDec = GUI.addButton("Volume -", xpos, ypos)
     btnVolInc = GUI.addButton("Volume +", xpos + 80 * SCALE, ypos)

@@ -363,10 +363,7 @@ ItemManager.doAttack = function(fighter, target)
             Assets.snd_hurt:play()
         end
     else
-        if target == Player then
-            -- pas la peine de voir les "ratés" des mobs
-            -- Effects.createFloatingText("raté", target.x, target.y, 4, 1, 0.7, 0)
-        else
+        if target ~= Player then
             Effects.createFloatingText("raté", target.x, target.y, 4, 1, 1, 1)
         end
     end
