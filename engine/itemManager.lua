@@ -262,7 +262,7 @@ ItemManager.update = function(dt)
                 end
             end
             local other = ItemManager.getItemAt(item.getCenter())
-            if other ~= nil and other ~= item then
+            if other ~= nil and other ~= item and item.state == MOBSTATES.SEEK then
                 other.walkOver(item)
             end
         end
