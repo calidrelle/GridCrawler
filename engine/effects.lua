@@ -3,7 +3,6 @@ Effects = {}
 local effects
 
 Effects.init = function()
-    print("Initialisation du moteur d'effets")
     effects = {}
 end
 

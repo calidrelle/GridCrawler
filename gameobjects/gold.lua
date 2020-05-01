@@ -8,9 +8,11 @@ ItemManager.newGold = function(tileX, tileY, amount)
     end
 
     item.walkOver = function(other)
-        Inventory.addItem(item, item.amount)
-        other.addMessage("Vous ramassez " .. item.amount .. " pièce(s) d'or", item.amount)
-        item.actif = false
+        if other == Player then
+            Inventory.addItem(item, item.amount)
+            other.addMessage("Vous ramassez " .. item.amount .. " pièce(s) d'or", item.amount)
+            item.actif = false
+        end
     end
 
     item.update = function(dt)

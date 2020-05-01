@@ -58,6 +58,7 @@ ItemManager.create = function(quad, x, y, width, height)
     item.canDropPage = false
     item.lootTable = {}
     item.path = nil
+    item.jumpingTimer = 0
 
     item.initStats = function(pv, atk, def, atkRange, detectRange, speed, atkSpeed)
         item.pv = pv
@@ -97,9 +98,6 @@ ItemManager.create = function(quad, x, y, width, height)
             -- local angle = math.random() * 2 * math.pi
             item.dx = math.cos(angle)
             item.dy = math.sin(angle)
-            if nbTry > 80 then
-                print("bizzare : " .. nbTry)
-            end
         until not item.checkCollision(dt) or nbTry > 100
     end
 
@@ -143,11 +141,13 @@ ItemManager.create = function(quad, x, y, width, height)
     end
 
     item.seek = function(other)
+        item.dx = 0
+        item.dy = 0
         local ox, oy = other.getMapCell()
         local ix, iy = item.getMapCell()
         item.path = Map.pathfinder.getPath(ix, iy, ox, oy)
         if item.path == nil then
-            print("déplacement à l'ancienne")
+            -- déplacement à l'ancienne
             if ox > ix then
                 item.dx = 1
             elseif ox < ix then
@@ -163,14 +163,10 @@ ItemManager.create = function(quad, x, y, width, height)
             if dist > 1 then
                 local px = item.path.path[dist - 1].x * TILESIZE
                 local py = item.path.path[dist - 1].y * TILESIZE
-                item.dx = (px - item.x) / math.abs(px - item.x)
-                item.dy = (py - item.y) / math.abs(py - item.y)
-            else
-                -- on est sur le Player
-                print("pas de déplacement nécessaire")
+                item.dx = math.sign(px - item.x)
+                item.dy = math.sign(py - item.y)
             end
         end
-
     end
 
     -- certains items comme les mobs, on une AI
@@ -210,10 +206,11 @@ ItemManager.create = function(quad, x, y, width, height)
             else
                 -- poursuite du Player
                 item.seek(Player)
+                --[[ avec le pathfinder, on ne vérifie pas les collisions
                 if item.checkCollision(dt) then
-                    -- item.state = MOBSTATES.CHANGEDIR
-                    return
-                end
+                --     -- item.state = MOBSTATES.CHANGEDIR
+                     return
+                end ]] --
             end
 
         elseif item.state == MOBSTATES.FIGHT then
@@ -258,6 +255,10 @@ ItemManager.update = function(dt)
                     item.x = item.x + item.dx * item.speed * dt
                     item.y = item.y + item.dy * item.speed * dt
                 end
+            end
+            local other = ItemManager.getItemAt(item.getCenter())
+            if other ~= nil and other ~= item then
+                other.walkOver(item)
             end
         end
     end
@@ -307,12 +308,11 @@ end
 ItemManager.draw = function()
     for _, item in pairs(items) do
         if item.x > -1 then
-            -- si l'item à une animation, on l'affiche, sinon, on affiche le quad de base
-            -- if item.state == MOBSTATES.SEEK then
-            --     love.graphics.setColor(1, 0.5, 0.5)
-            -- else
             love.graphics.setColor(1, 1, 1)
-            -- end
+            if item.state == MOBSTATES.SEEK then
+                Assets.draw(Assets.aggro, item.x, item.y)
+            end
+            -- si l'item à une animation, on l'affiche, sinon, on affiche le quad de base
             if item.currentAnim ~= nil then
                 item.currentAnim.draw(item, item.x, item.y, item.flip)
             else

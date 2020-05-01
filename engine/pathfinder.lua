@@ -181,16 +181,11 @@ factory.create = function(map)
                         neighbor.previous = current
                     end
                 else
-                    -- print("ce voisin a déjà été vérifié")
+                    -- ce voisin a déjà été vérifié
                 end
             end -- voisin suivant
 
         end
-        if nbTry == maxTry then
-            print("TRY MAX : " .. nbTry)
-        end
-        print("No solution")
-
         return nil
     end
 

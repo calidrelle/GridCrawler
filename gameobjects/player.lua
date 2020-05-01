@@ -126,7 +126,6 @@ local function move(dt)
         this.currentAnim = this.animRun
         this.shootx = math.sign(this.dx) * 0.7
         this.shooty = math.sign(this.dy) * 0.7
-        print(this.shootx, this.shooty)
     end
 end
 

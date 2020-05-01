@@ -240,7 +240,6 @@ this.build = function(width, height, seed)
     corridors = {}
     local t0 = love.timer.getTime()
     if (seed ~= nil) then
-        print("seeding : " .. seed)
         love.math.setRandomSeed(seed)
     else
         love.math.setRandomSeed(t0)

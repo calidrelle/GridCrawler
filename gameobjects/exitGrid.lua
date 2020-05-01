@@ -8,7 +8,7 @@ ItemManager.newExitGrid = function(tileX, tileY)
     end
 
     item.walkOver = function(other)
-        if other.name == "player" then
+        if other == Player then
             if Player.gridOpened then
                 if Player.level == LEVELMAX then
                     ScreenManager.setScreen("OUTSIDE")

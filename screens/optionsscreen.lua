@@ -90,7 +90,7 @@ this.keypressed = function(key)
     if key == "escape" then
         ScreenManager.setScreen("MENU")
     else
-        print(key)
+        print("optionscreen key: " .. key)
     end
 end
 

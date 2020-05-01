@@ -12,6 +12,9 @@ ItemManager.newXXX = function(tileX, tileY)
     end
 
     item.walkOver = function(other)
+        if other == Player then -- qui marche dessus ?
+        else
+        end
     end
 
     item.update = function(dt)

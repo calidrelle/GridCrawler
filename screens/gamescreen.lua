@@ -25,7 +25,6 @@ this.startNewLevel = function()
 end
 
 this.load = function()
-    print("load game")
     GUI.reset()
     if (Map == nil) then
         local mapBuilder = require("engine.dungeonBuilder")
@@ -210,7 +209,7 @@ this.keypressed = function(key)
         elseif key == "kp-" then
             Player.atkRange = Player.atkRange - 5
         else
-            -- print("gamescreen key : " .. key)
+            print("gamescreen key : " .. key)
         end
     end
 end
