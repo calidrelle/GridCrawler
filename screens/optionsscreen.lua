@@ -2,8 +2,8 @@ local this = {}
 
 OPTIONS = {}
 OPTIONS.volume = 50
-OPTIONS.fullscreen = true
-SCALE = 4
+OPTIONS.fullscreen = false
+SCALE = 3
 OPTIONS.SPAWN_AT_GRID = false
 
 love.window.setMode(1280, 768)

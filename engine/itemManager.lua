@@ -169,6 +169,10 @@ ItemManager.create = function(quad, x, y, width, height)
         end
     end
 
+    -- virtual
+    item.aggroSound = function()
+    end
+
     -- certains items comme les mobs, on une AI
     item.updateState = function(dt)
         local distToPlay = item.distanceToOther(Player)
@@ -183,6 +187,7 @@ ItemManager.create = function(quad, x, y, width, height)
                 if Player.pv > 0 then
                     item.target = Player
                     item.state = MOBSTATES.SEEK
+                    item.aggroSound()
                 end
             end
             if math.random() * 100 < 2 then

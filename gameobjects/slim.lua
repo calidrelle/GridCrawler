@@ -25,5 +25,9 @@ ItemManager.newSlim = function(tileX, tileY)
         item.currentAnim:update(dt)
     end
 
+    item.aggroSound = function()
+        Assets.snd_aggro_slim:play()
+    end
+
     return item
 end

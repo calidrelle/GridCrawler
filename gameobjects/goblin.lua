@@ -6,9 +6,9 @@ ItemManager.newGoblin = function(tileX, tileY)
     item.solid = true
     item.canBeAttacked = true
     item.canDropPage = true
-    table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.gobelin)))
+    table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.goblin)))
 
-    item.initMobStats(DATA.gobelin)
+    item.initMobStats(DATA.goblin)
     item.animIdle = require("engine.animation").createNew(Assets.goblin_idle_anim, 6, 0.1, true)
     item.animRun = require("engine.animation").createNew(Assets.goblin_run_anim, 6, 0.1, true)
     item.currentAnim = item.animIdle
@@ -23,6 +23,10 @@ ItemManager.newGoblin = function(tileX, tileY)
     item.update = function(dt)
         item.updateState(dt)
         item.currentAnim:update(dt)
+    end
+
+    item.aggroSound = function()
+        Assets.snd_aggro_goblin:play()
     end
 
     return item

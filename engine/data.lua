@@ -18,8 +18,8 @@ DATA.slim = {
     lootPoMax = 15
 }
 
--- GOBELIN
-DATA.gobelin = {
+-- GOBLIN
+DATA.goblin = {
     mobLevel = {0, 4, 8, 8, 4, 4, 8, 12, 12},
     pv = 8,
     atk = 5,

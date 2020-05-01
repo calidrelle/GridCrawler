@@ -269,7 +269,7 @@ this.build = function(width, height, seed)
     createBarrels(love.math.random(15, 25))
     createChests(love.math.random(1, 3))
     createSlims(DATA.slim.mobLevel[Player.level])
-    createGoblins(DATA.gobelin.mobLevel[Player.level])
+    createGoblins(DATA.goblin.mobLevel[Player.level])
     createZombies(DATA.zombie.mobLevel[Player.level])
     deployPages()
 
