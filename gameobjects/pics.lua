@@ -5,7 +5,7 @@ ItemManager.newPics = function(tileX, tileY)
     item.name = "pics"
     item.solid = false
     item.initStats(0, 10)
-    item.animRun = require("engine.animation").createNew(Assets.pics, 8, 0.01, false)
+    item.animRun = require("engine.animation").createNew(Assets.pics, 7, 0.01, false)
     item.currentAnim = nil
     item.timer = 0
 
