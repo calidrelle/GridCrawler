@@ -256,11 +256,7 @@ this.build = function(width, height, seed)
     map.spawn = this.getEmptyLocation(0) -- forcément dans une pièce
 
     -- Création de la grille de sortie
-    if OPTIONS.SPAWN_AT_GRID then
-        map.grid = this.getEmptyLocation(map.spawn.room)
-    else
-        map.grid = this.getEmptyLocation(0)
-    end
+    map.grid = this.getEmptyLocation(0)
     ItemManager.newExitGrid(map.grid.x * TILESIZE, map.grid.y * TILESIZE)
 
     -- on créé les autres entités du niveau par rapport à la position du player
@@ -318,9 +314,9 @@ this.getEmptyLocation = function(roomNumber)
         if map.spawn == nil then
             onSpawn = false
         else
-            onSpawn = map.spawn.x == tx and map.spawn.y == tx
+            onSpawn = map.spawn.x == tx and map.spawn.y == ty
         end
-    until map[tx][ty].type == FLOOR and not onSpawn or nbTry > 200
+    until (map[tx][ty].type == FLOOR and not onSpawn) or nbTry > 200
     return {x = tx, y = ty, room = roomNumber}
 end
 
