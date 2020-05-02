@@ -109,12 +109,10 @@ this.update = function(dt)
     mx = mx + TILESIZE * Player.lastdx
     my = my + TILESIZE * Player.lastdy
 
-    -- selectedItem = ItemManager.getItemAt(mx, my)
     selectedItem = ItemManager.getItemAroundPlayer(raduisSelection)
-    local itemHovered = ItemManager.getItemAt(Player.getCenter())
-    staires.isHover = false
-    if itemHovered ~= nil then
-        if itemHovered == staires then
+    local items = ItemManager.getItemsAt(Player.getCenter())
+    for _, item in pairs(items) do
+        if item == staires then
             staires.isHover = true
         end
     end

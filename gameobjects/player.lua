@@ -254,15 +254,19 @@ this.update = function(dt)
     this.dy = this.dy * FRICTION
 
     -- on marche sur un truc
-    local item = ItemManager.getItemAt(this.getCenter())
-    if item ~= nil then
-        item.walkOver(this)
-        if Inventory.getNombrePages() == MAX_PAGES then
-            if not this.gridOpened then
-                this.gridOpened = true
-                Assets.snd_opengrid:play()
-                Player.addMessage("La grille est ouverte !", 5)
-            end
+    local itemsOver = ItemManager.getItemsAt(this.getCenter())
+    for _, item in pairs(itemsOver) do
+        if item ~= nil then
+            item.walkOver(this)
+        end
+    end
+
+    -- check récupération de toutes les pages
+    if Inventory.getNombrePages() == MAX_PAGES then
+        if not this.gridOpened then
+            this.gridOpened = true
+            Assets.snd_opengrid:play()
+            Player.addMessage("La grille est ouverte !", 5)
         end
     end
 

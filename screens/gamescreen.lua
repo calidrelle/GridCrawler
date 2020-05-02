@@ -205,11 +205,10 @@ this.keypressed = function(key)
             Inventory.addItem(ItemManager.newGold(0, 0), 400)
             ScreenManager.setScreen("OUTSIDE")
         elseif key == "kp+" then
-            Player.level = Player.level + 1
-        elseif key == "kp-" then
-            Player.atkRange = Player.atkRange - 5
+            Player.pvMax = Player.pvMax + 10
+            Player.pv = Player.pv + 10
         else
-            print("gamescreen key : " .. key)
+            -- print("gamescreen key : " .. key)
         end
     end
 end

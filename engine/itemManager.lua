@@ -260,10 +260,13 @@ ItemManager.update = function(dt)
                     item.x = item.x + item.dx * item.speed * dt
                     item.y = item.y + item.dy * item.speed * dt
                 end
-            end
-            local other = ItemManager.getItemAt(item.getCenter())
-            if other ~= nil and other ~= item and item.state == MOBSTATES.SEEK then
-                other.walkOver(item)
+                -- en se déplaçant, le mob marche-t-il sur quelque chose ?
+                local others = ItemManager.getItemsAt(item.getCenter())
+                for _, other in pairs(others) do
+                    if other ~= nil and other ~= item and item.state == MOBSTATES.SEEK then
+                        other.walkOver(item)
+                    end
+                end
             end
         end
     end
@@ -274,13 +277,14 @@ ItemManager.update = function(dt)
     end
 end
 
-ItemManager.getItemAt = function(x, y)
+ItemManager.getItemsAt = function(x, y)
+    local result = {}
     for _, item in pairs(items) do
         if item.x <= x and item.x + item.width >= x and item.y <= y and item.y + item.height >= y then
-            return item
+            table.insert(result, item)
         end
     end
-    return nil
+    return result
 end
 
 ItemManager.getItemAroundPlayer = function(radius)
@@ -293,12 +297,13 @@ ItemManager.getItemAroundPlayer = function(radius)
 end
 
 ItemManager.isItemSolidAt = function(x, y)
-    local item = ItemManager.getItemAt(x, y)
-    if item == nil then
-        return false
-    else
-        return item.solid == true
+    local lstItems = ItemManager.getItemsAt(x, y)
+    for _, item in pairs(lstItems) do
+        if item.solid then
+            return true
+        end
     end
+    return false
 end
 
 ItemManager.getItems = function()
@@ -376,12 +381,21 @@ ItemManager.doAttack = function(fighter, target)
         Assets.snd_dead:play()
 
         -- drop du loot
-        for _, loot in pairs(target.lootTable) do
-            loot.x = target.x
-            loot.y = target.y
-        end
+        ItemManager.doDrop(target)
+
     end
     return true
+end
+
+ItemManager.doDrop = function(mob)
+    -- Les items existent déjà, mais à la position -1, -1
+    -- Le but est de les positionner dans le champ de jeu
+
+    for _, loot in pairs(mob.lootTable) do
+        local lootX, lootY = mob.x, mob.y
+        loot.x = lootX
+        loot.y = lootY
+    end
 end
 
 return ItemManager

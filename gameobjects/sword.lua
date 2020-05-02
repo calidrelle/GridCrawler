@@ -44,10 +44,12 @@ ItemManager.newSword = function(tileX, tileY, dx, dy)
         item.x = item.x + item.dx * dt * item.speed
         item.y = item.y + item.dy * dt * item.speed
 
-        local other = ItemManager.getItemAt(item.getCenter())
-        if other ~= nil and other.name ~= "player" then
-            if ItemManager.doAttack(item, other) then
-                item.actif = false
+        local others = ItemManager.getItemsAt(item.getCenter())
+        for _, other in pairs(others) do
+            if other ~= nil and other.name ~= "player" then
+                if ItemManager.doAttack(item, other) then
+                    item.actif = false
+                end
             end
         end
 
