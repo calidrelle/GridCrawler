@@ -7,7 +7,7 @@ LEVELMAX = 9 -- rajouter des mobLevel si ça change
 ---- SLIM
 DATA.slim = {
     mobLevel = {12, 8, 4, 0, 0, 4, 4, 8, 12},
-    pv = 5,
+    pv = 16,
     atk = 4,
     def = 1,
     atkRange = 20,
@@ -21,8 +21,8 @@ DATA.slim = {
 -- GOBLIN
 DATA.goblin = {
     mobLevel = {0, 4, 8, 8, 4, 4, 8, 12, 12},
-    pv = 8,
-    atk = 5,
+    pv = 22,
+    atk = 7,
     def = 2,
     atkRange = 20,
     detectRange = 100,
@@ -35,8 +35,8 @@ DATA.goblin = {
 -- ZOMBIE
 DATA.zombie = {
     mobLevel = {0, 0, 0, 4, 8, 12, 12, 12, 12},
-    pv = 10,
-    atk = 7,
+    pv = 40,
+    atk = 6,
     def = 4,
     atkRange = 16,
     detectRange = 120,

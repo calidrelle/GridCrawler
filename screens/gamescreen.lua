@@ -1,7 +1,5 @@
 local this = {}
 
-local seed = 1
-
 Map = nil
 local btnRestart = nil
 
@@ -14,7 +12,6 @@ end
 
 this.startNewLevel = function()
     Assets.init()
-    seed = nil
     Map = nil
     Player.resetAnims()
     ItemManager.reset()
@@ -28,7 +25,7 @@ this.load = function()
     GUI.reset()
     if (Map == nil) then
         local mapBuilder = require("engine.dungeonBuilder")
-        Map = mapBuilder.build(60, 60, seed)
+        Map = mapBuilder.build(60, 60)
         Player.setPosition(Map.spawn.x * TILESIZE, Map.spawn.y * TILESIZE)
     end
     -- Calcul de la zone de jeu

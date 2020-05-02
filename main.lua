@@ -3,8 +3,12 @@
 love.graphics.setDefaultFilter("nearest") -- pas d'aliasing
 
 -------------------[[ GLOBAL FUNCTIONS ]]
+local inDevMod = nil
 function DevMode()
-    return love.filesystem.getInfo("README.md") ~= nil
+    if inDevMod == nil then
+        inDevMod = love.filesystem.getInfo("README.md") ~= nil
+    end
+    return inDevMod
 end
 
 function trim(s)
@@ -37,6 +41,10 @@ function math.sign(value)
     else
         return math.abs(value) / value
     end
+end
+
+function math.impair(x)
+    return math.floor(x / 2) * 2 - 1
 end
 
 wile = {}

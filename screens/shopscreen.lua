@@ -49,7 +49,7 @@ this.load = function()
     addStat(3, "Défense +1", 80, Player.def, ItemManager.newTable(3 * TILESIZE, 9 * TILESIZE))
     addStat(4, "Distance d'attaque +5%", 60, Player.atkRange, ItemManager.newTable(10 * TILESIZE, 5 * TILESIZE))
     addStat(5, "Régénération de vie +5%", 50, Player.regenPv, ItemManager.newTable(10 * TILESIZE, 7 * TILESIZE))
-    addStat(6, "Régénération d'endurence +5%", 50, Player.regenStamina, ItemManager.newTable(10 * TILESIZE, 9 * TILESIZE))
+    addStat(6, "Régénération d'endurance +5%", 50, Player.regenStamina, ItemManager.newTable(10 * TILESIZE, 9 * TILESIZE))
 
     MUSICPLAYER:stop()
     MUSICPLAYER = love.audio.newSource("sons/16.mp3", "stream")
@@ -161,7 +161,7 @@ this.draw = function()
     if selectedItem ~= nil then
         if selectedItem.name == "bigtable" then
             GUI.addInfoBull(
-                "Fait ton choix sur les 6 petites tables rouges. Tes courses terminées, prends les escaliers derrière moi pour continuer ton aventure !",
+                "Fais ton choix sur les 6 petites tables rouges. Tes courses terminées, prends les escaliers derrière moi pour continuer ton aventure !",
                 6)
         end
     end

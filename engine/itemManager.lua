@@ -354,7 +354,8 @@ ItemManager.doAttack = function(fighter, target)
         return false
     end
 
-    local damage = math.floor(math.random() * (fighter.atk - target.def + 1))
+    -- local damage = math.floor(math.random() * (fighter.atk - target.def + 1))
+    local damage = fighter.atk
     if damage > 0 then
         print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
         if target == Player then
