@@ -25,15 +25,20 @@ this.load = function()
     GUI.reset()
     if (Map == nil) then
         local mapBuilder = require("engine.dungeonBuilder")
-        Map = mapBuilder.build(60, 60)
+        if DevMode() then
+            Map = mapBuilder.build(60, 60, 1)
+        else
+            Map = mapBuilder.build(60, 60)
+        end
         Player.setPosition(Map.spawn.x * TILESIZE, Map.spawn.y * TILESIZE)
+        GUI.addInfoBull("Bienvenue au niveau " .. Player.level .. " de GridCrawler.\nTrouve les " .. MAX_PAGES ..
+                            " pages pour reconstituer le grimoire d'ouverture de la grille.")
     end
     -- Calcul de la zone de jeu
     PIXELLARGE = (WIDTH - 100 * SCALE)
     btnRestart = GUI.addButton("Rejouer", PIXELLARGE / 2 - 40 * SCALE, HEIGHT / 2 + 8 * SCALE, 64 * SCALE)
     btnRestart.visible = false
-    GUI.addInfoBull("Bienvenue au niveau " .. Player.level .. " de GridCrawler.\nTrouve les " .. MAX_PAGES ..
-                        " pages pour reconstituer le grimoire d'ouverture de la grille.")
+
 end
 
 this.update = function(dt)
@@ -89,25 +94,17 @@ local function drawGui()
     GUI.drawProgressBar(PIXELLARGE / 2 - 250, HEIGHT - 50, 200, 32, Player.pv, Player.pvMax, 1, 0.1, 0, true)
     GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina, 100, 0, 0.6, 1, true)
     drawFichePerso()
-
-    -- Messages
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.setFont(Font20)
-    if #Player.messages > 0 then
-        love.graphics.printf(Player.messages[1].text, PIXELLARGE + SCALE * 16 + 6, HEIGHT - (76 * SCALE), 70 * SCALE, "left")
-    end
 end
 
 local function drawMinimap()
-    local scale = 3
-    local xoff = PIXELLARGE - Map.width * scale - TILESIZE
-    local yoff = 20
-    love.graphics.setLineWidth(3)
-    love.graphics.setColor(0, 0, 0, 1)
-    love.graphics.rectangle("line", xoff, yoff, Map.width * scale, Map.height * scale)
-    love.graphics.setLineWidth(1)
-    love.graphics.setColor(.5, .5, .5, 0.6)
-    love.graphics.rectangle("fill", xoff, yoff, Map.width * scale, Map.height * scale)
+    local xoff = PIXELLARGE + (TILESIZE - 1) * SCALE
+    local yoff = (TILESIZE - 1) * SCALE
+    -- love.graphics.setLineWidth(3)
+    -- love.graphics.setColor(0, 0, 0, 1)
+    -- love.graphics.rectangle("line", xoff, yoff, Map.width * SCALE, Map.height * SCALE)
+    -- love.graphics.setLineWidth(1)
+    -- love.graphics.setColor(.5, .5, .5, 0.6)
+    -- love.graphics.rectangle("fill", xoff, yoff, Map.width * SCALE, Map.height * SCALE)
 
     for x = 1, Map.width do
         for y = 1, Map.height do
@@ -115,10 +112,10 @@ local function drawMinimap()
             if tile.visited then
                 if tile.type == FLOOR or tile.type == CORRIDOR then
                     love.graphics.setColor(0.6, 0.4, 0.3)
-                    love.graphics.rectangle("fill", xoff + x * scale, yoff + y * scale, scale, scale)
+                    love.graphics.rectangle("fill", xoff + x * SCALE, yoff + y * SCALE, SCALE, SCALE)
                 elseif tile.type == WALL then
                     love.graphics.setColor(0.2, 0.2, 0.4)
-                    love.graphics.rectangle("fill", xoff + x * scale, yoff + y * scale, scale, scale)
+                    love.graphics.rectangle("fill", xoff + x * SCALE, yoff + y * SCALE, SCALE, SCALE)
                 end
             end
         end
@@ -126,15 +123,15 @@ local function drawMinimap()
     -- Grille
     if Map[Map.grid.x][Map.grid.y].visited then
         love.graphics.setColor(0, 1, 0)
-        love.graphics.rectangle("fill", xoff + Map.grid.x * scale, yoff + Map.grid.y * scale, scale, scale)
+        love.graphics.rectangle("fill", xoff + Map.grid.x * SCALE, yoff + Map.grid.y * SCALE, SCALE, SCALE)
     end
 
     -- Player
     love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.rectangle("fill", xoff + (Player.x / TILESIZE) * scale, yoff + (Player.y / TILESIZE) * scale, scale, scale)
+    love.graphics.rectangle("fill", xoff + (Player.x / TILESIZE) * SCALE, yoff + (Player.y / TILESIZE) * SCALE, SCALE, SCALE)
 
     love.graphics.setFont(Font16)
-    love.graphics.print("Niv. " .. Player.level, xoff, yoff)
+    love.graphics.print("Niv. " .. Player.level, xoff + SCALE, yoff + SCALE)
 end
 
 this.draw = function()

@@ -9,7 +9,6 @@ STAMINA_FIRE = 10
 
 this.flip = false
 this.bounds = {}
-this.messages = {}
 
 FRICTION = 0.55
 
@@ -127,18 +126,6 @@ local function move(dt)
         this.shootx = math.sign(this.dx) * 0.7
         this.shooty = math.sign(this.dy) * 0.7
     end
-end
-
-this.addMessage = function(text, timer)
-    for key, msg in pairs(this.messages) do
-        if msg.text == text then
-            return
-        end
-    end
-    local msg = {}
-    msg.text = text
-    msg.timer = timer
-    table.insert(this.messages, 1, msg)
 end
 
 local function doShoot(dt)
@@ -266,15 +253,7 @@ this.update = function(dt)
         if not this.gridOpened then
             this.gridOpened = true
             Assets.snd_opengrid:play()
-            Player.addMessage("La grille est ouverte !", 5)
-        end
-    end
-
-    -- les messages : on ne décompte que le temps du message affiché (le dernier entré)
-    if #this.messages > 0 then
-        this.messages[1].timer = this.messages[1].timer - dt
-        if this.messages[1].timer <= 0 then
-            table.remove(this.messages, 1)
+            GUI.addInfoBull("La grille est ouverte !")
         end
     end
 end

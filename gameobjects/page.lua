@@ -13,7 +13,6 @@ ItemManager.newPage = function(tileX, tileY, num)
         if other == Player then
             Effects.createLootItemEffect(item)
             Inventory.addItem(item, 1)
-            other.addMessage("Vous ramassez la page " .. item.numPage, 4)
             item.actif = false
         end
     end

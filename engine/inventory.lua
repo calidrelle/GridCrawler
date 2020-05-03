@@ -1,12 +1,14 @@
 Inventory = {}
 local nbItems = 16
 local items = {}
+local po = 0
 
 Inventory.getItems = function()
     return items
 end
 
 Inventory.init = function()
+    po = 0
     for i = 1, nbItems do
         items[i] = {}
     end
@@ -35,32 +37,18 @@ Inventory.getNombrePages = function()
 end
 
 Inventory.getPo = function()
-    for _, item in pairs(items) do
-        if item.name ~= nil then
-            if item.name == "gold" then
-                return item.count
-            end
-        end
-    end
-    return 0
+    return po
 end
 
 Inventory.removePo = function(amount)
-    for _, item in pairs(items) do
-        if item.name ~= nil then
-            if item.name == "gold" then
-                if item.count >= amount then
-                    item.count = item.count - amount
-                    Assets.snd_pay:play()
-                    return true
-                else
-                    Assets.snd_error:play()
-                    return false
-                end
-            end
-        end
+    if po >= amount then
+        po = po - amount
+        Assets.snd_pay:play()
+        return true
+    else
+        Assets.snd_error:play()
+        return false
     end
-    return false
 end
 
 local function lootSound(item)
@@ -72,6 +60,11 @@ local function lootSound(item)
 end
 
 Inventory.addItem = function(newItem, nombre)
+    if newItem.name == "gold" then
+        po = po + nombre
+        Assets.snd_loot:play()
+        return
+    end
 
     for i = 1, nbItems do
         if items[i].name == newItem.name then
@@ -101,11 +94,17 @@ Inventory.draw = function()
             local item = items[i]
             if item.name ~= nil then
                 -- on rajoute la scale car on est en après le transform.pop
-                Assets.draw(item.quad, PIXELLARGE + (x * TILESIZE) * SCALE, (y * TILESIZE) * SCALE, false, SCALE)
-                love.graphics.print(item.count, PIXELLARGE + (x * TILESIZE) * SCALE, (y * TILESIZE) * SCALE)
+                Assets.draw(item.quad, 2 + PIXELLARGE + (x * TILESIZE) * SCALE,
+                            2 + HEIGHT - (Assets.gui_bottom:getHeight() * SCALE) + ((y - 1) * TILESIZE) * SCALE, false, SCALE)
+                if item.count > 1 then
+                    love.graphics.print(item.count, 2 + PIXELLARGE + (x * TILESIZE) * SCALE,
+                                        2 + HEIGHT - (Assets.gui_bottom:getHeight() * SCALE) + ((y - 1) * TILESIZE) * SCALE)
+                end
             end
         end
     end
+    love.graphics.setColor(0.867, 0.835, 0.251)
+    love.graphics.print("GOLD:" .. po, 2 + PIXELLARGE + TILESIZE * SCALE, HEIGHT - TILESIZE * SCALE)
 end
 
 return Inventory

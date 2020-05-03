@@ -15,10 +15,6 @@ ItemManager.newExitGrid = function(tileX, tileY)
                 else
                     ScreenManager.setScreen("VENDOR")
                 end
-            else
-                other.addMessage(
-                    "Pour ouvrir la grille, il te faut le grimoire complet. Les monstres ont volé les 8 pages et en ont caché dans les barriques et les caisses du manoir. Trouve les 8 pages !",
-                    5)
             end
         end
     end
