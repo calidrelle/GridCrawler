@@ -26,11 +26,8 @@ this.load = function()
     GUI.reset()
     if (Map == nil) then
         local mapBuilder = require("engine.dungeonBuilder")
-        if DevMode() then
-            Map = mapBuilder.build(60, 60, 1)
-        else
-            Map = mapBuilder.build(60, 60)
-        end
+        -- Map = mapBuilder.build(60, 60, 1)
+        Map = mapBuilder.build(60, 60)
         Player.setPosition(Map.spawn.x * TILESIZE, Map.spawn.y * TILESIZE)
         GUI.addInfoBull("Bienvenue au niveau " .. Player.level .. " de GridCrawler.\nTrouve les " .. MAX_PAGES ..
                             " pages pour reconstituer le grimoire d'ouverture de la grille.")
