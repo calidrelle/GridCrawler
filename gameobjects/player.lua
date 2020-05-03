@@ -42,6 +42,9 @@ this.createNew = function()
     this.stamina = 100
     this.regenStamina = 25
     this.regenPv = 0.5
+    this.auras = {}
+    this.aurasToDeal = {} -- les debufs que le player passe à ses cibles
+
     Inventory.init()
 end
 
@@ -138,7 +141,7 @@ local function doShoot(dt)
         local x = this.x + this.shootx * TILESIZE
         local y = this.y + this.shooty * TILESIZE
         local sword = ItemManager.newSword(x, y, this.shootx, this.shooty)
-        sword.initStats(0, Player.atk, 0, 0, Player.atkRange, 0)
+        sword.initStats(0, Player.atk, 0, 0, Player.atkRange, 0, Player.aurasToDeal)
         this.stamina = this.stamina - STAMINA_FIRE
         Assets.snd_shoot:play()
     else

@@ -46,6 +46,7 @@ this.update = function(dt)
         this.restartGame()
     end
     ItemManager.update(dt)
+    AurasManager.update(dt)
     Player.update(dt)
     Effects.update(dt)
     if GameOver.status then
@@ -83,7 +84,11 @@ local function drawGui()
 
     -- Catactéristiques player
     GUI.drawProgressBar(PIXELLARGE / 2 - 250, HEIGHT - 50, 200, 32, Player.pv, Player.pvMax, 1, 0.1, 0, true)
-    GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina, 100, 0, 0.6, 1, true)
+    if table.contains(Player.auras, "poison") then
+        GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina, 100, 0, 1, 0.6, true)
+    else
+        GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina, 100, 0, 0.6, 1, true)
+    end
     drawFichePerso()
 end
 

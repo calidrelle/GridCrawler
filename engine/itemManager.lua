@@ -45,6 +45,12 @@ ItemManager.create = function(quad, x, y, width, height)
     item.state = MOBSTATES.NONE
     item.cooldown = 0
     item.click = false
+    item.canBeAttacked = false
+    item.canDropPage = false
+    item.displayPvLost = true
+    item.lootTable = {}
+    item.path = nil
+    item.jumpingTimer = 0
 
     item.pv = 0
     item.pvMax = 0
@@ -53,14 +59,10 @@ ItemManager.create = function(quad, x, y, width, height)
     item.detectRange = 0
     item.speed = 0
     item.atkSpeed = 0
-    item.canBeAttacked = false
-    item.canDropPage = false
-    item.displayPvLost = true
-    item.lootTable = {}
-    item.path = nil
-    item.jumpingTimer = 0
+    item.auras = {}
+    item.aurasToDeal = {}
 
-    item.initStats = function(pv, atk, atkRange, detectRange, speed, atkSpeed)
+    item.initStats = function(pv, atk, atkRange, detectRange, speed, atkSpeed, auraToDeal)
         item.pv = pv
         item.pvMax = pv
         item.atkRange = atkRange
@@ -68,10 +70,11 @@ ItemManager.create = function(quad, x, y, width, height)
         item.detectRange = detectRange
         item.speed = speed
         item.atkSpeed = atkSpeed
+        item.aurasToDeal = auraToDeal
     end
 
     item.initMobStats = function(mobData)
-        item.initStats(mobData.pv, mobData.atk, mobData.atkRange, mobData.detectRange, mobData.speed, mobData.atkSpeed)
+        item.initStats(mobData.pv, mobData.atk, mobData.atkRange, mobData.detectRange, mobData.speed, mobData.atkSpeed, mobData.auraToDeal)
     end
 
     item.getCenter = function()
@@ -367,6 +370,10 @@ ItemManager.doAttack = function(fighter, target)
         target.pv = target.pv - damage
         if target.pv > 0 then
             Assets.snd_hurt:play()
+        end
+        -- DOT ?
+        for _, aura in pairs(fighter.aurasToDeal) do
+            AurasManager.addAura(aura, target, damage)
         end
     else
         if target ~= Player then

@@ -14,7 +14,8 @@ DATA.slim = {
     speed = 25,
     atkSpeed = 0.2,
     lootPoMin = 5,
-    lootPoMax = 15
+    lootPoMax = 15,
+    auraToDeal = {}
 }
 
 -- GOBLIN
@@ -27,12 +28,13 @@ DATA.goblin = {
     speed = 40,
     atkSpeed = 0.15,
     lootPoMin = 5,
-    lootPoMax = 15
+    lootPoMax = 15,
+    auraToDeal = {}
 }
 
 -- ZOMBIE
 DATA.zombie = {
-    mobLevel = {0, 0, 0, 4, 8, 12, 12, 12, 12},
+    mobLevel = {0, 0, 2, 4, 8, 12, 12, 12, 12},
     pv = 40,
     atk = 6,
     atkRange = 16,
@@ -40,5 +42,6 @@ DATA.zombie = {
     speed = 20,
     atkSpeed = 0.25,
     lootPoMin = 5,
-    lootPoMax = 15
+    lootPoMax = 15,
+    auraToDeal = {"poison"}
 }

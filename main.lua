@@ -31,6 +31,16 @@ function table.removeAll(tab)
     end
 end
 
+function table.removeFromValue(tab, value)
+    for i = #tab, 1, -1 do
+        if tab[i] == value then
+            table.remove(tab, i)
+            return true
+        end
+    end
+    return false
+end
+
 function math.dist(x1, y1, x2, y2)
     return ((x2 - x1) ^ 2 + (y2 - y1) ^ 2) ^ 0.5
 end
@@ -85,6 +95,7 @@ function love.load()
     require("engine.data")
     require("engine.assets").init()
     require("engine.itemManager")
+    require("engine.aurasManager")
     require("engine.inventory")
     require("engine.gui").init()
     require("engine.effects").init()

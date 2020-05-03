@@ -8,6 +8,7 @@ ItemManager.newXXX = function(tileX, tileY)
     item.canDropPage = false
     item.displayPvLost = true
     item.initStats(0, 0, 0, 0, 0, 0) -- pv, atk, atkRange, detectRange, speed, atkSpeed
+    item.auras = {}
 
     item.hit = function(other)
     end
