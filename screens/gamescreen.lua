@@ -42,6 +42,7 @@ this.load = function()
     end
     -- Calcul de la zone de jeu
     PIXELLARGE = (WIDTH - 100 * SCALE)
+    print(PIXELLARGE .. " x " .. HEIGHT .. ", scale : " .. SCALE)
     btnRestart = GUI.addButton("Rejouer", PIXELLARGE / 2 - 40 * SCALE, HEIGHT / 2 + 8 * SCALE, 64 * SCALE)
     btnRestart.visible = false
 end
@@ -94,6 +95,11 @@ local function drawGui()
         GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina, 100, 0, 1, 0.6, true)
     else
         GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina, 100, 0, 0.6, 1, true)
+    end
+
+    if Player.pv / Player.pvMax < 0.5 and Player.pv > 0 then
+        love.graphics.setColor(1, 1, 1, 1 - (Player.pv / Player.pvMax))
+        love.graphics.draw(Assets.lowlife, 0, 0, 0, PIXELLARGE, HEIGHT / 768)
     end
     drawFichePerso()
 end
@@ -162,7 +168,7 @@ this.draw = function()
     Player.draw()
     Effects.draw()
 
-    love.graphics.pop()
+    love.graphics.pop() ----------------------------------------------------------------------- POP
     -- les auras
     AurasManager.draw()
 

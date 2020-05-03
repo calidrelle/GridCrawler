@@ -19,6 +19,7 @@ Assets.init = function()
     Assets.GameOver = love.graphics.newImage("images/gameover.png")
     Assets.outside = love.graphics.newImage("images/outside.png")
     Assets.shop = love.graphics.newImage("images/shop.png")
+    Assets.lowlife = love.graphics.newImage("images/lowlife.png")
 
     -- SPRITESHEET
     sheet = love.graphics.newImage("images/SpriteSheet.png")
