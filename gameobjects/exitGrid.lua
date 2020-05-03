@@ -20,6 +20,9 @@ ItemManager.newExitGrid = function(tileX, tileY)
     end
 
     item.update = function(dt)
+        if Player.gridOpened then
+            item.quad = Assets.downstairs
+        end
     end
 
     return item

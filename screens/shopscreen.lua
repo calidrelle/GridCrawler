@@ -73,16 +73,16 @@ this.load = function()
     end
 
     if stat1 == STAT_PV or stat2 == STAT_PV then
-        addStat(STAT_PV, "Point de vie +1", 200, Player.pvMax, ItemManager.newTable(3 * TILESIZE, 7 * TILESIZE))
+        addStat(STAT_PV, "Point de vie +1", 150, Player.pvMax, ItemManager.newTable(3 * TILESIZE, 7 * TILESIZE))
     end
     if stat1 == STAT_DEF or stat2 == STAT_DEF then
-        addStat(STAT_DEF, "Défense +1", 200, Player.def, ItemManager.newTable(3 * TILESIZE, 9 * TILESIZE))
+        addStat(STAT_DEF, "Défense +1", 150, Player.def, ItemManager.newTable(3 * TILESIZE, 9 * TILESIZE))
     end
     if stat1 == STAT_ATK or stat2 == STAT_ATK then
-        addStat(STAT_ATK, "Attaque +1", 200, Player.atk, ItemManager.newTable(10 * TILESIZE, 7 * TILESIZE))
+        addStat(STAT_ATK, "Attaque +1", 150, Player.atk, ItemManager.newTable(10 * TILESIZE, 7 * TILESIZE))
     end
     if stat1 == STAT_SPD or stat2 == STAT_SPD then
-        addStat(STAT_SPD, "Vitesse +2%", 200, Player.speedInit, ItemManager.newTable(10 * TILESIZE, 9 * TILESIZE))
+        addStat(STAT_SPD, "Vitesse +2%", 150, Player.speedInit, ItemManager.newTable(10 * TILESIZE, 9 * TILESIZE))
     end
 
     MUSICPLAYER:stop()
