@@ -50,29 +50,28 @@ ItemManager.create = function(quad, x, y, width, height)
     item.pvMax = 0
     item.atkRange = 0
     item.atk = 0
-    item.def = 0
     item.detectRange = 0
     item.speed = 0
     item.atkSpeed = 0
     item.canBeAttacked = false
     item.canDropPage = false
+    item.displayPvLost = true
     item.lootTable = {}
     item.path = nil
     item.jumpingTimer = 0
 
-    item.initStats = function(pv, atk, def, atkRange, detectRange, speed, atkSpeed)
+    item.initStats = function(pv, atk, atkRange, detectRange, speed, atkSpeed)
         item.pv = pv
         item.pvMax = pv
         item.atkRange = atkRange
         item.atk = atk
-        item.def = def
         item.detectRange = detectRange
         item.speed = speed
         item.atkSpeed = atkSpeed
     end
 
     item.initMobStats = function(mobData)
-        item.initStats(mobData.pv, mobData.atk, mobData.def, mobData.atkRange, mobData.detectRange, mobData.speed, mobData.atkSpeed)
+        item.initStats(mobData.pv, mobData.atk, mobData.atkRange, mobData.detectRange, mobData.speed, mobData.atkSpeed)
     end
 
     item.getCenter = function()
@@ -354,7 +353,6 @@ ItemManager.doAttack = function(fighter, target)
         return false
     end
 
-    -- local damage = math.floor(math.random() * (fighter.atk - target.def + 1))
     local damage = fighter.atk
     if damage > 0 then
         print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
@@ -362,7 +360,9 @@ ItemManager.doAttack = function(fighter, target)
             Effects.createFloatingText(damage .. "", target.x, target.y, 4, 1, 0.7, 0)
             Effects.createCamShake(0.1, 10)
         else
-            Effects.createFloatingText(damage .. "", target.x, target.y, 4, 1, 1, 1)
+            if target.displayPvLost then
+                Effects.createFloatingText(damage .. "", target.x, target.y, 4, 1, 1, 1)
+            end
         end
         target.pv = target.pv - damage
         if target.pv > 0 then

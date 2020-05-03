@@ -137,7 +137,7 @@ local function doShoot(dt)
         local x = this.x + this.shootx * TILESIZE
         local y = this.y + this.shooty * TILESIZE
         local sword = ItemManager.newSword(x, y, this.shootx, this.shooty)
-        sword.initStats(0, Player.atk, 0, 0, 0, Player.atkRange, 0)
+        sword.initStats(0, Player.atk, 0, 0, Player.atkRange, 0)
         this.stamina = this.stamina - STAMINA_FIRE
         Assets.snd_shoot:play()
     else

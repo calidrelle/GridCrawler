@@ -6,6 +6,7 @@ ItemManager.newChest = function(tileX, tileY)
     item.solid = true
     item.canBeAttacked = true
     item.canDropPage = true
+    item.displayPvLost = false
     table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.chest)))
 
     item.hit = function(other)

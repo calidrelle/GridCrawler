@@ -61,27 +61,18 @@ end
 
 local function drawFichePerso()
     local xpos = PIXELLARGE + 20 * SCALE
-    local ypos = 80 * SCALE
+    local ypos = 76 * SCALE
     love.graphics.setFont(Font20)
     love.graphics.setColor(1, 1, 1, 1)
 
     local stats = {}
-    table.insert(stats, {"MAX VIE ", Player.pvMax})
-    table.insert(stats, {"ATK     ", Player.atk})
-    table.insert(stats, {"DEF     ", Player.def})
-    table.insert(stats, {"DIST ATK", wile.display2decimale(Player.atkRange)})
-    table.insert(stats, {"REG VIE ", wile.display2decimale(Player.regenPv)})
-    table.insert(stats, {"REG ENDU", wile.display2decimale(Player.regenStamina)})
+    table.insert(stats, {"VIE", Player.pvMax})
+    table.insert(stats, {"ATK", Player.atk})
+    table.insert(stats, {"DEF", Player.def})
+    table.insert(stats, {"VIT", wile.display2decimale(Player.speedInit / 120 * 100) .. "%"})
 
     for i = 1, #stats do
-        if SCALE == 4 then
-            love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos + math.floor((i - 1) / 3) * 8 * TILESIZE,
-                                TILESIZE + ypos + 24 * ((i - 1) % 3))
-        elseif SCALE == 3 then
-            love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos, TILESIZE + ypos + 24 * (i - 1))
-        else
-            error("Cette SCALE n'est pas gérée : [" .. SCALE .. "]")
-        end
+        love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos, TILESIZE + ypos + 22 * (i - 1))
     end
 end
 
@@ -99,12 +90,6 @@ end
 local function drawMinimap()
     local xoff = PIXELLARGE + (TILESIZE - 1) * SCALE
     local yoff = (TILESIZE - 1) * SCALE
-    -- love.graphics.setLineWidth(3)
-    -- love.graphics.setColor(0, 0, 0, 1)
-    -- love.graphics.rectangle("line", xoff, yoff, Map.width * SCALE, Map.height * SCALE)
-    -- love.graphics.setLineWidth(1)
-    -- love.graphics.setColor(.5, .5, .5, 0.6)
-    -- love.graphics.rectangle("fill", xoff, yoff, Map.width * SCALE, Map.height * SCALE)
 
     for x = 1, Map.width do
         for y = 1, Map.height do
