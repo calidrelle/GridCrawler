@@ -106,6 +106,8 @@ function love.load()
     OPTIONS.applyValues()
     love.window.setTitle("Grid Crawler (vxx.xx.xx by Wile)")
 
+    math.randomseed(love.timer.getTime())
+
     require("engine.data")
     require("engine.assets").init()
     require("engine.itemManager")
