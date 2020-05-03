@@ -27,7 +27,7 @@ DATA.goblin = {
     detectRange = 100,
     speed = 40,
     atkSpeed = 0.15,
-    lootPoMin = 5,
+    lootPoMin = 10,
     lootPoMax = 15,
     auraToDeal = {}
 }
@@ -41,7 +41,7 @@ DATA.zombie = {
     detectRange = 120,
     speed = 20,
     atkSpeed = 0.25,
-    lootPoMin = 5,
-    lootPoMax = 15,
+    lootPoMin = 10,
+    lootPoMax = 20,
     auraToDeal = {{"Poison", 10}}
 }

@@ -209,7 +209,7 @@ local function createSlims(nbTotal)
     for _ = 1, nbTotal do
         repeat
             pos = this.getEmptyLocation(0) -- monsters in rooms only
-        until pos.room ~= map.spawn.room -- pas dans monstre dans la pièce du spawn
+        until pos.room ~= map.spawn.room and math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
         ItemManager.newSlim(pos.x * TILESIZE, pos.y * TILESIZE)
     end
 end
@@ -219,7 +219,7 @@ local function createGoblins(nbTotal)
     for _ = 1, nbTotal do
         repeat
             pos = this.getEmptyLocation(0) -- monsters in rooms only
-        until pos.room ~= map.spawn.room -- pas dans monstre dans la pièce du spawn
+        until pos.room ~= map.spawn.room and math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
         ItemManager.newGoblin(pos.x * TILESIZE, pos.y * TILESIZE)
     end
 end
@@ -229,7 +229,7 @@ local function createZombies(nbTotal)
     for _ = 1, nbTotal do
         repeat
             pos = this.getEmptyLocation(0) -- monsters in rooms only
-        until pos.room ~= map.spawn.room -- pas dans monstre dans la pièce du spawn
+        until pos.room ~= map.spawn.room and math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
         ItemManager.newZombie(pos.x * TILESIZE, pos.y * TILESIZE)
     end
 end
