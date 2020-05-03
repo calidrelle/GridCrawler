@@ -126,7 +126,6 @@ ScreenManager.setScreen = function(name)
     if name == "MENU" then
         screen = menuScreen
     elseif name == "GAME" then
-        love.mouse.setVisible(false)
         screen = gameScreen
     elseif name == "NEWGAME" then
         gameScreen.restartGame()
@@ -136,7 +135,6 @@ ScreenManager.setScreen = function(name)
         MUSICPLAYER:play()
         screen = menuScreen
     elseif name == "NEXTLEVEL" then
-        love.mouse.setVisible(false)
         MUSICPLAYER:stop()
         MUSICPLAYER = musicIntro
         MUSICPLAYER:play()
@@ -150,7 +148,6 @@ ScreenManager.setScreen = function(name)
         screen = gameQuit
     elseif name == "VENDOR" then
         Player.inTheShop = true
-        love.mouse.setVisible(false)
         screen = shopScreen
     elseif name == "OUTSIDE" then
         screen = outsideScreen
@@ -186,7 +183,7 @@ function love.draw()
         love.graphics.print("FPS: " .. love.timer.getFPS(), 10, 10)
         love.graphics.print("Items: " .. #ItemManager.getItems(), 10, 28)
         if Map ~= nil and Map.totalGolds ~= nil then
-            love.graphics.print("Items: " .. Map.totalGolds, 10, 46)
+            love.graphics.print("Golds: " .. Map.totalGolds, 10, 46)
         end
     end
 end

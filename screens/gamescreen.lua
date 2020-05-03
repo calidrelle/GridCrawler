@@ -23,6 +23,7 @@ this.startNewLevel = function()
 end
 
 this.load = function()
+    love.mouse.setVisible(false)
     GUI.reset()
     if (Map == nil) then
         local mapBuilder = require("engine.dungeonBuilder")

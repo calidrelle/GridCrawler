@@ -20,7 +20,7 @@ GUI.addInfoBull = function(text, duree, ypos, persistant)
     _, this.wrappedtext = FontVendor32:getWrap(this.text, this.large)
 
     for key, value in pairs(buttons) do
-        if value.type == "info" then
+        if value.type == "info" and value.ypos == this.ypos then
             table.remove(buttons, key)
         end
     end

@@ -23,6 +23,7 @@ local function addStat(id, name, cost, value, item)
 end
 
 this.load = function()
+    love.mouse.setVisible(false)
     Inventory.removePages() -- On vide les pages de l'inventaire
     ItemManager.reset()
     AurasManager.reset()
