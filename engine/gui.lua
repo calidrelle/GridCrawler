@@ -59,6 +59,7 @@ GUI.addButton = function(text, x, y, width)
     this.y = y
     this.width = width or Assets.button:getWidth() * SCALE
     this.height = Assets.button:getHeight() * SCALE
+    this.soundHover = false
 
     this.drText = love.graphics.newText(Font32, this.text)
     this.textWidth = this.drText:getWidth()
@@ -83,11 +84,21 @@ GUI.addButton = function(text, x, y, width)
         end
         if mx < this.x or mx > this.x + this.width or my < this.y or my > this.y + this.height then
             this.hover = false
+            this.soundHover = false
             return
         end
         this.hover = true
+        if not this.soundHover then
+            Assets.snd_btnHover:play()
+            this.soundHover = true
+        end
+
         this.clicked = this.pressed and not love.mouse.isDown(1)
         this.pressed = love.mouse.isDown(1)
+
+        if this.clicked then
+            Assets.snd_btnClicked:play()
+        end
     end
 
     table.insert(buttons, this)

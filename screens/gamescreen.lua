@@ -5,12 +5,19 @@ local btnRestart = nil
 
 this.restartGame = function()
     -- Après un gameover, on recréé un perso tout neuf
+    print("restartGame")
     Assets.init()
     Player.createNew()
     this.startNewLevel()
+    OPTIONS.DIFFICULTY = 0
+    GameOver.status = false
+    GameOver.timer = 0
+    ScreenManager.started = false
+    ScreenManager.setScreen("MENU")
 end
 
 this.startNewLevel = function()
+    print("startNewLevel")
     Assets.init()
     Map = nil
     Player.resetAnims()
@@ -37,12 +44,12 @@ this.load = function()
     PIXELLARGE = (WIDTH - 100 * SCALE)
     btnRestart = GUI.addButton("Rejouer", PIXELLARGE / 2 - 40 * SCALE, HEIGHT / 2 + 8 * SCALE, 64 * SCALE)
     btnRestart.visible = false
-
 end
 
 this.update = function(dt)
     if btnRestart.clicked then
         this.restartGame()
+        return
     end
     ItemManager.update(dt)
     AurasManager.update(dt)
@@ -177,6 +184,7 @@ this.keypressed = function(key)
     end
     if key == "return" and btnRestart.visible then
         this.restartGame()
+        return
     end
     if DevMode() then
         if key == "f10" then
@@ -190,8 +198,6 @@ this.keypressed = function(key)
         elseif key == "kp+" then
             Player.pvMax = Player.pvMax + 10
             Player.pv = Player.pv + 10
-        else
-            -- print("gamescreen key : " .. key)
         end
     end
 end

@@ -108,6 +108,9 @@ Assets.init = function()
     Assets.snd_pay = love.audio.newSource("sons/pay.wav", "static")
     Assets.snd_pics = love.audio.newSource("sons/pics.wav", "static")
 
+    Assets.snd_btnHover = love.audio.newSource("sons/btn_hover.wav", "static")
+    Assets.snd_btnClicked = love.audio.newSource("sons/btn_clicked.wav", "static")
+
     Assets.snd_aggro_slim = love.audio.newSource("sons/aggro_slim.wav", "static")
     Assets.snd_aggro_goblin = love.audio.newSource("sons/aggro_goblin.wav", "static")
     Assets.snd_aggro_zombie = love.audio.newSource("sons/aggro_zombie.wav", "static")

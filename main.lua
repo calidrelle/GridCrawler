@@ -61,6 +61,18 @@ wile = {}
 function wile.display2decimale(value)
     return math.floor(value * 100) / 100
 end
+function wile.boolToStr(value)
+    if value == nil then
+        return "nil"
+    end
+    if value then
+        return "true"
+    elseif not value then
+        return "false"
+    else
+        return "not a boolean : " .. value
+    end
+end
 -------------------[[ GLOBAL FUNCTIONS ]]
 
 local gameScreen = require("screens.gamescreen")
@@ -70,6 +82,7 @@ local optionsScreen = require("screens.optionsscreen")
 local keysOptionsScreen = require("screens.keysoptions")
 local shopScreen = require("screens.shopscreen")
 local outsideScreen = require("screens.outside")
+
 local screen = nil
 
 Font20 = love.graphics.newFont("fonts/decterm.ttf", 20)
@@ -118,6 +131,7 @@ function love.load()
 end
 
 ScreenManager = {}
+ScreenManager.started = false
 ScreenManager.setScreen = function(name)
     GUI.reset()
     love.mouse.setVisible(true)
@@ -129,7 +143,7 @@ ScreenManager.setScreen = function(name)
         screen = gameScreen
     elseif name == "NEWGAME" then
         gameScreen.restartGame()
-        menuScreen.resetStarted()
+        ScreenManager.started = false
         MUSICPLAYER:stop()
         MUSICPLAYER = musicIntro
         MUSICPLAYER:play()
@@ -182,9 +196,13 @@ function love.draw()
         love.graphics.setFont(Font16)
         love.graphics.print("FPS: " .. love.timer.getFPS(), 10, 10)
         love.graphics.print("Items: " .. #ItemManager.getItems(), 10, 28)
+        love.graphics.print("Difficulté: " .. OPTIONS.DIFFICULTY, 10, 46)
         if Map ~= nil and Map.totalGolds ~= nil then
-            love.graphics.print("Golds: " .. Map.totalGolds, 10, 46)
+            love.graphics.print("Golds: " .. Map.totalGolds, 10, 64)
         end
+        love.graphics.print("Player.gridOpened : " .. wile.boolToStr(Player.gridOpened), 10, 80)
+        love.graphics.print("GameOver.status : " .. wile.boolToStr(GameOver.status), 10, 100)
+        love.graphics.print("GameOver.timer : " .. GameOver.timer, 10, 120)
     end
 end
 

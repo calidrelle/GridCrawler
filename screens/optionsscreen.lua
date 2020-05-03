@@ -4,6 +4,7 @@ OPTIONS = {}
 OPTIONS.volume = 50
 OPTIONS.fullscreen = false
 SCALE = 3
+OPTIONS.DIFFICULTY = 0
 
 love.window.setMode(1280, 768)
 

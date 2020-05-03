@@ -359,6 +359,16 @@ ItemManager.doAttack = function(fighter, target)
     end
 
     local damage = fighter.atk
+
+    if target == Player then
+        if OPTIONS.DIFFICULTY == 1 then
+            damage = math.floor(damage * 0.75)
+        end
+        if OPTIONS.DIFFICULTY == 3 then
+            damage = math.floor(damage * 1.20)
+        end
+    end
+
     if damage > 0 then
         print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
         if target == Player then
