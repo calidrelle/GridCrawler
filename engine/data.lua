@@ -15,7 +15,7 @@ DATA.slim = {
     atkSpeed = 0.2,
     lootPoMin = 5,
     lootPoMax = 15,
-    auraToDeal = {}
+    auraToDeal = {} -- nom, durée en seconde
 }
 
 -- GOBLIN
@@ -43,5 +43,5 @@ DATA.zombie = {
     atkSpeed = 0.25,
     lootPoMin = 5,
     lootPoMax = 15,
-    auraToDeal = {"poison"}
+    auraToDeal = {{"Poison", 10}}
 }

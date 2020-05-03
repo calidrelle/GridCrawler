@@ -15,6 +15,7 @@ this.startNewLevel = function()
     Map = nil
     Player.resetAnims()
     ItemManager.reset()
+    AurasManager.reset()
     Player.gridOpened = false
     GameOver.status = false
     GameOver.timer = 0
@@ -84,7 +85,7 @@ local function drawGui()
 
     -- Catactéristiques player
     GUI.drawProgressBar(PIXELLARGE / 2 - 250, HEIGHT - 50, 200, 32, Player.pv, Player.pvMax, 1, 0.1, 0, true)
-    if table.contains(Player.auras, "poison") then
+    if table.contains(Player.auras, "Poison") then
         GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina, 100, 0, 1, 0.6, true)
     else
         GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina, 100, 0, 0.6, 1, true)
@@ -157,6 +158,8 @@ this.draw = function()
     Effects.draw()
 
     love.graphics.pop()
+    -- les auras
+    AurasManager.draw()
 
     drawGui()
     Inventory.draw()

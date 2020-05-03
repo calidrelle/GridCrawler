@@ -373,7 +373,7 @@ ItemManager.doAttack = function(fighter, target)
         end
         -- DOT ?
         for _, aura in pairs(fighter.aurasToDeal) do
-            AurasManager.addAura(aura, target, damage)
+            AurasManager.addAura(aura[1], aura[2], target)
         end
     else
         if target ~= Player then

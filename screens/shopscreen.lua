@@ -25,6 +25,7 @@ end
 this.load = function()
     Inventory.removePages() -- On vide les pages de l'inventaire
     ItemManager.reset()
+    AurasManager.reset()
     local mapBuilder = require("engine.dungeonBuilder")
     Map = mapBuilder.createEmptyMap(12, 11)
 

@@ -2,14 +2,14 @@
 -- Penser à rajouter le require de ce fichier dans ItemManager.lua
 AurasManager.newAuraPoison = function(target, duration)
     local aura = AurasManager.create(target, duration)
-    aura.name = "poison"
+    aura.name = "Poison"
     aura.initialValue = target.regenStamina
 
     aura.start = function()
     end
 
     aura.apply = function()
-        target.regenStamina = 0
+        target.regenStamina = 3
     end
 
     aura.finish = function()

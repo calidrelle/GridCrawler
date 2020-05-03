@@ -14,6 +14,7 @@ this.load = function()
     MUSICPLAYER:play()
 
     ItemManager.reset()
+    AurasManager.reset()
     ItemManager.newTorch(192, 184)
     ItemManager.newTorch(288, 184)
 

@@ -13,9 +13,13 @@ AurasManager.create = function(target, duration)
     return this
 end
 
-AurasManager.addAura = function(aura, target, duration)
+AurasManager.reset = function()
+    table.removeAll(auras)
+end
+
+AurasManager.addAura = function(aura, duration, target)
     table.insert(target.auras, aura)
-    if aura == "poison" then
+    if aura == "Poison" then
         AurasManager.newAuraPoison(target, duration).start()
     else
         print("Aura inconnue : " .. aura)
@@ -33,6 +37,19 @@ AurasManager.update = function(dt)
             aura.finish()
             table.removeFromValue(aura.target.auras, aura.name)
             table.remove(auras, i)
+        end
+    end
+end
+
+AurasManager.draw = function()
+    -- On affiche les auras du joueur
+    local ypos = 0
+    love.graphics.setFont(Font32)
+    love.graphics.setColor(1, 1, 1, 1)
+    for _, aura in pairs(auras) do
+        if aura.target == Player then
+            love.graphics.print(aura.name .. " (" .. math.ceil(aura.duration) .. ")", PIXELLARGE - 60 * SCALE, TILESIZE * SCALE + ypos * 32)
+            ypos = ypos + 20
         end
     end
 end
