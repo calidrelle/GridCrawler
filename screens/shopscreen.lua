@@ -41,9 +41,9 @@ this.load = function()
     ItemManager.newTorch(4 * TILESIZE, 1 * TILESIZE)
     ItemManager.newTorch(9 * TILESIZE, 1 * TILESIZE)
 
-    ItemManager.newBarrel(3 * TILESIZE, 4 * TILESIZE)
-    ItemManager.newBarrel(2 * TILESIZE, 10 * TILESIZE)
-    ItemManager.newBarrel(10 * TILESIZE, 10 * TILESIZE)
+    ItemManager.newBarrel(3 * TILESIZE, 4 * TILESIZE).isSelectable = false
+    ItemManager.newBarrel(2 * TILESIZE, 10 * TILESIZE).isSelectable = false
+    ItemManager.newBarrel(10 * TILESIZE, 10 * TILESIZE).isSelectable = false
 
     ItemManager.newBooks(3 * TILESIZE, 2 * TILESIZE)
     ItemManager.newBooks(4 * TILESIZE, 2 * TILESIZE)

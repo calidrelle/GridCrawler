@@ -51,6 +51,7 @@ ItemManager.create = function(quad, x, y, width, height)
     item.lootTable = {}
     item.path = nil
     item.jumpingTimer = 0
+    item.isSelectable = true
 
     item.pv = 0
     item.pvMax = 0
@@ -293,7 +294,7 @@ end
 
 ItemManager.getItemAroundPlayer = function(radius)
     for _, item in pairs(items) do
-        if item.distanceToOther(Player) < radius then
+        if item.isSelectable and item.distanceToOther(Player) < radius then
             return item
         end
     end
