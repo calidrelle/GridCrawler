@@ -70,7 +70,9 @@ ItemManager.create = function(quad, x, y, width, height)
         item.detectRange = detectRange
         item.speed = speed
         item.atkSpeed = atkSpeed
-        item.aurasToDeal = auraToDeal
+        if auraToDeal ~= nil then
+            item.aurasToDeal = auraToDeal
+        end
     end
 
     item.initMobStats = function(mobData)
