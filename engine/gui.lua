@@ -6,14 +6,16 @@ GUI.init = function()
     buttons = {}
 end
 
-GUI.addInfoBull = function(text, duree)
+GUI.addInfoBull = function(text, duree, ypos, persistant)
     local this = {}
     this.type = "info"
     this.text = text
+    this.persistant = persistant or false
     this.duration = duree or 5
     this.actif = true
     this.alpha = 1
     this.large = WIDTH / 2
+    this.ypos = ypos or 50
     this.wrappedtext = nil
     _, this.wrappedtext = FontVendor32:getWrap(this.text, this.large)
 
@@ -36,9 +38,9 @@ GUI.addInfoBull = function(text, duree)
     this.draw = function()
         love.graphics.setFont(FontVendor32)
         love.graphics.setColor(0.2, 0.2, 0.2, 0.8 * this.alpha)
-        love.graphics.rectangle("fill", (WIDTH - this.large) / 2, 50, this.large, #this.wrappedtext * 32 + 12)
+        love.graphics.rectangle("fill", (WIDTH - this.large) / 2, this.ypos, this.large, #this.wrappedtext * 32 + 12)
         love.graphics.setColor(1, 1, 1, this.alpha)
-        love.graphics.printf(this.text, (WIDTH - this.large) / 2, 56, this.large, "center")
+        love.graphics.printf(this.text, (WIDTH - this.large) / 2, this.ypos + 6, this.large, "center")
     end
 
     table.insert(buttons, this)
@@ -93,7 +95,15 @@ GUI.addButton = function(text, x, y, width)
 end
 
 GUI.reset = function()
-    table.removeAll(buttons)
+    for i = #buttons, 1, -1 do
+        if buttons[i].type == "info" then
+            if not buttons[i].persistant then
+                table.remove(buttons, i)
+            end
+        else
+            table.remove(buttons, i)
+        end
+    end
 end
 
 GUI.update = function(dt)

@@ -36,6 +36,7 @@ OPTIONS.save = function()
     add(OPTIONS.FIRE)
 
     love.filesystem.write("options.sav", strOptions)
+    GUI.addInfoBull("Options sauvegardées", 3, HEIGHT - 200, true)
 end
 
 OPTIONS.load = function()
@@ -93,6 +94,7 @@ this.update = function(dt)
     if btnBack.clicked then
         OPTIONS.save()
         ScreenManager.setScreen("MENU")
+        return
     end
 
     if btnVolDec.clicked then
