@@ -5,6 +5,7 @@ love.graphics.setDefaultFilter("nearest") -- pas d'aliasing
 -------------------[[ GLOBAL FUNCTIONS ]]
 local inDevMod = nil
 function DevMode()
+    -- return false
     if inDevMod == nil then
         inDevMod = love.filesystem.getInfo("README.md") ~= nil
     end
@@ -191,7 +192,7 @@ function love.draw()
     love.graphics.setFont(Font20)
     screen.draw()
     GUI.draw()
-    if DevMode() then
+    if DevMode() and false then
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.setFont(Font16)
         love.graphics.print("FPS: " .. love.timer.getFPS(), 10, 10)
