@@ -29,6 +29,7 @@ this.createNew = function()
     this.jumpingTimer = 0
     this.shootx = 0
     this.shooty = 0
+    this.hasItemSelected = false
 
     this.canBeAttacked = true -- le player peut se faire taper
     this.pv = 10

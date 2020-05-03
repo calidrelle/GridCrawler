@@ -6,6 +6,12 @@ local staires
 local selectedItem = nil
 local raduisSelection = 20
 
+local STAT_PV = 1
+local STAT_ATK = 2
+local STAT_DEF = 3
+local STAT_SPD = 4
+local strChoixStats
+
 local function addStat(id, name, cost, value, item)
     local stat = {}
     stat.id = id
@@ -27,11 +33,13 @@ this.load = function()
     Player.setPosition(6.5 * TILESIZE, 10 * TILESIZE)
 
     ItemManager.newVendor(6.5 * TILESIZE, 5 * TILESIZE)
+    ItemManager.newBigTable(6 * TILESIZE, 6 * TILESIZE)
+
     staires = ItemManager.newDownstairs(7 * TILESIZE, 3 * TILESIZE)
     ItemManager.newTorch(4 * TILESIZE, 1 * TILESIZE)
     ItemManager.newTorch(9 * TILESIZE, 1 * TILESIZE)
-    ItemManager.newBigTable(6 * TILESIZE, 6 * TILESIZE)
-    ItemManager.newBarrel(2 * TILESIZE, 3 * TILESIZE)
+
+    ItemManager.newBarrel(3 * TILESIZE, 4 * TILESIZE)
     ItemManager.newBarrel(2 * TILESIZE, 10 * TILESIZE)
     ItemManager.newBarrel(10 * TILESIZE, 10 * TILESIZE)
 
@@ -43,13 +51,37 @@ this.load = function()
     ItemManager.newBooks(10 * TILESIZE, 2 * TILESIZE)
     ItemManager.newChest(11 * TILESIZE, 2 * TILESIZE)
 
-    -- Les stats
-    addStat(1, "Vie max +1", 60, Player.pvMax, ItemManager.newTable(3 * TILESIZE, 5 * TILESIZE))
-    addStat(2, "Attaque +1", 60, Player.atk, ItemManager.newTable(3 * TILESIZE, 7 * TILESIZE))
-    addStat(3, "Défense +1", 80, Player.def, ItemManager.newTable(3 * TILESIZE, 9 * TILESIZE))
-    addStat(4, "Distance d'attaque +5%", 60, Player.atkRange, ItemManager.newTable(10 * TILESIZE, 5 * TILESIZE))
-    addStat(5, "Régénération de vie +5%", 50, Player.regenPv, ItemManager.newTable(10 * TILESIZE, 7 * TILESIZE))
-    addStat(6, "Régénération d'endurance +5%", 50, Player.regenStamina, ItemManager.newTable(10 * TILESIZE, 9 * TILESIZE))
+    -- Les stats : 2 au hasard
+
+    local stat1 = math.random(4)
+    local stat2 = 0
+    repeat
+        stat2 = math.random(4)
+    until stat1 ~= stat2
+
+    -- 20% de change de ne rien vendre
+    if math.random(100) < 15 then
+        stat1 = 0
+        stat2 = 0
+        strChoixStats =
+            "Je suis désolé, mais je n'ai pas été livré. Je n'ai rien à te proposer aujourd'hui. Prends les escaliers derrière moi pour continuer ton aventure !"
+    else
+        strChoixStats =
+            "Fais ton choix sur les 2 petites tables que je te propose aujourd'hui. Tes courses terminées, prends les escaliers derrière moi pour continuer ton aventure !"
+    end
+
+    if stat1 == STAT_PV or stat2 == STAT_PV then
+        addStat(STAT_PV, "Point de vie +1", 200, Player.pvMax, ItemManager.newTable(3 * TILESIZE, 7 * TILESIZE))
+    end
+    if stat1 == STAT_DEF or stat2 == STAT_DEF then
+        addStat(STAT_DEF, "Défense +1", 200, Player.def, ItemManager.newTable(3 * TILESIZE, 9 * TILESIZE))
+    end
+    if stat1 == STAT_ATK or stat2 == STAT_ATK then
+        addStat(STAT_ATK, "Attaque +1", 200, Player.atk, ItemManager.newTable(10 * TILESIZE, 7 * TILESIZE))
+    end
+    if stat1 == STAT_SPD or stat2 == STAT_SPD then
+        addStat(STAT_SPD, "Vitesse +2%", 200, Player.speedInit, ItemManager.newTable(10 * TILESIZE, 9 * TILESIZE))
+    end
 
     MUSICPLAYER:stop()
     MUSICPLAYER = love.audio.newSource("sons/16.mp3", "stream")
@@ -72,29 +104,19 @@ local function doSelect()
         for _, stat in pairs(stats) do
             if stat.item == selectedItem then
                 if Inventory.removePo(stat.cost) then
-                    if stat.id == 1 then
+                    if stat.id == STAT_PV then
                         stat.value = stat.value + 1
                         Player.pvMax = stat.value
-                    elseif stat.id == 2 then
+                    elseif stat.id == STAT_ATK then
                         stat.value = stat.value + 1
                         Player.atk = stat.value
-                    elseif stat.id == 3 then
+                    elseif stat.id == STAT_DEF then
                         stat.value = stat.value + 1
                         Player.def = stat.value
-                    elseif stat.id == 4 then
-                        stat.value = stat.value * 1.05
-                        Player.atkRange = stat.value
-                    elseif stat.id == 5 then
-                        stat.value = stat.value * 1.05
-                        Player.regenPv = stat.value
-                    elseif stat.id == 6 then
-                        stat.value = stat.value * 1.05
-                        Player.regenPv = stat.value
-                    else
-                        print("Amélioration inconnue !!!")
+                    elseif stat.id == STAT_SPD then
+                        stat.value = stat.value * 1.02
+                        Player.speedInit = stat.value
                     end
-                else
-                    GUI.addInfoBull("Pas assez d'argent")
                 end
             end
         end
@@ -110,12 +132,7 @@ this.update = function(dt)
     my = my + TILESIZE * Player.lastdy
 
     selectedItem = ItemManager.getItemAroundPlayer(raduisSelection)
-    local items = ItemManager.getItemsAt(Player.getCenter())
-    for _, item in pairs(items) do
-        if item == staires then
-            staires.isHover = true
-        end
-    end
+    staires.isHover = (selectedItem == staires)
 
     Player.update(dt)
     if Player.hasItemSelected then
@@ -160,9 +177,7 @@ this.draw = function()
     love.graphics.setFont(FontVendor32)
     if selectedItem ~= nil then
         if selectedItem.name == "bigtable" then
-            GUI.addInfoBull(
-                "Fais ton choix sur les 6 petites tables rouges. Tes courses terminées, prends les escaliers derrière moi pour continuer ton aventure !",
-                6)
+            GUI.addInfoBull(strChoixStats, 6)
         end
     end
 

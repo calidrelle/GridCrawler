@@ -391,12 +391,23 @@ end
 ItemManager.doDrop = function(mob)
     -- Les items existent déjà, mais à la position -1, -1
     -- Le but est de les positionner dans le champ de jeu
-
     for _, loot in pairs(mob.lootTable) do
         local lootX, lootY = mob.x, mob.y
         loot.x = lootX
         loot.y = lootY
     end
+end
+
+ItemManager.getPoInItems = function()
+    local totalPo = 0
+    for _, item in pairs(items) do
+        for _, loot in pairs(item.lootTable) do
+            if loot.name == "gold" then
+                totalPo = totalPo + loot.amount
+            end
+        end
+    end
+    return totalPo
 end
 
 return ItemManager

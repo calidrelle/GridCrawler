@@ -282,6 +282,8 @@ this.build = function(width, height, seed)
 
     map.pathfinder = pathfinder.create(map)
     print("Map created in " .. love.timer.getTime() - t0)
+    map.totalGolds = ItemManager.getPoInItems()
+    print("Golds dans le donjon : " .. map.totalGolds)
     return map
 end
 

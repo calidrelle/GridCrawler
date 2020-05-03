@@ -174,6 +174,9 @@ function love.draw()
         love.graphics.setFont(Font16)
         love.graphics.print("FPS: " .. love.timer.getFPS(), 10, 10)
         love.graphics.print("Items: " .. #ItemManager.getItems(), 10, 28)
+        if Map ~= nil and Map.totalGolds ~= nil then
+            love.graphics.print("Items: " .. Map.totalGolds, 10, 46)
+        end
     end
 end
 

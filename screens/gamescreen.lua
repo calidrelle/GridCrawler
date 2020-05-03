@@ -177,11 +177,9 @@ this.keypressed = function(key)
             Player.pv = -1
         elseif key == "f11" then
             Player.gridOpened = true
-            Inventory.addItem(ItemManager.newGold(0, 0), 10000)
+            Inventory.addItem(ItemManager.newGold(0, 0), math.random(190, 250))
             ScreenManager.setScreen("VENDOR")
         elseif key == "f12" then
-            Player.gridOpened = true
-            Inventory.addItem(ItemManager.newGold(0, 0), 400)
             ScreenManager.setScreen("OUTSIDE")
         elseif key == "kp+" then
             Player.pvMax = Player.pvMax + 10
