@@ -62,7 +62,7 @@ this.load = function()
     until stat1 ~= stat2
 
     -- 20% de change de ne rien vendre
-    if math.random(100) < 15 then
+    if math.random(100) <= DATA.PCENTNOCELL then
         stat1 = 0
         stat2 = 0
         strChoixStats =

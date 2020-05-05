@@ -363,13 +363,13 @@ ItemManager.doAttack = function(fighter, target)
 
     if target == Player then
         if OPTIONS.DIFFICULTY == 1 then
-            damage = math.floor(damage * 0.50)
+            damage = math.floor(damage * DATA.RATIO_EASY)
         end
         if OPTIONS.DIFFICULTY == 1 then
-            damage = math.floor(damage * 0.75)
+            damage = math.floor(damage * DATA.RATIO_NORMAL)
         end
         if OPTIONS.DIFFICULTY == 3 then
-            damage = math.floor(damage * 1)
+            damage = math.floor(damage * DATA.RATIO_HARD)
         end
     end
 
