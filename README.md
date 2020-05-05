@@ -13,6 +13,9 @@ Pour créer un tag : git tag -a v0.2 -m "Version 0.2"
 Pour push le tag  : git push --tags
 pour le changelog : git log --oneline --decorate
 
+Pour ouvrir la grille et passer au niveau suivant, il faut trouver les 9 parties de la clef.
+Ces 9 parties sont disséminées dans les tonneaux ou sur des monstres
+
 TODO:
 (/) Complètement au clavier
 ( ) Manque de challenge, porte et clef ?
@@ -32,7 +35,8 @@ TODO:
     (/) ATK & DEF & PV
     (/) range detection
     ( ) bumped when hit (to avoid spam fight)
-    (/) screen shake when player is touch
+    ( ) screen shake when player is touch
+    ( ) blood particules when monster is touched
 (/) change level
 (/) MENUS
 (/) Sounds & music (music: BeepBox ?)
