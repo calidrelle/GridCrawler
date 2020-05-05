@@ -7,6 +7,8 @@ https://itch.io/jam/gamecodeur-gamejam-24
 
 Lien itch.io : https://wile.itch.io/gridcrawler
 
+Lien youtube gameplay : https://www.youtube.com/watch?v=xIaNYg-BdKI
+
 Pour créer un tag : git tag -a v0.2 -m "Version 0.2"
 Pour push le tag  : git push --tags
 pour le changelog : git log --oneline --decorate
