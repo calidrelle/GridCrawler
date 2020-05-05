@@ -8,6 +8,7 @@ function DevMode()
     -- return false
     if inDevMod == nil then
         inDevMod = love.filesystem.getInfo("README.md") ~= nil
+        print("DevMod : " .. wile.boolToStr(inDevMod))
     end
     return inDevMod
 end
@@ -190,11 +191,12 @@ function love.update(dt)
     screen.update(dt)
 end
 
+local displayDebugInfos = false
 function love.draw()
     love.graphics.setFont(Font20)
     screen.draw()
     GUI.draw()
-    if DevMode() and false then
+    if DevMode() and displayDebugInfos then
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.setFont(Font16)
         love.graphics.print("FPS: " .. love.timer.getFPS(), 10, 10)
@@ -211,4 +213,7 @@ end
 
 function love.keypressed(key)
     screen.keypressed(key)
+    if key == "f1" and inDevMod then
+        displayDebugInfos = not displayDebugInfos
+    end
 end

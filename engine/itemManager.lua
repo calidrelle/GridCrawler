@@ -418,6 +418,11 @@ ItemManager.doDrop = function(mob)
         local lootX, lootY = mob.x, mob.y
         loot.x = lootX
         loot.y = lootY
+        -- si c'est des golds, on les positionne à la fin de la liste des items pour être afficher en dernier, donc dessus les parchemins
+        if loot.name == "gold" then
+            table.removeFromValue(items, loot)
+            table.insert(items, loot)
+        end
     end
 end
 
