@@ -315,6 +315,16 @@ ItemManager.getItems = function()
     return items
 end
 
+ItemManager.getPics = function()
+    local pics = {}
+    for _, item in pairs(items) do
+        if item.name == "pics" then
+            table.insert(pics, item)
+        end
+    end
+    return pics
+end
+
 ItemManager.getRandomItem = function()
     local r = love.math.random(#items)
     return items[r]

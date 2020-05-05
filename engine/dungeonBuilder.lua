@@ -116,6 +116,67 @@ local function vCorridor(y1, y2, x)
     end
 end
 
+local function getSurroundsWall(x, y)
+    local res = ""
+    for dy = -1, 1 do
+        for dx = -1, 1 do
+            if map[x + dx][y + dy].type == WALL then
+                res = res .. "x"
+            else
+                res = res .. "o"
+            end
+        end
+    end
+    return res
+end
+
+local function getDistNearestPics(cellX, cellY)
+    local x = cellX * TILESIZE
+    local y = cellY * TILESIZE
+    local minDist = 100000000
+    for _, item in pairs(ItemManager.getPics()) do
+        local d = math.dist(item.x, item.y, x, y)
+        if d < minDist then
+            minDist = d
+        end
+    end
+    return minDist
+end
+
+local function createPics()
+    local nbPicsTotal = Player.level * OPTIONS.DIFFICULTY + 5
+    local nbPics = 0
+
+    local nbTry = 0
+    while nbPics < nbPicsTotal do
+        local x = love.math.random(map.width)
+        local y = love.math.random(map.height)
+        if map[x][y].type == CORRIDOR then
+            local tmp = getSurroundsWall(x, y)
+            local ok = false
+            if tmp == "xxxoooxxx" then
+                ok = true
+            elseif tmp == "xoxxoxxox" then
+                ok = true
+            elseif tmp == "xxxooooxx" then
+                ok = true
+            else
+                ok = false
+            end
+            if ok and getDistNearestPics(x, y) < 40 then
+                ok = false
+            end
+            if ok or nbTry > 200 then
+                ItemManager.newPics(x * TILESIZE, y * TILESIZE)
+                nbPics = nbPics + 1
+            else
+                nbTry = nbTry + 1
+            end
+        end
+    end
+
+end
+
 local function createCorridors()
     -- Tant que toutes les pièces ne sont pas liées, on continue
     for i = 1, #rooms - 1 do
@@ -138,11 +199,9 @@ local function createCorridors()
     for _, value in pairs(corridors) do
         if map[value[1]][value[2]].type == WALL then
             map[value[1]][value[2]] = tileFactory.create(CORRIDOR)
-            if love.math.random(100) < math.ceil((Player.level * 1.5) + 2) then
-                ItemManager.newPics(value[1] * TILESIZE, value[2] * TILESIZE)
-            end
         end
     end
+    createPics()
 end
 
 local function removeWalls()
