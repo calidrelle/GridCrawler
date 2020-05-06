@@ -327,7 +327,7 @@ this.build = function(width, height, seed)
         end
     end
 
-    local nbMobs = 12 + Player.level * 3
+    local nbMobs = math.floor(10 + Player.level * 1.4 + (OPTIONS.DIFFICULTY * 1.5))
     for i = 1, nbMobs do
         local mob = mobsToCreate[love.math.random(#mobsToCreate)]
         if mob[1] == "slim" then

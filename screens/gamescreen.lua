@@ -104,6 +104,18 @@ local function drawGui()
     drawFichePerso()
 end
 
+local function strDiff(diff)
+    if diff == 1 then
+        return "Facile"
+    elseif diff == 2 then
+        return "Normal"
+    elseif diff == 3 then
+        return "Difficile"
+    else
+        return "Inconnu"
+    end
+end
+
 local function drawMinimap()
     local xoff = PIXELLARGE + (TILESIZE - 1) * SCALE
     local yoff = (TILESIZE - 1) * SCALE
@@ -133,7 +145,7 @@ local function drawMinimap()
     love.graphics.rectangle("fill", xoff + (Player.x / TILESIZE) * SCALE, yoff + (Player.y / TILESIZE) * SCALE, SCALE, SCALE)
 
     love.graphics.setFont(Font16)
-    love.graphics.print("Niv. " .. Player.level, xoff + SCALE, yoff + SCALE)
+    love.graphics.print("Niv. " .. Player.level .. ' (' .. strDiff(OPTIONS.DIFFICULTY) .. ")", xoff + SCALE, yoff - 6 * SCALE)
 end
 
 this.draw = function()

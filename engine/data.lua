@@ -43,7 +43,7 @@ DATA.slim = {
 -- GOBLIN
 DATA.goblin = {
     pv = 22,
-    atk = 7,
+    atk = 6,
     atkRange = 20,
     detectRange = 100,
     speed = 40,
@@ -56,7 +56,7 @@ DATA.goblin = {
 -- ZOMBIE
 DATA.zombie = {
     pv = 40,
-    atk = 6,
+    atk = 7,
     atkRange = 16,
     detectRange = 120,
     speed = 20,
