@@ -21,6 +21,7 @@ require("gameobjects.smoke")
 require("gameobjects.slim")
 require("gameobjects.goblin")
 require("gameobjects.zombie")
+require("gameobjects.vampire")
 
 MOBSTATES = {}
 MOBSTATES.NONE = ""

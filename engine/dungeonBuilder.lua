@@ -288,6 +288,14 @@ local function createZombies(level)
     ItemManager.newZombie(pos.x * TILESIZE, pos.y * TILESIZE, level)
 end
 
+local function createVampires(level)
+    local pos
+    repeat
+        pos = this.getEmptyLocation(0) -- monsters in rooms only
+    until pos.room ~= map.spawn.room and math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
+    ItemManager.newVampire(pos.x * TILESIZE, pos.y * TILESIZE, level)
+end
+
 this.build = function(width, height, seed)
     map = {}
     rooms = {}
@@ -331,14 +339,15 @@ this.build = function(width, height, seed)
         local mob = mobsToCreate[love.math.random(#mobsToCreate)]
         if mob[1] == "slim" then
             createSlims(mob[2])
-        end
-        if mob[1] == "goblin" then
+        elseif mob[1] == "goblin" then
             createGoblins(mob[2])
-        end
-        if mob[1] == "zombie" then
+        elseif mob[1] == "zombie" then
             createZombies(mob[2])
+        elseif mob[1] == "vampire" then
+            createVampires(mob[2])
+        else
+            error("Type de monstre inconnue : " .. mob[1])
         end
-
     end
     deployPages()
 

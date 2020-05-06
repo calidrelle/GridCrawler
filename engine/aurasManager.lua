@@ -3,6 +3,7 @@ AurasManager = {}
 local auras = {}
 
 require("gameobjects.aura_poison")
+require("gameobjects.aura_morsure")
 
 AurasManager.create = function(target, duration)
     local this = {}
@@ -21,15 +22,17 @@ AurasManager.addAura = function(aura, duration, target)
     table.insert(target.auras, aura)
     if aura == "Poison" then
         AurasManager.newAuraPoison(target, duration).start()
+    elseif aura == "Morsure" then
+        AurasManager.newAuraMorsure(target, duration).start()
     else
-        print("Aura inconnue : " .. aura)
+        error("Aura inconnue de aurasManager : " .. aura)
     end
 end
 
 AurasManager.update = function(dt)
     for _, aura in pairs(auras) do
         aura.duration = aura.duration - dt
-        aura.apply()
+        aura.apply(dt)
     end
     for i = #auras, 1, -1 do
         local aura = auras[i]

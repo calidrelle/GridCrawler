@@ -38,6 +38,8 @@ Assets.init = function()
     Assets.slime_run_anim = createQuad(0, 128)
     Assets.zombie_idle_anim = createQuad(288, 48)
     Assets.zombie_run_anim = createQuad(288, 64)
+    Assets.vampire_idle_anim = createQuad(288, 80)
+    Assets.vampire_run_anim = createQuad(288, 96)
 
     -- DONJONS
     Assets.empty_gray = createQuad(144, 0)
@@ -115,6 +117,7 @@ Assets.init = function()
     Assets.snd_aggro_slim = love.audio.newSource("sons/aggro_slim.wav", "static")
     Assets.snd_aggro_goblin = love.audio.newSource("sons/aggro_goblin.wav", "static")
     Assets.snd_aggro_zombie = love.audio.newSource("sons/aggro_zombie.wav", "static")
+    Assets.snd_aggro_vampire = love.audio.newSource("sons/aggro_vampire.wav", "static")
 
     print("Assets loaded")
 end

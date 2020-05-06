@@ -49,3 +49,5 @@ For later ideas :
 CREDITS:
 Musique shop : yujiboy https://yujiboy.itch.io/game-musics (n°24)
 Sprites : o-lobster https://o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack
+Sounds : https://freesound.org
+

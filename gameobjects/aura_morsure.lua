@@ -1,19 +1,19 @@
 -- This file is a template
 -- Penser à rajouter le require de ce fichier dans ItemManager.lua
-AurasManager.newAuraPoison = function(target, duration)
+AurasManager.newAuraMorsure = function(target, duration)
     local aura = AurasManager.create(target, duration)
-    aura.name = "Poison"
-    aura.initialValue = target.regenStamina
+    aura.name = "Morsure"
+    aura.initialValue = target.regenPv -- 0.5 pour le player pour restaurer
 
     aura.start = function()
     end
 
     aura.apply = function(dt)
-        target.regenStamina = 3
+        target.regenPv = 0.1
     end
 
     aura.finish = function()
-        target.regenStamina = aura.initialValue
+        target.regenPv = aura.initialValue -- restauration de la valeur originale
     end
 
     return aura

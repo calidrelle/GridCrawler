@@ -11,6 +11,21 @@ DATA.RATIO_EASY = 0.5
 DATA.RATIO_NORMAL = 0.75
 DATA.RATIO_HARD = 1
 
+--[[            1 2 3 4 5 6 7 8 9
+    slim1       x x x . . . . . .
+    slim2       . . . x x x . . .
+    slim3       . . . . . . x x x
+    goblin1     . x x x . . . . .
+    goblin2     . . . . x x x . .
+    goblin3     . . . . . . . x x
+    zombie1     . . x x x . . . .
+    zombie2     . . . . . x x x .
+    zombie3     . . . . . . . . x
+    vampire1    . x x x x . . . .
+    vampire2    . . . . . x x x x
+    vampire3    . . . . . . . x x
+]]
+
 -- Format : nom_mob, liveau, from, to
 DATA.mobLevels = {
     -- Slims
@@ -24,7 +39,11 @@ DATA.mobLevels = {
     -- Zombies
     {"zombie", 1, 3, 5}, --
     {"zombie", 2, 6, 8}, --
-    {"zombie", 3, 9, 9} --
+    {"zombie", 3, 9, 9}, --
+    -- Vampires
+    {"vampire", 1, 2, 5}, --
+    {"vampire", 2, 7, 9}, --
+    {"vampire", 3, 8, 9} --
 }
 
 ---- SLIM
@@ -64,4 +83,17 @@ DATA.zombie = {
     lootPoMin = 10,
     lootPoMax = 20,
     auraToDeal = {{"Poison", 10}}
+}
+
+-- VAMPIRE
+DATA.vampire = {
+    pv = 28,
+    atk = 5,
+    atkRange = 20,
+    detectRange = 100,
+    speed = 32,
+    atkSpeed = 0.20,
+    lootPoMin = 15,
+    lootPoMax = 30,
+    auraToDeal = {{"Morsure", 8}}
 }
