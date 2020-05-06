@@ -341,6 +341,9 @@ end
 ItemManager.draw = function()
     for _, item in pairs(items) do
         if item.x > -1 then
+            if item.state == MOBSTATES.SEEK then
+                Assets.draw(Assets.aggro, item.x, item.y)
+            end
             love.graphics.setColor(1, 1, 1)
             -- si l'item à une animation, on l'affiche, sinon, on affiche le quad de base
             if item.currentAnim ~= nil then
@@ -353,11 +356,7 @@ ItemManager.draw = function()
             if item.pv > 0 then
                 love.graphics.setColor(1, 0, 0)
                 love.graphics.rectangle("fill", item.x, item.y - 1, TILESIZE * item.pv / item.pvMax, 3) -- La barre de vie à la taille d'une tile
-                if item.state == MOBSTATES.SEEK then
-                    love.graphics.setColor(1, 1, 0)
-                else
-                    love.graphics.setColor(0, 0, 0)
-                end
+                love.graphics.setColor(0, 0, 0)
                 love.graphics.rectangle("line", item.x, item.y - 1, TILESIZE, 3) -- La barre de vie à la taille d'une tile
                 -- niveau du mob
                 love.graphics.setColor(0.85, 0.9, 1, 0.8)
@@ -400,11 +399,11 @@ ItemManager.doAttack = function(fighter, target)
     if damage > 0 then
         print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
         if target == Player then
-            Effects.createFloatingText(damage .. "", target.x, target.y, 4, 1, 0.7, 0)
+            Effects.createFloatingText("*", target.x, target.y, 2, 1, 0.7, 0)
             Effects.createCamShake(0.1, 10)
         else
             if target.displayPvLost then
-                Effects.createFloatingText(damage .. "", target.x, target.y, 4, 1, 1, 1)
+                Effects.createFloatingText("*", target.x, target.y, 2, 0.5, 1, 0.6)
             end
         end
         target.pv = target.pv - damage

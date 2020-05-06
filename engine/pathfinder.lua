@@ -52,20 +52,6 @@ Spot.create = function(x, y, isWall)
                 end
             end
         end
-
-        -- voisins sans les diagonales
-        -- if this.x < g.width then
-        --     table.insert(this.neighbors, g[this.x + 1][this.y])
-        -- end
-        -- if this.x > 1 then
-        --     table.insert(this.neighbors, g[this.x - 1][this.y])
-        -- end
-        -- if this.y < g.height then
-        --     table.insert(this.neighbors, g[this.x][this.y + 1])
-        -- end
-        -- if this.y > 1 then
-        --     table.insert(this.neighbors, g[this.x][this.y - 1])
-        -- end
     end
 
     this.draw = function(r, g, b)

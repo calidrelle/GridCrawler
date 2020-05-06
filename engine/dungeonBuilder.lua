@@ -315,7 +315,6 @@ this.build = function(width, height, seed)
 
     -- on créé les autres entités du niveau par rapport à la position du player
     -- Items présents : les pics et la sortie
-    -- createPagesPieces()
     createBarrels(love.math.random(15, 25))
     createChests(love.math.random(1, 3))
 
