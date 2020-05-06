@@ -1,6 +1,6 @@
 -- This file is a template
 -- Penser à rajouter le require de ce fichier dans ItemManager.lua
-ItemManager.newGoblin = function(tileX, tileY)
+ItemManager.newGoblin = function(tileX, tileY, level)
     local item = ItemManager.create(Assets.goblin_idle_anim, tileX, tileY)
     item.name = "goblin"
     item.solid = true
@@ -8,6 +8,7 @@ ItemManager.newGoblin = function(tileX, tileY)
     item.canDropPage = true
     table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.goblin)))
 
+    item.level = level
     item.initMobStats(DATA.goblin)
     item.animIdle = require("engine.animation").createNew(Assets.goblin_idle_anim, 6, 0.1, true)
     item.animRun = require("engine.animation").createNew(Assets.goblin_run_anim, 6, 0.1, true)

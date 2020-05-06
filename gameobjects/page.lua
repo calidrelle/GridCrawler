@@ -1,7 +1,7 @@
 -- This file is a template
 -- Penser à rajouter le require de ce fichier dans ItemManager.lua
 ItemManager.newPage = function(tileX, tileY, num)
-    local item = ItemManager.create(Assets.page[num], tileX, tileY)
+    local item = ItemManager.create(Assets.page[num], tileX, tileY, TILESIZE, TILESIZE, true)
     item.name = "page" .. num
     item.numPage = num
     item.solid = false -- item collide with player/mob ?

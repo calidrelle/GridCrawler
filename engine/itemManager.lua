@@ -29,7 +29,7 @@ MOBSTATES.SEEK = "seek"
 MOBSTATES.FIGHT = "fight"
 MOBSTATES.CHANGEDIR = "change"
 
-ItemManager.create = function(quad, x, y, width, height)
+ItemManager.create = function(quad, x, y, width, height, onTop)
     local item = {}
     item.quad = quad
     item.x = x
@@ -53,6 +53,7 @@ ItemManager.create = function(quad, x, y, width, height)
     item.jumpingTimer = 0
     item.isSelectable = true
 
+    item.level = 1
     item.pv = 0
     item.pvMax = 0
     item.atkRange = 0
@@ -77,6 +78,7 @@ ItemManager.create = function(quad, x, y, width, height)
     end
 
     item.initMobStats = function(mobData)
+        print("Stats pour un " .. item.name .. " de niveau " .. item.level)
         item.initStats(mobData.pv, mobData.atk, mobData.atkRange, mobData.detectRange, mobData.speed, mobData.atkSpeed, mobData.auraToDeal)
     end
 
@@ -246,7 +248,12 @@ ItemManager.create = function(quad, x, y, width, height)
         end
     end
 
-    table.insert(items, item)
+    -- Si c'est une page, on l'insert en premier
+    if onTop then
+        table.insert(items, 1, item)
+    else
+        table.insert(items, item)
+    end
     return item
 end
 
@@ -334,9 +341,6 @@ ItemManager.draw = function()
     for _, item in pairs(items) do
         if item.x > -1 then
             love.graphics.setColor(1, 1, 1)
-            if item.state == MOBSTATES.SEEK then
-                Assets.draw(Assets.aggro, item.x, item.y)
-            end
             -- si l'item à une animation, on l'affiche, sinon, on affiche le quad de base
             if item.currentAnim ~= nil then
                 item.currentAnim.draw(item, item.x, item.y, item.flip)
@@ -348,8 +352,17 @@ ItemManager.draw = function()
             if item.pv > 0 then
                 love.graphics.setColor(1, 0, 0)
                 love.graphics.rectangle("fill", item.x, item.y - 1, TILESIZE * item.pv / item.pvMax, 3) -- La barre de vie à la taille d'une tile
-                love.graphics.setColor(0, 0, 0)
+                if item.state == MOBSTATES.SEEK then
+                    love.graphics.setColor(1, 1, 0)
+                else
+                    love.graphics.setColor(0, 0, 0)
+                end
                 love.graphics.rectangle("line", item.x, item.y - 1, TILESIZE, 3) -- La barre de vie à la taille d'une tile
+                -- niveau du mob
+                love.graphics.setColor(0.85, 0.9, 1, 0.8)
+                for l = 1, item.level do
+                    love.graphics.circle("fill", item.x + 1 * l * 2, item.y - 3, 1)
+                end
             end
             if DevMode() then
                 if item.path ~= nil then
@@ -428,11 +441,6 @@ ItemManager.doDrop = function(mob)
         local lootX, lootY = mob.x, mob.y
         loot.x = lootX
         loot.y = lootY
-        -- si c'est des golds, on les positionne à la fin de la liste des items pour être afficher en dernier, donc dessus les parchemins
-        if loot.name == "gold" then
-            table.removeFromValue(items, loot)
-            table.insert(items, loot)
-        end
     end
 end
 

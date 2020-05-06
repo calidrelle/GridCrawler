@@ -1,6 +1,6 @@
 -- This file is a template
 -- Penser à rajouter le require de ce fichier dans ItemManager.lua
-ItemManager.newZombie = function(tileX, tileY)
+ItemManager.newZombie = function(tileX, tileY, level)
     local item = ItemManager.create(Assets.zombie_idle_anim, tileX, tileY)
     item.name = "zombie"
     item.solid = true
@@ -8,6 +8,7 @@ ItemManager.newZombie = function(tileX, tileY)
     item.canDropPage = true
     table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.zombie)))
 
+    item.level = level
     item.initMobStats(DATA.zombie)
     item.animIdle = require("engine.animation").createNew(Assets.zombie_idle_anim, 4, 0.18, true)
     item.animRun = require("engine.animation").createNew(Assets.zombie_run_anim, 4, 0.18, true)

@@ -263,34 +263,29 @@ local function createChests(nbTotal)
     end
 end
 
-local function createSlims(nbTotal)
+local function createSlims(level)
     local pos
-    for _ = 1, nbTotal do
-        repeat
-            pos = this.getEmptyLocation(0) -- monsters in rooms only
-        until pos.room ~= map.spawn.room and math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
-        ItemManager.newSlim(pos.x * TILESIZE, pos.y * TILESIZE)
-    end
+    repeat
+        pos = this.getEmptyLocation(0) -- monsters in rooms only
+    until pos.room ~= map.spawn.room and math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
+    ItemManager.newSlim(pos.x * TILESIZE, pos.y * TILESIZE, level)
 end
 
-local function createGoblins(nbTotal)
+local function createGoblins(level)
     local pos
-    for _ = 1, nbTotal do
-        repeat
-            pos = this.getEmptyLocation(0) -- monsters in rooms only
-        until pos.room ~= map.spawn.room and math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
-        ItemManager.newGoblin(pos.x * TILESIZE, pos.y * TILESIZE)
-    end
+    repeat
+        pos = this.getEmptyLocation(0) -- monsters in rooms only
+    until pos.room ~= map.spawn.room and math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
+    ItemManager.newGoblin(pos.x * TILESIZE, pos.y * TILESIZE, level)
+
 end
 
-local function createZombies(nbTotal)
+local function createZombies(level)
     local pos
-    for _ = 1, nbTotal do
-        repeat
-            pos = this.getEmptyLocation(0) -- monsters in rooms only
-        until pos.room ~= map.spawn.room and math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
-        ItemManager.newZombie(pos.x * TILESIZE, pos.y * TILESIZE)
-    end
+    repeat
+        pos = this.getEmptyLocation(0) -- monsters in rooms only
+    until pos.room ~= map.spawn.room and math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
+    ItemManager.newZombie(pos.x * TILESIZE, pos.y * TILESIZE, level)
 end
 
 this.build = function(width, height, seed)
@@ -323,9 +318,29 @@ this.build = function(width, height, seed)
     -- createPagesPieces()
     createBarrels(love.math.random(15, 25))
     createChests(love.math.random(1, 3))
-    createSlims(DATA.slim.mobLevel[Player.level])
-    createGoblins(DATA.goblin.mobLevel[Player.level])
-    createZombies(DATA.zombie.mobLevel[Player.level])
+
+    -- Création des mobs selon le niveau du Player
+    local mobsToCreate = {}
+    for _, mobLev in pairs(DATA.mobLevels) do
+        if mobLev[3] <= Player.level and Player.level <= mobLev[4] then
+            table.insert(mobsToCreate, mobLev)
+        end
+    end
+
+    local nbMobs = 12 + Player.level * 3
+    for i = 1, nbMobs do
+        local mob = mobsToCreate[love.math.random(#mobsToCreate)]
+        if mob[1] == "slim" then
+            createSlims(mob[2])
+        end
+        if mob[1] == "goblin" then
+            createGoblins(mob[2])
+        end
+        if mob[1] == "zombie" then
+            createZombies(mob[2])
+        end
+
+    end
     deployPages()
 
     map.collideAt = function(x, y)

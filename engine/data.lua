@@ -11,9 +11,24 @@ DATA.RATIO_EASY = 0.5
 DATA.RATIO_NORMAL = 0.75
 DATA.RATIO_HARD = 1
 
+-- Format : nom_mob, liveau, from, to
+DATA.mobLevels = {
+    -- Slims
+    {"slim", 1, 1, 3}, --
+    {"slim", 2, 4, 6}, --
+    {"slim", 3, 7, 9}, --
+    -- Goblins
+    {"goblin", 1, 2, 4}, -- 
+    {"goblin", 2, 5, 7}, -- 
+    {"goblin", 3, 8, 9}, --
+    -- Zombies
+    {"zombie", 1, 3, 5}, --
+    {"zombie", 2, 6, 8}, --
+    {"zombie", 3, 9, 9} --
+}
+
 ---- SLIM
 DATA.slim = {
-    mobLevel = {12, 8, 4, 0, 0, 4, 4, 8, 12},
     pv = 16,
     atk = 4,
     atkRange = 20,
@@ -27,7 +42,6 @@ DATA.slim = {
 
 -- GOBLIN
 DATA.goblin = {
-    mobLevel = {0, 4, 8, 8, 4, 4, 8, 12, 12},
     pv = 22,
     atk = 7,
     atkRange = 20,
@@ -41,7 +55,6 @@ DATA.goblin = {
 
 -- ZOMBIE
 DATA.zombie = {
-    mobLevel = {0, 0, 2, 4, 8, 12, 12, 12, 12},
     pv = 40,
     atk = 6,
     atkRange = 16,

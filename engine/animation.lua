@@ -36,7 +36,7 @@ this.createNew = function(quad, nbFrames, secPerFrame, loop)
 
     function anim:draw(x, y, flip)
         if flip then
-            love.graphics.draw(Assets.getSheet(), anim.quads[frame], x + TILESIZE, y, 0, -1, 1, 1)
+            love.graphics.draw(Assets.getSheet(), anim.quads[frame], x + TILESIZE, y, 0, -1, 1)
         else
             love.graphics.draw(Assets.getSheet(), anim.quads[frame], x, y)
         end

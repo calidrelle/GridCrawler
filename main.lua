@@ -1,5 +1,6 @@
 -- [Wiki Love2D](https://love2d.org/wiki/Main_Page), [Wiki LUA](https://www.lua.org/docs.html)
 -- [Fonction mathématiques Love2D](https://love2d.org/wiki/General_math)
+-- [Easing functions](https://easings.net/)
 love.graphics.setDefaultFilter("nearest") -- pas d'aliasing
 
 -------------------[[ GLOBAL FUNCTIONS ]]
