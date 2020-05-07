@@ -2,14 +2,19 @@ Background = {}
 
 local timer = 0
 local scale
+local alpha = 1
 
 Background.update = function(dt)
     timer = timer + dt * 0.3
     scale = (1 + 1 / 20 + math.sin(timer) / 20)
 end
 
+Background.setAlpha = function(value)
+    alpha = value
+end
+
 Background.draw = function()
-    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setColor(1, 1, 1, alpha)
     love.graphics.draw(Assets.titleScreen, WIDTH / 2, HEIGHT / 2, 0, WIDTH / Assets.titleScreen:getWidth() * scale,
                        HEIGHT / Assets.titleScreen:getHeight() * scale, Assets.titleScreen:getWidth() / 2,
                        Assets.titleScreen:getHeight() / 2)
