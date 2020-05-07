@@ -69,6 +69,10 @@ local function doStartHard()
     end
 end
 
+local function doOptions()
+    ScreenManager.setScreen("OPTIONS")
+end
+
 this.update = function(dt)
     if btnPlay.clicked then
         doBackInGame()
@@ -82,7 +86,7 @@ this.update = function(dt)
         doStartHard()
 
     elseif btnOptions.clicked then
-        ScreenManager.setScreen("OPTIONS")
+        doOptions()
     elseif btnQuit.clicked then
         ScreenManager.setScreen("QUIT")
     end
@@ -103,6 +107,8 @@ this.keypressed = function(key)
         doStartNormal()
     elseif key == "3" or key == "kp3" then
         doStartHard()
+    elseif key == "o" then
+        doOptions()
     else
         print(key)
     end

@@ -18,6 +18,7 @@ this.update = function(dt)
         alpha = alpha + dt / 2
     end
     Background.setAlpha(alpha)
+    MUSICPLAYER:setVolume(alpha * OPTIONS.volume / 100)
 end
 
 this.draw = function()
