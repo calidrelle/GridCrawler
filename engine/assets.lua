@@ -13,6 +13,7 @@ end
 Assets.init = function()
     -- IMAGES
     Assets.titleScreen = love.graphics.newImage("images/EcranTitre.png")
+    Assets.title = love.graphics.newImage("images/title.png")
     Assets.button = love.graphics.newImage("images/button.png")
     Assets.gui = love.graphics.newImage("images/gui.png")
     Assets.gui_bottom = love.graphics.newImage("images/gui_bottom.png")
