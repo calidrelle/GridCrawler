@@ -78,10 +78,12 @@ function wile.boolToStr(value)
 end
 -------------------[[ GLOBAL FUNCTIONS ]]
 
+local optionsScreen = require("screens.optionsscreen")
+local splashscreen = require("screens.splashscreen")
+local tutoscreen = require("screens.tutoscreen")
 local gameScreen = require("screens.gamescreen")
 local menuScreen = require("screens.menuscreen")
 local gameQuit = require("screens.quitscreen")
-local optionsScreen = require("screens.optionsscreen")
 local keysOptionsScreen = require("screens.keysoptions")
 local shopScreen = require("screens.shopscreen")
 local outsideScreen = require("screens.outside")
@@ -93,6 +95,7 @@ Font32 = love.graphics.newFont("fonts/decterm.ttf", 32)
 Font16 = love.graphics.newFont("fonts/decterm.ttf", 16)
 Font8 = love.graphics.newFont("fonts/decterm.ttf", 8)
 FontVendor12 = love.graphics.newFont("fonts/Pixellari.ttf", 12)
+FontVendor20 = love.graphics.newFont("fonts/Pixellari.ttf", 20)
 FontVendor32 = love.graphics.newFont("fonts/Pixellari.ttf", 32)
 local musicIntro
 local musicLoops = {}
@@ -110,6 +113,7 @@ function love.load()
 
     math.randomseed(love.timer.getTime())
 
+    require("gameobjects.background")
     require("engine.data")
     require("engine.assets").init()
     require("engine.itemManager")
@@ -132,7 +136,7 @@ function love.load()
     MUSICPLAYER:play()
     MUSICPLAYER:setVolume(OPTIONS.volume / 100)
 
-    ScreenManager.setScreen("MENU")
+    ScreenManager.setScreen("SPLASH")
 end
 
 ScreenManager = {}
@@ -144,6 +148,10 @@ ScreenManager.setScreen = function(name)
     Player.inTheShop = false
     if name == "MENU" then
         screen = menuScreen
+    elseif name == "SPLASH" then
+        screen = splashscreen
+    elseif name == "TUTO" then
+        screen = tutoscreen
     elseif name == "GAME" then
         screen = gameScreen
     elseif name == "NEWGAME" then
@@ -187,6 +195,7 @@ end
 
 function love.update(dt)
     dt = math.min(dt, 1 / 60)
+    Background.update(dt)
     updateMusic()
     GUI.update(dt)
     screen.update(dt)

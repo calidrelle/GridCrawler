@@ -44,6 +44,7 @@ end
 
 local function doStartEasy()
     if btnPlayEasy.visible then
+        MUSICPLAYER:stop()
         OPTIONS.DIFFICULTY = 1
         ScreenManager.setScreen("GAME")
         ScreenManager.started = true
@@ -52,6 +53,7 @@ end
 
 local function doStartNormal()
     if btnPlayNormal.visible then
+        MUSICPLAYER:stop()
         OPTIONS.DIFFICULTY = 2
         ScreenManager.setScreen("GAME")
         ScreenManager.started = true
@@ -60,6 +62,7 @@ end
 
 local function doStartHard()
     if btnPlayHard.visible then
+        MUSICPLAYER:stop()
         OPTIONS.DIFFICULTY = 3
         ScreenManager.setScreen("GAME")
         ScreenManager.started = true
@@ -86,8 +89,7 @@ this.update = function(dt)
 end
 
 this.draw = function()
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.draw(Assets.titleScreen, 0, 0, 0, WIDTH / Assets.titleScreen:getWidth(), HEIGHT / Assets.titleScreen:getHeight())
+    Background.draw()
 end
 
 this.keypressed = function(key)

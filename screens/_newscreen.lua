@@ -18,8 +18,7 @@ this.update = function(dt)
 end
 
 this.draw = function()
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.draw(Assets.titleScreen, 0, 0, 0, WIDTH / Assets.titleScreen:getWidth(), HEIGHT / Assets.titleScreen:getHeight())
+    Background.draw()
 end
 
 this.keypressed = function(key)

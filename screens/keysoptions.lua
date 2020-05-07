@@ -69,8 +69,7 @@ this.update = function(dt)
 end
 
 this.draw = function()
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.draw(Assets.titleScreen, 0, 0, 0, WIDTH / Assets.titleScreen:getWidth(), HEIGHT / Assets.titleScreen:getHeight())
+    Background.draw()
 
     for i = 1, 6 do
         love.graphics.setColor(0.2, 0.2, 0.2, 0.8)

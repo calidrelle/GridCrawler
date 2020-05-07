@@ -78,8 +78,8 @@ this.load = function()
     GUI.reset()
     xpos = (WIDTH - 140 * SCALE) / 2
     ypos = HEIGHT / 3
-    btnVolDec = GUI.addButton("Volume -", xpos, ypos)
-    btnVolInc = GUI.addButton("Volume +", xpos + 80 * SCALE, ypos)
+    btnVolDec = GUI.addButton("Musique -", xpos, ypos)
+    btnVolInc = GUI.addButton("Musique +", xpos + 80 * SCALE, ypos)
 
     btnFullscreen = GUI.addButton("Plein écran", xpos, ypos + 80)
 
@@ -133,8 +133,7 @@ this.update = function(dt)
 end
 
 this.draw = function()
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.draw(Assets.titleScreen, 0, 0, 0, WIDTH / Assets.titleScreen:getWidth(), HEIGHT / Assets.titleScreen:getHeight())
+    Background.draw()
     GUI.drawProgressBar(xpos, ypos - 30, SCALE * 140, 20, OPTIONS.volume, 100, 0.8, 0.1, 0.1)
 end
 

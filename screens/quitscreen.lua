@@ -7,8 +7,13 @@ table.insert(credits, "https://www.gamecodeur.fr")
 table.insert(credits, "")
 table.insert(credits, "     CREDITS:")
 table.insert(credits, "Sprites              : o-lobster  https://o-lobster.itch.io")
+table.insert(credits, "                       0x72       https://0x72.itch.io/pixeldudesmaker")
 table.insert(credits, "Sprites écran de fin : jestan     https://jestan.itch.io/classic-rpg")
 table.insert(credits, "Musique shop et fin  : yujiboy    https://yujiboy.itch.io")
+
+table.insert(credits, "Musique donjon       : Wile avec  https://beepbox.co")
+table.insert(credits, "Sons                 : Wile avec  http://www.superflashbros.net/as3sfxr/")
+table.insert(credits, "Sons des monstres    :            https://freesound.org")
 
 local btnPlay
 local btnQuit
@@ -32,11 +37,10 @@ end
 this.draw = function()
     local xpos = WIDTH * 1 / 4
     local ypos = HEIGHT * 1 / 3
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.draw(Assets.titleScreen, 0, 0, 0, WIDTH / Assets.titleScreen:getWidth(), HEIGHT / Assets.titleScreen:getHeight())
+    Background.draw()
 
     love.graphics.setColor(0.21, 0.21, 0.21, 0.85)
-    love.graphics.rectangle("fill", xpos, ypos, WIDTH / 2, HEIGHT / 3)
+    love.graphics.rectangle("fill", xpos, ypos, WIDTH / 2, 310)
 
     love.graphics.setColor(1, 1, 1, 1)
     for i, value in pairs(credits) do
