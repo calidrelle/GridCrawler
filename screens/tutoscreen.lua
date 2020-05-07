@@ -12,6 +12,7 @@ this.load = function()
     xpos = 50
     ypos = HEIGHT / 4
     large = WIDTH - xpos * 2
+    Background.setAlpha(1)
 end
 
 local function doGoMenu()
