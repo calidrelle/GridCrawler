@@ -66,7 +66,6 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
     item.aurasToDeal = {}
 
     item.initStats = function(pv, atk, atkRange, detectRange, speed, atkSpeed, auraToDeal)
-        print("initStats d'un " .. item.name .. " de niveau " .. item.level)
         local coef = item.level * 0.5 + 0.5
         item.pv = pv * coef
         item.pvMax = pv * coef

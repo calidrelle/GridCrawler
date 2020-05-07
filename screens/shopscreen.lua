@@ -171,9 +171,6 @@ this.draw = function()
     Player.draw()
     Assets.draw(Assets.vendor_topdoor, TILESIZE * 6, TILESIZE * 11)
 
-    love.graphics.setColor(0.867, 0.835, 0.251)
-    love.graphics.print(Inventory.getPo() .. " po", 96, 160)
-
     love.graphics.pop() -------------------------------------
 
     love.graphics.setFont(FontVendor32)
@@ -191,6 +188,13 @@ this.draw = function()
             GUI.addInfoBull(stat.name .. " = " .. stat.cost .. " po\nValeur actuelle : " .. wile.display2decimale(stat.value), 3)
         end
     end
+    local xpos = PIXELLARGE + 20 * SCALE
+    local ypos = 80 * SCALE
+    love.graphics.setColor(0.8, 0.8, 0.8, 0.8)
+    love.graphics.rectangle("fill", xpos - 10, ypos - 10, 41 * SCALE, 41 * SCALE)
+    Player.drawFichePerso()
+    love.graphics.setColor(0.867, 0.835, 0.251)
+    love.graphics.print("GOLD:" .. Inventory.getPo(), PIXELLARGE + 20 * SCALE, 80 * SCALE + 88)
 end
 
 this.keypressed = function(key)

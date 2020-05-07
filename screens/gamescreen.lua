@@ -67,23 +67,6 @@ this.update = function(dt)
     end
 end
 
-local function drawFichePerso()
-    local xpos = PIXELLARGE + 20 * SCALE
-    local ypos = 76 * SCALE
-    love.graphics.setFont(Font20)
-    love.graphics.setColor(1, 1, 1, 1)
-
-    local stats = {}
-    table.insert(stats, {"VIE", Player.pvMax})
-    table.insert(stats, {"ATK", Player.atk})
-    table.insert(stats, {"DEF", Player.def})
-    table.insert(stats, {"VIT", wile.display2decimale(Player.speedInit / 120 * 100) .. "%"})
-
-    for i = 1, #stats do
-        love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos, TILESIZE + ypos + 22 * (i - 1))
-    end
-end
-
 local function drawGui()
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.draw(Assets.gui, WIDTH - 100 * SCALE, 0, 0, SCALE, SCALE)
@@ -106,7 +89,6 @@ local function drawGui()
         love.graphics.setColor(1, 1, 1, 1 - (Player.pv / Player.pvMax))
         love.graphics.draw(Assets.lowlife, 0, 0, 0, PIXELLARGE, HEIGHT / 768)
     end
-    drawFichePerso()
 end
 
 local function strDiff(diff)
@@ -190,6 +172,7 @@ this.draw = function()
     AurasManager.draw()
 
     drawGui()
+    Player.drawFichePerso()
     Inventory.draw()
     drawMinimap()
 

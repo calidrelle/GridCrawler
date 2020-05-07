@@ -262,6 +262,22 @@ this.update = function(dt)
     end
 end
 
+this.drawFichePerso = function()
+    local xpos = PIXELLARGE + 20 * SCALE
+    local ypos = 80 * SCALE
+    love.graphics.setFont(Font20)
+    love.graphics.setColor(1, 1, 1, 1)
+    local stats = {}
+    table.insert(stats, {"VIE", Player.pvMax})
+    table.insert(stats, {"ATK", Player.atk})
+    table.insert(stats, {"DEF", Player.def})
+    table.insert(stats, {"VIT", wile.display2decimale(Player.speedInit / 120 * 100) .. "%"})
+
+    for i = 1, #stats do
+        love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos, ypos + 22 * (i - 1))
+    end
+end
+
 this.draw = function()
     love.graphics.setColor(1, 1, 1)
     this.currentAnim.draw(self, this.x, this.y, this.flip)
