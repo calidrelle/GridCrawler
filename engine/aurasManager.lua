@@ -56,13 +56,14 @@ end
 
 AurasManager.draw = function()
     -- On affiche les auras du joueur
-    local ypos = TILESIZE * SCALE
+    local xpos = PIXELLARGE + 20 * SCALE
+    local ypos = 80 * SCALE
     love.graphics.setFont(Font20)
     love.graphics.setColor(1, 1, 1, 1)
     for _, aura in pairs(auras) do
         if aura.target == Player then
-            Assets.draw(aura.icon, PIXELLARGE - 72 * SCALE, ypos - 5, false, SCALE - 1)
-            love.graphics.print(aura.name .. " (" .. math.ceil(aura.duration) .. ")", PIXELLARGE - 60 * SCALE, ypos)
+            Assets.draw(aura.icon, xpos, ypos - 5, false, SCALE - 1)
+            love.graphics.print(aura.name .. " (" .. wile.display1decimale(aura.duration) .. ")", xpos + TILESIZE * 2, ypos)
             ypos = ypos + 24
         end
     end

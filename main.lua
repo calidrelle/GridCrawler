@@ -64,6 +64,11 @@ wile = {}
 function wile.display2decimale(value)
     return math.floor(value * 100) / 100
 end
+
+function wile.display1decimale(value)
+    return math.floor(value * 10) / 10
+end
+
 function wile.boolToStr(value)
     if value == nil then
         return "nil"

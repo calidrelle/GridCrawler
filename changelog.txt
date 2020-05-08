@@ -1,3 +1,6 @@
+--- v0.5.3
+Les auras sont affichées sous la minimap et non dans l'écran de jeu
+
 --- v0.5.2
 La barre de vie est violette si on est sous morsure
 Les monstres regardent à nouveaux dans le sens de leurs déplacements

@@ -173,13 +173,11 @@ this.draw = function()
     Effects.draw()
 
     love.graphics.pop() ----------------------------------------------------------------------- POP
-    -- les auras
-    AurasManager.draw()
 
     drawGui()
+    AurasManager.draw()
     if love.keyboard.isDown(OPTIONS.SHOWCARAC) then
         Player.drawFichePerso()
-        print("REGEN : PV = " .. Player.regenPv .. ", STAM = " .. Player.regenStamina)
     end
     Inventory.draw()
     drawMinimap()
