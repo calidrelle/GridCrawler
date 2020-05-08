@@ -46,22 +46,17 @@ this.draw = function()
     printUnder("Bienvenue dans GridCrawler", FontVendor32)
     love.graphics.setColor(0.8, 0.8, 1, 1)
     printUnder("\n")
-    printUnder("Le Roi de Gridland a estimé que vous n'étiez pas assez digne de le servir, quel affront !")
-    printUnder(
-        "Pour lui prouvez votre valeur et rendre fière votre famille, vous devez sortir vivant du donjon dans lequel il vous a emprisonné.\nChacun des 9 étages de ce donjon vous mettra à l'épreuve, mais un marchand vous aidera entre chaque étage, s'il le peut.")
-
-    printUnder("\n")
     printUnder("  - A chaque étage, trouve les 8 parchemins pour reconstituer le grimoire d'ouverture de la grille")
     printUnder("  - Pour te déplacer, utilise les touches ([Z], [Q], [S]] et [D] par défaut)")
-    printUnder("  - Saute par dessus les pics pour ne pas de faire empaler ([Espace] par défaut)")
+    printUnder("  - Saute par dessus les pics pour ne pas te faire empaler ([Espace] par défaut)")
     printUnder("  - Utilise ton épée pour te battre et pour casser tout ce que tu peux ([ctrl droit] par défaut)")
     printUnder("                 (Tu peux changer ces touches dans les options)")
-    printUnder("  - Les monstres et les objets donnent de l'or et parfois, un parchemin")
+    printUnder("  - Les monstres et les objets donnent de l'or et parfois un parchemin")
     printUnder(
-        "  - Une fois la grille ouverte, tu as accès au marchand qui peut te vendre des améliorations avant de descendre au niveau inférieur")
+        "  - Une fois la grille ouverte, tu as accès au marchand. Tu peux lui achdeter des améliorations et avant de descendre au niveau inférieur")
 
     printUnder(
-        "\n ** A chaque fois que tu entres chez le vendeur, ta progression est sauvée pour te permettre de quitter le jeu. Mais si tu descends dans le donjon, cette progression est effacée et tu devras survivre au niveau suivant.")
+        " ** A chaque fois que tu entres chez le vendeur, ta progression est sauvée pour te permettre de quitter le jeu. Mais si tu descends dans le donjon, cette progression est effacée et tu devras survivre au niveau suivant.")
     printUnder("\n\n                                                                                           Bonne chance, Aventurier !!")
 end
 

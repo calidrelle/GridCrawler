@@ -25,9 +25,9 @@ DATA.RATIO_HARD = 1
     zombie1     . . x x x . . . .
     zombie2     . . . . . x x x .
     zombie3     . . . . . . . . x
-    vampire1    . x x x x . . . .
-    vampire2    . . . . . x x x x
-    vampire3    . . . . . . . x x
+    vampire1    . . . x x x . . .
+    vampire2    . . . . . . x x x
+    vampire3    . . . . . . . . x
 ]]
 
 -- Format : nom_mob, liveau, from, to
@@ -45,7 +45,7 @@ DATA.mobLevels = {
     {"zombie", 2, 6, 8}, --
     {"zombie", 3, 9, 9}, --
     -- Vampires
-    {"vampire", 1, 2, 5}, --
+    {"vampire", 1, 4, 6}, --
     {"vampire", 2, 7, 9}, --
     {"vampire", 3, 8, 9} --
 }
