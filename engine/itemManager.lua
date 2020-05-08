@@ -158,8 +158,10 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
             -- déplacement à l'ancienne            
             if ox > ix then
                 item.dx = 1
+                item.flip = false
             elseif ox < ix then
                 item.dx = -1
+                item.flip = true
             end
             if oy < iy then
                 item.dy = -1
@@ -171,8 +173,12 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
             if dist > 1 then
                 local px = item.path.path[dist - 1].x * TILESIZE
                 local py = item.path.path[dist - 1].y * TILESIZE
+                if math.abs(px - item.x) < 2 then
+                    px = item.x
+                end
                 item.dx = math.sign(px - item.x)
                 item.dy = math.sign(py - item.y)
+                item.flip = item.dx < 0
             end
         end
     end
