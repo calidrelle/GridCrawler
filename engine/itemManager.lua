@@ -155,7 +155,7 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
         local ix, iy = item.getMapCell()
         item.path = Map.pathfinder.getPath(ix, iy, ox, oy)
         if item.path == nil then
-            -- déplacement à l'ancienne
+            -- déplacement à l'ancienne            
             if ox > ix then
                 item.dx = 1
             elseif ox < ix then
@@ -198,7 +198,7 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
                     item.aggroSound()
                 end
             end
-            if math.random() * 100 < 2 then
+            if math.random(100) <= DATA.PCENTCHANGEDIR then
                 item.state = MOBSTATES.CHANGEDIR
             end
 
@@ -219,11 +219,6 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
             else
                 -- poursuite du Player
                 item.seek(Player)
-                --[[ avec le pathfinder, on ne vérifie pas les collisions
-                if item.checkCollision(dt) then
-                --     -- item.state = MOBSTATES.CHANGEDIR
-                     return
-                end ]] --
             end
 
         elseif item.state == MOBSTATES.FIGHT then

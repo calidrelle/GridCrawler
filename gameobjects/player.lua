@@ -211,11 +211,13 @@ this.update = function(dt)
         end
         return
     end
+
     if this.stamina < 100 then
         this.stamina = this.stamina + this.regenStamina * dt
     else
         this.stamina = 100
     end
+
     -- Déplacements
     this.speed = this.speedInit
     if love.keyboard.isDown(OPTIONS.LEFT) then
@@ -229,6 +231,11 @@ this.update = function(dt)
         this.dy = -1
     elseif love.keyboard.isDown(OPTIONS.DOWN) then
         this.dy = 1
+    end
+    -- Gestion des diagonales
+    if (this.dx * this.dy) ~= 0 then
+        this.dx = this.dx * 0.707
+        this.dy = this.dy * 0.707
     end
 
     if this.stamina == 100 then

@@ -4,7 +4,11 @@ DATA.barrel = {lootPoMin = 1, lootPoMax = 5}
 DATA.chest = {lootPoMin = 5, lootPoMax = 15}
 LEVELMAX = 9 -- rajouter des mobLevel si ça change
 
-DATA.PCENTNOCELL = 10 -- Pourcentage de chance que le vendeur n'ait rien à vendre
+-- Pourcentage de chance que le vendeur n'ait rien à vendre
+DATA.PCENTNOCELL = 10
+
+-- Pourcentage de chance qu'un mob change de direction
+DATA.PCENTCHANGEDIR = 2
 
 -- RATIOS pour les niveau de diffucultés
 DATA.RATIO_EASY = 0.5
