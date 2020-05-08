@@ -20,6 +20,11 @@ this.load = function()
     btnPlayNormal = GUI.addButton("2. Partie normal", x, y - 80, 100 * SCALE)
     btnPlayHard = GUI.addButton("3. Partie difficile", x, y - 20, 100 * SCALE)
 
+    if DATA.SaveExists() then
+        ScreenManager.started = true
+        btnReplay.hints = "Attention, recommencer une partie efface la progression en cours"
+    end
+
     if ScreenManager.started then
         btnPlayEasy.visible = false
         btnPlayNormal.visible = false
@@ -37,8 +42,13 @@ end
 
 local function doBackInGame()
     if btnPlay.visible then
-        ScreenManager.setScreen("GAME")
-        ScreenManager.started = true
+        if DATA.SaveExists() then
+            DATA.LoadGame()
+            ScreenManager.setScreen("VENDOR")
+        else
+            ScreenManager.setScreen("GAME")
+            ScreenManager.started = true
+        end
     end
 end
 
@@ -102,7 +112,11 @@ this.keypressed = function(key)
     elseif key == "return" or key == "kpenter" then
         doBackInGame()
     elseif key == "1" or key == "kp1" then
-        doStartEasy()
+        if btnPlayEasy.visible then
+            doStartEasy()
+        elseif btnPlay.visible then
+            doBackInGame()
+        end
     elseif key == "2" or key == "kp2" then
         doStartNormal()
     elseif key == "3" or key == "kp3" then

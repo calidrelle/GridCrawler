@@ -16,28 +16,8 @@ Pour push le tag  : git push --tags
 pour le changelog : git log --oneline --decorate
 
 # TODOLIST
-(/) Complètement au clavier
 ( ) Manque de challenge, porte et clef ?
 ( ) Certains niveaux fait à la main
-( ) Spawn à mob
-(/) Lors de la récupération de la 8°, informer qu'on peut ouvrir la grille
-( ) Les crédits dans l'écran "quit"
-(/) Des boutons dans les menus et une police de caractères plus grosse
-(/) key check for opening grid
-(/) fight an item
-    (/) sword animation (rotation) in the mouse direction
-    (/) hide mouse cursor
-(/) item die and drop
-(/) loot
-(/) inventory 4x4, stack
-( ) monsters
-    (/) ATK & DEF & PV
-    (/) range detection
-    ( ) bumped when hit (to avoid spam fight)
-    (/) screen shake when player is touch
-(/) change level
-(/) MENUS
-(/) Sounds & music (music: BeepBox ?)
 ( ) bonus: light shader
 
 # Lien web utiles

@@ -101,3 +101,71 @@ DATA.vampire = {
     lootPoMax = 30,
     auraToDeal = {{"Morsure", 8}}
 }
+
+------------------------------------------------ BACKUP
+
+DATA.sell1 = 0
+DATA.sell2 = 0
+DATA.saveFileExists = nil
+
+DATA.SaveExists = function()
+    if DATA.saveFileExists == nil then
+        local info = love.filesystem.getInfo("game.sav")
+        DATA.saveFileExists = info ~= nil
+    end
+    return DATA.saveFileExists
+end
+
+DATA.LoadGame = function()
+    if not DATA.SaveExists() then
+        return
+    end
+    local values = {}
+    for line in love.filesystem.lines("game.sav") do
+        table.insert(values, line)
+    end
+
+    OPTIONS.DIFFICULTY = values[1] + 0
+    Player.level = values[2] + 0
+    Inventory.setPo(values[3] + 0)
+    Player.pvMax = values[4] + 0
+    Player.atk = values[5] + 0
+    Player.def = values[6] + 0
+    Player.speedInit = values[7] + 0
+    DATA.sell1 = values[8] + 0
+    DATA.sell2 = values[9] + 0
+
+    Player.pv = Player.pvMax
+    Player.speed = Player.speedInit
+    print("backup loaded")
+end
+
+DATA.SaveGame = function()
+    local strOptions = ""
+
+    local function add(value)
+        strOptions = strOptions .. value .. "\n"
+    end
+    add(OPTIONS.DIFFICULTY)
+    add(Player.level)
+    add(Inventory.getPo())
+    add(Player.pvMax)
+    add(Player.atk)
+    add(Player.def)
+    add(Player.speedInit)
+    add(DATA.sell1)
+    add(DATA.sell2)
+
+    love.filesystem.write("game.sav", strOptions)
+    GUI.addInfoBull("Progression sauvegardée", 3, HEIGHT * 4 / 5, true)
+    print("backup saved")
+    DATA.saveFileExists = true
+end
+
+DATA.DeleteSave = function()
+    love.filesystem.remove("game.sav")
+    DATA.sell1 = 0 -- pour permettre de tirer au hasard
+    DATA.sell2 = 0
+    DATA.saveFileExists = false
+    print("backup deleted")
+end

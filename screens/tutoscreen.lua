@@ -60,7 +60,9 @@ this.draw = function()
     printUnder(
         "  - Une fois la grille ouverte, tu as accès au marchand qui peut te vendre des améliorations avant de descendre au niveau inférieur")
 
-    printUnder("\n    Bonne chance, Aventurier !!")
+    printUnder(
+        "\n ** A chaque fois que tu entres chez le vendeur, ta progression est sauvée pour te permettre de quitter le jeu. Mais si tu descends dans le donjon, cette progression est effacée et tu devras survivre au niveau suivant.")
+    printUnder("\n\n                                                                                           Bonne chance, Aventurier !!")
 end
 
 this.keypressed = function(key)

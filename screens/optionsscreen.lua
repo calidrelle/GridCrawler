@@ -12,6 +12,8 @@ OPTIONS.applyValues = function()
     love.window.setFullscreen(OPTIONS.fullscreen)
     WIDTH = love.graphics.getWidth()
     HEIGHT = love.graphics.getHeight()
+    PIXELLARGE = (WIDTH - 100 * SCALE)
+    print(PIXELLARGE .. " x " .. HEIGHT .. ", scale : " .. SCALE)
 end
 
 OPTIONS.save = function()

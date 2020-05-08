@@ -41,8 +41,6 @@ this.load = function()
                             " pages pour reconstituer le grimoire d'ouverture de la grille.")
     end
     -- Calcul de la zone de jeu
-    PIXELLARGE = (WIDTH - 100 * SCALE)
-    print(PIXELLARGE .. " x " .. HEIGHT .. ", scale : " .. SCALE)
     btnRestart = GUI.addButton("Rejouer", PIXELLARGE / 2 - 40 * SCALE, HEIGHT / 2 + 8 * SCALE, 64 * SCALE)
     btnRestart.visible = false
 end
@@ -174,6 +172,7 @@ this.draw = function()
     drawGui()
     if love.keyboard.isDown(OPTIONS.SHOWCARAC) then
         Player.drawFichePerso()
+        print("REGEN : PV = " .. Player.regenPv .. ", STAM = " .. Player.regenStamina)
     end
     Inventory.draw()
     drawMinimap()

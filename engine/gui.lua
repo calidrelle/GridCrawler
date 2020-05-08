@@ -27,8 +27,9 @@ GUI.addInfoBull = function(text, duree, ypos, persistant)
 
     this.update = function(dt)
         this.duration = this.duration - dt
-        if this.duration < 1 then
+        if this.duration < 1.5 then
             this.alpha = this.duration -- fade out la dernière seconde
+            this.ypos = this.ypos + 20 * dt
         end
         if this.duration <= 0 then
             this.actif = false
@@ -57,6 +58,7 @@ GUI.addButton = function(text, x, y, width)
     this.text = text
     this.x = x
     this.y = y
+    this.hints = ""
     this.width = width or Assets.button:getWidth() * SCALE
     this.height = Assets.button:getHeight() * SCALE
     this.soundHover = false
@@ -76,6 +78,11 @@ GUI.addButton = function(text, x, y, width)
         end
         love.graphics.draw(Assets.button, x, y, 0, this.width / Assets.button:getWidth(), this.height / Assets.button:getHeight())
         love.graphics.draw(this.drText, this.x + (this.width - this.textWidth) / 2, 4 + this.y + (this.height - this.textHeight) / 2)
+
+        if this.hover and this.hints ~= "" then
+            love.graphics.setFont(Font20)
+            love.graphics.print(this.hints, love.mouse.getX(), love.mouse.getY() + 16)
+        end
     end
 
     this.update = function(dt, mx, my)
@@ -105,6 +112,27 @@ GUI.addButton = function(text, x, y, width)
     return this
 end
 
+GUI.drawProgressBar = function(x, y, width, height, value, valuemax, r, g, b, displayValues)
+    love.graphics.setLineWidth(3)
+    love.graphics.setColor(0.2, 0.2, 0.2, 0.8)
+    love.graphics.rectangle("fill", x, y, width, height)
+    love.graphics.setColor(r, g, b, 1)
+    love.graphics.rectangle("fill", x, y, width * value / valuemax, height)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle("line", x, y, width, height)
+    love.graphics.setLineWidth(1)
+
+    if displayValues then
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setFont(Font20)
+        if math.floor(value) == 0 and value > 0 then
+            value = 1 -- ne pas afficher 0 sauf si on est mort
+        end
+        love.graphics.printf(math.floor(value) .. "/" .. math.floor(valuemax), x + 4, y + 6, width - 4, "center")
+    end
+end
+
+------------------------------------------------ GUI MANAGMENT ---
 GUI.reset = function()
     for i = #buttons, 1, -1 do
         if buttons[i].type == "info" then
@@ -132,26 +160,6 @@ end
 GUI.draw = function()
     for _, b in pairs(buttons) do
         b.draw()
-    end
-end
-
-GUI.drawProgressBar = function(x, y, width, height, value, valuemax, r, g, b, displayValues)
-    love.graphics.setLineWidth(3)
-    love.graphics.setColor(0.2, 0.2, 0.2, 0.8)
-    love.graphics.rectangle("fill", x, y, width, height)
-    love.graphics.setColor(r, g, b, 1)
-    love.graphics.rectangle("fill", x, y, width * value / valuemax, height)
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle("line", x, y, width, height)
-    love.graphics.setLineWidth(1)
-
-    if displayValues then
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.setFont(Font20)
-        if math.floor(value) == 0 and value > 0 then
-            value = 1 -- ne pas afficher 0 sauf si on est mort
-        end
-        love.graphics.printf(math.floor(value) .. "/" .. math.floor(valuemax), x + 4, y + 6, width - 4, "center")
     end
 end
 

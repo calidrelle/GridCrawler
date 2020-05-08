@@ -3,7 +3,6 @@
 AurasManager.newAuraMorsure = function(target, duration)
     local aura = AurasManager.create(target, duration)
     aura.name = "Morsure"
-    aura.initialValue = target.regenPv -- 0.5 pour le player pour restaurer
 
     aura.start = function()
     end
@@ -13,7 +12,7 @@ AurasManager.newAuraMorsure = function(target, duration)
     end
 
     aura.finish = function()
-        target.regenPv = aura.initialValue -- restauration de la valeur originale
+        target.regenPv = 0.5
     end
 
     return aura

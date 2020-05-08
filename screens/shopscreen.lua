@@ -5,6 +5,7 @@ local mx, my = 0, 0
 local staires
 local selectedItem = nil
 local raduisSelection = 20
+local btnQuitter
 
 local STAT_PV = 1
 local STAT_ATK = 2
@@ -23,7 +24,8 @@ local function addStat(id, name, cost, value, item)
 end
 
 this.load = function()
-    love.mouse.setVisible(false)
+    -- love.mouse.setVisible(false)
+    btnQuitter = GUI.addButton("Quitter", WIDTH - 80 * SCALE, HEIGHT - 30 * SCALE)
     Inventory.removePages() -- On vide les pages de l'inventaire
     ItemManager.reset()
     AurasManager.reset()
@@ -54,16 +56,24 @@ this.load = function()
     ItemManager.newChest(11 * TILESIZE, 2 * TILESIZE)
 
     -- Les stats : 2 au hasard
-    local stat1 = love.math.random(4)
-    local stat2 = 0
-    repeat
-        stat2 = love.math.random(4)
-    until stat1 ~= stat2
+    if DATA.sell1 == 0 then
+        print("Tirage random stats")
+        if love.math.random(100) <= DATA.PCENTNOCELL then
+            DATA.sell1 = -1
+            DATA.sell2 = -1
+        else
+            DATA.sell1 = love.math.random(4)
+            DATA.sell2 = 0
+            repeat
+                DATA.sell2 = love.math.random(4)
+            until DATA.sell1 ~= DATA.sell2
+        end
+    else
+        print("stats from backup")
+    end
 
     -- change de ne rien vendre
-    if love.math.random(100) <= DATA.PCENTNOCELL then
-        stat1 = 0
-        stat2 = 0
+    if DATA.sell1 == -1 then
         strChoixStats =
             "Je suis désolé, mais je n'ai pas été livré. Je n'ai rien à te proposer aujourd'hui. Prends les escaliers derrière moi pour continuer ton aventure !"
     else
@@ -71,16 +81,16 @@ this.load = function()
             "Fais ton choix sur les 2 petites tables que je te propose aujourd'hui. Tes courses terminées, prends les escaliers derrière moi pour continuer ton aventure !"
     end
 
-    if stat1 == STAT_PV or stat2 == STAT_PV then
+    if DATA.sell1 == STAT_PV or DATA.sell2 == STAT_PV then
         addStat(STAT_PV, "Point de vie +1", 150, Player.pvMax, ItemManager.newTable(3 * TILESIZE, 7 * TILESIZE))
     end
-    if stat1 == STAT_DEF or stat2 == STAT_DEF then
+    if DATA.sell1 == STAT_DEF or DATA.sell2 == STAT_DEF then
         addStat(STAT_DEF, "Défense +1", 150, Player.def, ItemManager.newTable(3 * TILESIZE, 9 * TILESIZE))
     end
-    if stat1 == STAT_ATK or stat2 == STAT_ATK then
+    if DATA.sell1 == STAT_ATK or DATA.sell2 == STAT_ATK then
         addStat(STAT_ATK, "Attaque +1", 150, Player.atk, ItemManager.newTable(10 * TILESIZE, 7 * TILESIZE))
     end
-    if stat1 == STAT_SPD or stat2 == STAT_SPD then
+    if DATA.sell1 == STAT_SPD or DATA.sell2 == STAT_SPD then
         addStat(STAT_SPD, "Vitesse +2%", 150, Player.speedInit, ItemManager.newTable(10 * TILESIZE, 9 * TILESIZE))
     end
 
@@ -118,6 +128,7 @@ local function doSelect()
                         stat.value = stat.value * 1.02
                         Player.speedInit = stat.value
                     end
+                    DATA.SaveGame()
                 end
             end
         end
@@ -138,6 +149,15 @@ this.update = function(dt)
     Player.update(dt)
     if Player.hasItemSelected then
         doSelect()
+    end
+
+    if btnQuitter.hover then
+        GUI.addInfoBull("Quitter maintenant te permettra de continuer ta partie au même endroit")
+    end
+    if btnQuitter.clicked then
+        DATA.SaveGame()
+        ScreenManager.setScreen("MENU")
+        return
     end
 end
 
@@ -170,6 +190,9 @@ this.draw = function()
     Player.draw()
     Assets.draw(Assets.vendor_topdoor, TILESIZE * 6, TILESIZE * 11)
 
+    love.graphics.print("Niv." .. Player.level, TILESIZE * 8, TILESIZE * 12)
+    love.graphics.print("Niv." .. Player.level + 1, TILESIZE * 6, TILESIZE * 1)
+
     love.graphics.pop() -------------------------------------
 
     love.graphics.setFont(FontVendor32)
@@ -180,14 +203,14 @@ this.draw = function()
     end
 
     if staires.isHover then
-        GUI.addInfoBull("Si tu as fait tous tes choix, tu peux descendre à l'étage inférieur.")
+        GUI.addInfoBull(
+            "Si tu as fait tous tes choix, tu peux descendre à l'étage inférieur.\nAttention, si tu meurs, tu recommenceras au premier niveau du manoir !")
     end
     for i, stat in pairs(stats) do
         if stat.item == selectedItem then
             GUI.addInfoBull(stat.name .. " = " .. stat.cost .. " po\nValeur actuelle : " .. wile.display2decimale(stat.value), 3)
         end
     end
-    local xpos = PIXELLARGE + 20 * SCALE
     local ypos = 80 * SCALE
     Player.drawFichePerso()
     love.graphics.setColor(0.651, 0.384, 0)

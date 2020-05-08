@@ -160,11 +160,13 @@ ScreenManager.setScreen = function(name)
         MUSICPLAYER:stop()
         MUSICPLAYER = musicIntro
         MUSICPLAYER:play()
+        DATA.DeleteSave()
         screen = menuScreen
     elseif name == "NEXTLEVEL" then
         MUSICPLAYER:stop()
         MUSICPLAYER = musicIntro
         MUSICPLAYER:play()
+        DATA.DeleteSave()
         gameScreen.startNewLevel()
         screen = gameScreen
     elseif name == "OPTIONS" then

@@ -40,6 +40,10 @@ Inventory.getPo = function()
     return po
 end
 
+Inventory.setPo = function(value)
+    po = value
+end
+
 Inventory.removePo = function(amount)
     if po >= amount then
         po = po - amount

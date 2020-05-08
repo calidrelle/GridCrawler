@@ -3,17 +3,16 @@
 AurasManager.newAuraPoison = function(target, duration)
     local aura = AurasManager.create(target, duration)
     aura.name = "Poison"
-    aura.initialValue = target.regenStamina
 
     aura.start = function()
     end
 
     aura.apply = function(dt)
-        target.regenStamina = 3
+        target.regenStamina = 2
     end
 
     aura.finish = function()
-        target.regenStamina = aura.initialValue
+        target.regenStamina = 25
     end
 
     return aura
