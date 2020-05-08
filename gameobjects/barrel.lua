@@ -5,7 +5,10 @@ ItemManager.newBarrel = function(x, y)
     item.canBeAttacked = true
     item.canDropPage = true
     item.displayPvLost = false
-    table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.barrel)))
+
+    item.addPo = function()
+        table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.barrel)))
+    end
 
     item.hit = function(other)
         ItemManager.doAttack(other, item)

@@ -6,13 +6,16 @@ ItemManager.newSlim = function(tileX, tileY, level)
     item.solid = true
     item.canBeAttacked = true
     item.canDropPage = true
-    table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.slim)))
 
     item.level = level
     item.initMobStats(DATA.slim)
     item.animIdle = require("engine.animation").createNew(Assets.slime_idle_anim, 6, 0.1, true)
     item.animRun = require("engine.animation").createNew(Assets.slime_run_anim, 6, 0.1, true)
     item.currentAnim = item.animIdle
+
+    item.addPo = function()
+        table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.slim)))
+    end
 
     item.hit = function(other)
         ItemManager.doAttack(other, item)

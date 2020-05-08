@@ -144,7 +144,7 @@ local function getDistNearestPics(cellX, cellY)
 end
 
 local function createPics()
-    local nbPicsTotal = Player.level * OPTIONS.DIFFICULTY + 5
+    local nbPicsTotal = (Player.level * OPTIONS.DIFFICULTY + 5) / 2
     local nbPics = 0
 
     local nbTry = 0
@@ -232,6 +232,17 @@ local function deployPages()
             item = ItemManager.getRandomItem()
         until item.canDropPage
         table.insert(item.lootTable, ItemManager.newPage(-1, -1, i))
+    end
+end
+
+local function deployPieces()
+    local maxPo = love.math.random(DATA.MINPO, DATA.MAXPO)
+    local item
+    while ItemManager.getPoInItems() < maxPo do
+        repeat
+            item = ItemManager.getRandomItem()
+        until item.canDropPage
+        item.addPo()
     end
 end
 
@@ -350,6 +361,7 @@ this.build = function(width, height, seed)
         end
     end
     deployPages()
+    deployPieces()
 
     map.collideAt = function(x, y)
         local tileX = math.floor(x / TILESIZE)

@@ -6,13 +6,16 @@ ItemManager.newVampire = function(tileX, tileY, level)
     item.solid = true
     item.canBeAttacked = true
     item.canDropPage = true
-    table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.vampire)))
 
     item.level = level
     item.initMobStats(DATA.vampire)
     item.animIdle = require("engine.animation").createNew(Assets.vampire_idle_anim, 4, 0.18, true)
     item.animRun = require("engine.animation").createNew(Assets.vampire_run_anim, 4, 0.18, true)
     item.currentAnim = item.animIdle
+
+    item.addPo = function()
+        table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.vampire)))
+    end
 
     item.hit = function(other)
         ItemManager.doAttack(other, item)

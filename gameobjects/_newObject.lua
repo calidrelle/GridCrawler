@@ -13,6 +13,10 @@ ItemManager.newXXX = function(tileX, tileY)
     item.hit = function(other)
     end
 
+    item.addPo = function()
+        table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.___)))
+    end
+
     item.walkOver = function(other)
         if other == Player then -- qui marche dessus ?
         else

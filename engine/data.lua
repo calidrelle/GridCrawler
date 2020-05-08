@@ -4,6 +4,10 @@ DATA.barrel = {lootPoMin = 1, lootPoMax = 5}
 DATA.chest = {lootPoMin = 5, lootPoMax = 15}
 LEVELMAX = 9 -- rajouter des mobLevel si ça change
 
+-- Nombre de pièces par niveau
+DATA.MINPO = 145
+DATA.MAXPO = 200
+
 -- Pourcentage de chance que le vendeur n'ait rien à vendre
 DATA.PCENTNOCELL = 10
 

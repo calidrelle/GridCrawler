@@ -1,6 +1,8 @@
 --- v0.5.2
 La barre de vie est violette si on est sous morsure
 Les monstres regardent à nouveaux dans le sens de leurs déplacements
+Distribution globale des po
+Nombre de pics divisé par 2
 --- v0.5.1
 Affichage des auras
 Clignotement du cadre rouge

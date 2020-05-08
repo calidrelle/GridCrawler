@@ -256,7 +256,12 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
     else
         table.insert(items, item)
     end
+
+    item.addPo = function()
+    end
+
     return item
+
 end
 
 ItemManager.reset = function()
