@@ -190,8 +190,8 @@ this.draw = function()
     local xpos = PIXELLARGE + 20 * SCALE
     local ypos = 80 * SCALE
     Player.drawFichePerso()
-    love.graphics.setColor(0.867, 0.835, 0.251)
-    love.graphics.print("GOLD:" .. Inventory.getPo(), PIXELLARGE + 20 * SCALE + TILESIZE, 22 + ypos + 88)
+    love.graphics.setColor(0.651, 0.384, 0)
+    love.graphics.print("GOLD=" .. Inventory.getPo(), PIXELLARGE + 20 * SCALE + TILESIZE, 22 + ypos + 88)
 end
 
 this.keypressed = function(key)

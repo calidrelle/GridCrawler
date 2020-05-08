@@ -6,6 +6,7 @@ OPTIONS.LEFT = "q"
 OPTIONS.RIGHT = "d"
 OPTIONS.FIRE = "rctrl"
 OPTIONS.JUMP = "space"
+OPTIONS.SHOWCARAC = "tab"
 
 ---------------------------------------------------------
 local btnBack
@@ -16,6 +17,7 @@ local btnLeft
 local btnRight
 local btnFire
 local btnJump
+local btnShowCarac
 
 local xpos
 local ypos
@@ -32,35 +34,40 @@ this.load = function()
     btnRight = GUI.addButton(OPTIONS.RIGHT, xpos, ypos + 180)
     btnJump = GUI.addButton(OPTIONS.JUMP, xpos, ypos + 240)
     btnFire = GUI.addButton(OPTIONS.FIRE, xpos, ypos + 300)
+    btnShowCarac = GUI.addButton(OPTIONS.SHOWCARAC, xpos, ypos + 360)
 
-    btnBack = GUI.addButton("Retour", xpos, HEIGHT / 3 + 320, 64 * SCALE)
+    btnBack = GUI.addButton("Retour", WIDTH * 3 / 4, HEIGHT * 4 / 5, 64 * SCALE)
     selectionText = ""
 end
 
 this.update = function(dt)
     if btnUp.clicked then
         btnUp.waiting = true
-        selectionText = "Appuyez sur la touche voulue pour'HAUT'"
+        selectionText = "Appuyez sur la touche pour'HAUT'"
     end
     if btnDown.clicked then
         btnDown.waiting = true
-        selectionText = "Appuyez sur la touche voulue pour 'BAS'"
+        selectionText = "Appuyez sur la touche pour 'BAS'"
     end
     if btnLeft.clicked then
         btnLeft.waiting = true
-        selectionText = "Appuyez sur la touche voulue pour 'GAUCHE'"
+        selectionText = "Appuyez sur la touche pour 'GAUCHE'"
     end
     if btnRight.clicked then
         btnRight.waiting = true
-        selectionText = "Appuyez sur la touche voulue pour 'DROITE'"
+        selectionText = "Appuyez sur la touche pour 'DROITE'"
     end
     if btnJump.clicked then
         btnJump.waiting = true
-        selectionText = "Appuyez sur la touche voulue pour 'SAUTER'"
+        selectionText = "Appuyez sur la touche pour 'SAUTER'"
     end
     if btnFire.clicked then
         btnFire.waiting = true
-        selectionText = "Appuyez sur la touche voulue pour 'TIR'"
+        selectionText = "Appuyez sur la touche pour 'TIR'"
+    end
+    if btnShowCarac.clicked then
+        btnShowCarac.waiting = true
+        selectionText = "Appuyez sur la touche pour 'CARACTERISTIQUES'"
     end
 
     if btnBack.clicked then
@@ -71,9 +78,9 @@ end
 this.draw = function()
     Background.draw()
 
-    for i = 1, 6 do
+    for i = 1, 7 do
         love.graphics.setColor(0.2, 0.2, 0.2, 0.8)
-        love.graphics.rectangle("fill", 260 + xpos, ypos + (i - 1) * 60, 140, 48)
+        love.graphics.rectangle("fill", 260 + xpos, ypos + (i - 1) * 60, 160, 48)
     end
 
     love.graphics.setColor(1, 1, 1, 1)
@@ -86,21 +93,21 @@ this.draw = function()
     love.graphics.print("Droite", 300 + xpos, 180 + ypos + 6)
     love.graphics.print("Saut", 300 + xpos, 240 + ypos + 6)
     love.graphics.print("Tir", 300 + xpos, 300 + ypos + 6)
+    love.graphics.print("Stats.", 300 + xpos, 360 + ypos + 6)
 end
 
 local function isKeyDispo(key)
-    if OPTIONS.UP == key or OPTIONS.DOWN == key or OPTIONS.LEFT == key or OPTIONS.RIGHT == key or OPTIONS.JUMP == key or OPTIONS.FIRE == key then
+    if key == "escape" then
+        return false
+    end
+    if OPTIONS.UP == key or OPTIONS.DOWN == key or OPTIONS.LEFT == key or OPTIONS.RIGHT == key or OPTIONS.JUMP == key or OPTIONS.FIRE == key or
+        OPTIONS.SHOWCARAC == key then
         return false
     end
     return true
 end
 
 this.keypressed = function(key)
-    if key == "escape" then
-        if selectionText == "" then
-            ScreenManager.setScreen("OPTIONS")
-        end
-    end
     if btnUp.waiting then
         if isKeyDispo(key) then
             OPTIONS.UP = key
@@ -139,6 +146,13 @@ this.keypressed = function(key)
     if btnFire.waiting then
         if isKeyDispo(key) then
             OPTIONS.FIRE = key
+        else
+            Assets.snd_error:play()
+        end
+    end
+    if btnShowCarac.waiting then
+        if isKeyDispo(key) then
+            OPTIONS.SHOWCARAC = key
         else
             Assets.snd_error:play()
         end

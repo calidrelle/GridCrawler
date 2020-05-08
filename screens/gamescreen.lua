@@ -172,7 +172,7 @@ this.draw = function()
     AurasManager.draw()
 
     drawGui()
-    if love.keyboard.isDown("tab") then
+    if love.keyboard.isDown(OPTIONS.SHOWCARAC) then
         Player.drawFichePerso()
     end
     Inventory.draw()

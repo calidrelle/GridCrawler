@@ -88,7 +88,7 @@ this.load = function()
 
     btnKeyOptions = GUI.addButton("Touches", xpos, ypos + 240)
 
-    btnBack = GUI.addButton("Retour", xpos, ypos + 320, 64 * SCALE)
+    btnBack = GUI.addButton("Retour", WIDTH * 3 / 4, HEIGHT * 4 / 5, 64 * SCALE)
 end
 
 this.update = function(dt)
