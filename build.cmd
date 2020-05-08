@@ -9,6 +9,7 @@ xcopy *.ttf d:\temp\dist /s
 xcopy *.png d:\temp\dist /s
 xcopy *.wav d:\temp\dist /s
 xcopy *.mp3 d:\temp\dist /s
+xcopy changelog.txt d:\temp\dist /s
 d:
 cd d:\temp\dist\
 powershell -Command "(gc main.lua) -replace 'xx.xx.xx', '%version%' | Out-File -encoding ASCII main.lua"
@@ -21,6 +22,7 @@ copy "c:\program files\love\*.ico" .
 copy /b love.exe+game.love GridCrawler.exe
 del game.love
 del love.exe
+xcopy d:\temp\dist\changelog.txt .
 jar -cMf d:\dev\GridCrawler.v%version%.zip .
 echo --------------------------
 echo Build dispo dans d:\dev\GridCrawler.v%version%.zip
