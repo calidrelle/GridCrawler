@@ -1,5 +1,7 @@
---- v0.5.1
+--- v0.5.2
+La barre de vie est violette si on est sous morsure
 Les monstres regardent à nouveaux dans le sens de leurs déplacements
+--- v0.5.1
 Affichage des auras
 Clignotement du cadre rouge
 Sauvegarde au shop

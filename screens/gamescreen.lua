@@ -79,7 +79,7 @@ local function drawGui()
 
     -- Catactéristiques player
     if table.contains(Player.auras, "Morsure") then
-        GUI.drawProgressBar(PIXELLARGE / 2 - 250, HEIGHT - 50, 200, 32, Player.pv, Player.pvMax, 0, 1, 0.6, true)
+        GUI.drawProgressBar(PIXELLARGE / 2 - 250, HEIGHT - 50, 200, 32, Player.pv, Player.pvMax, 0.698, 0, 1, true)
     else
         GUI.drawProgressBar(PIXELLARGE / 2 - 250, HEIGHT - 50, 200, 32, Player.pv, Player.pvMax, 1, 0.1, 0, true)
     end
