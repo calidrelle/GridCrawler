@@ -218,6 +218,13 @@ this.draw = function()
 end
 
 this.keypressed = function(key)
+    if DevMode() then
+        if key == "kp+" then
+            Player.level = Player.level + 1
+            Player.atk = 100
+            Player.pvMax = 100
+        end
+    end
 end
 
 return this

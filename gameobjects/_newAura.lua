@@ -1,7 +1,7 @@
 -- This file is a template
 -- Penser à rajouter le require de ce fichier dans ItemManager.lua
 AurasManager.newAuraXXX = function(target, duration)
-    local aura = AurasManager.create(target, duration)
+    local aura = AurasManager.create(target, duration, Assets.___)
     aura.name = "Xxxx" -- Mettre une majuscule car texte affiché
     aura.initialValue = target.___ -- pour restaurer
 

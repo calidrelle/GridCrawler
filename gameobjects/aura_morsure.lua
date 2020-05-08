@@ -1,7 +1,7 @@
 -- This file is a template
 -- Penser à rajouter le require de ce fichier dans ItemManager.lua
 AurasManager.newAuraMorsure = function(target, duration)
-    local aura = AurasManager.create(target, duration)
+    local aura = AurasManager.create(target, duration, Assets.morsure)
     aura.name = "Morsure"
 
     aura.start = function()

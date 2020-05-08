@@ -5,10 +5,11 @@ local auras = {}
 require("gameobjects.aura_poison")
 require("gameobjects.aura_morsure")
 
-AurasManager.create = function(target, duration)
+AurasManager.create = function(target, duration, icon)
     local this = {}
     this.duration = duration
     this.target = target
+    this.icon = icon
 
     table.insert(auras, this)
     return this
@@ -19,13 +20,22 @@ AurasManager.reset = function()
 end
 
 AurasManager.addAura = function(aura, duration, target)
-    table.insert(target.auras, aura)
-    if aura == "Poison" then
-        AurasManager.newAuraPoison(target, duration).start()
-    elseif aura == "Morsure" then
-        AurasManager.newAuraMorsure(target, duration).start()
+    -- On rajoute une aura si on ne l'a pas déjà, sinon, on initialise sa duréerror
+    if table.contains(target.auras, aura) then
+        for _, a in pairs(auras) do
+            if a.name == aura then
+                a.duration = duration
+            end
+        end
     else
-        error("Aura inconnue de aurasManager : " .. aura)
+        table.insert(target.auras, aura)
+        if aura == "Poison" then
+            AurasManager.newAuraPoison(target, duration).start()
+        elseif aura == "Morsure" then
+            AurasManager.newAuraMorsure(target, duration).start()
+        else
+            error("Aura inconnue de aurasManager : " .. aura)
+        end
     end
 end
 
@@ -46,13 +56,14 @@ end
 
 AurasManager.draw = function()
     -- On affiche les auras du joueur
-    local ypos = 0
-    love.graphics.setFont(Font32)
+    local ypos = TILESIZE * SCALE
+    love.graphics.setFont(Font20)
     love.graphics.setColor(1, 1, 1, 1)
     for _, aura in pairs(auras) do
         if aura.target == Player then
-            love.graphics.print(aura.name .. " (" .. math.ceil(aura.duration) .. ")", PIXELLARGE - 60 * SCALE, TILESIZE * SCALE + ypos * 32)
-            ypos = ypos + 20
+            Assets.draw(aura.icon, PIXELLARGE - 72 * SCALE, ypos - 5, false, SCALE - 1)
+            love.graphics.print(aura.name .. " (" .. math.ceil(aura.duration) .. ")", PIXELLARGE - 60 * SCALE, ypos)
+            ypos = ypos + 24
         end
     end
 end
