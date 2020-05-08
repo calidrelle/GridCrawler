@@ -265,8 +265,10 @@ end
 this.drawFichePerso = function()
     local xpos = PIXELLARGE + 20 * SCALE
     local ypos = 80 * SCALE
+    local img = love.graphics.newImage("images/bg_stats.png")
+    love.graphics.draw(img, xpos - TILESIZE, ypos - 4)
     love.graphics.setFont(Font20)
-    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.setColor(0, 0, 0, 1)
     local stats = {}
     table.insert(stats, {"VIE", Player.pvMax})
     table.insert(stats, {"ATK", Player.atk})
@@ -274,7 +276,7 @@ this.drawFichePerso = function()
     table.insert(stats, {"VIT", wile.display2decimale(Player.speedInit / 120 * 100) .. "%"})
 
     for i = 1, #stats do
-        love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos, ypos + 22 * (i - 1))
+        love.graphics.print(stats[i][1] .. " = " .. stats[i][2], xpos + TILESIZE, 22 + ypos + 22 * (i - 1))
     end
 end
 

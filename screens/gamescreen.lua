@@ -172,7 +172,9 @@ this.draw = function()
     AurasManager.draw()
 
     drawGui()
-    Player.drawFichePerso()
+    if love.keyboard.isDown("tab") then
+        Player.drawFichePerso()
+    end
     Inventory.draw()
     drawMinimap()
 

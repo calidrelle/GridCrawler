@@ -54,15 +54,14 @@ this.load = function()
     ItemManager.newChest(11 * TILESIZE, 2 * TILESIZE)
 
     -- Les stats : 2 au hasard
-
-    local stat1 = math.random(4)
+    local stat1 = love.math.random(4)
     local stat2 = 0
     repeat
-        stat2 = math.random(4)
+        stat2 = love.math.random(4)
     until stat1 ~= stat2
 
-    -- 20% de change de ne rien vendre
-    if math.random(100) <= DATA.PCENTNOCELL then
+    -- change de ne rien vendre
+    if love.math.random(100) <= DATA.PCENTNOCELL then
         stat1 = 0
         stat2 = 0
         strChoixStats =
@@ -190,11 +189,9 @@ this.draw = function()
     end
     local xpos = PIXELLARGE + 20 * SCALE
     local ypos = 80 * SCALE
-    love.graphics.setColor(0.8, 0.8, 0.8, 0.8)
-    love.graphics.rectangle("fill", xpos - 10, ypos - 10, 41 * SCALE, 41 * SCALE)
     Player.drawFichePerso()
     love.graphics.setColor(0.867, 0.835, 0.251)
-    love.graphics.print("GOLD:" .. Inventory.getPo(), PIXELLARGE + 20 * SCALE, 80 * SCALE + 88)
+    love.graphics.print("GOLD:" .. Inventory.getPo(), PIXELLARGE + 20 * SCALE + TILESIZE, 22 + ypos + 88)
 end
 
 this.keypressed = function(key)
