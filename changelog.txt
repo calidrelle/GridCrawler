@@ -1,11 +1,13 @@
 --- v0.5.3
 Les auras sont affichées sous la minimap et non dans l'écran de jeu
+Les effets de dégâts descendent trop vite
 
 --- v0.5.2
 La barre de vie est violette si on est sous morsure
 Les monstres regardent à nouveaux dans le sens de leurs déplacements
 Distribution globale des po
 Nombre de pics divisé par 2
+
 --- v0.5.1
 Affichage des auras
 Clignotement du cadre rouge

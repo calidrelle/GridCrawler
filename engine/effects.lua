@@ -54,13 +54,13 @@ Effects.createFloatingText = function(text, x, y, duree, r, g, b)
     this.r = r
     this.g = g
     this.b = b
-    this.dx = math.random(-2, 2)
+    this.dx = math.random(-20, 20) / 10
     this.dy = -5
 
     this.update = function(dt)
         this.x = this.x + this.dx * dt * 20
         this.y = this.y + this.dy * dt * 20
-        this.dy = this.dy + dt * 20
+        this.dy = this.dy + dt * 12
         this.alpha = this.duree / this.dureeInit
     end
 
