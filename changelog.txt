@@ -1,6 +1,8 @@
 --- v0.5.1
+Affichage des auras
 Clignotement du cadre rouge
 Sauvegarde au shop
+Ajout du changelog dans la version déployée
 Ajout du paramétrage de la touche pour afficher les stats
 CamShake moins violent
 Le player se déplace moins vite en diagonale pour concerver la même vitesse
