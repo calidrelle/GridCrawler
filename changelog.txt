@@ -1,4 +1,5 @@
 --- v0.5.1
+Clignotement du cadre rouge
 Sauvegarde au shop
 Ajout du paramétrage de la touche pour afficher les stats
 CamShake moins violent

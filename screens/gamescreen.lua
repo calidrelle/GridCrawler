@@ -2,6 +2,7 @@ local this = {}
 
 Map = nil
 local btnRestart = nil
+local clignotementLowLife = 0
 
 this.restartGame = function()
     -- Après un gameover, on recréé un perso tout neuf
@@ -46,6 +47,12 @@ this.load = function()
 end
 
 this.update = function(dt)
+    if Player.lowlife() then
+        clignotementLowLife = clignotementLowLife + dt
+        if clignotementLowLife > 2 * math.pi then
+            clignotementLowLife = 0
+        end
+    end
     if btnRestart.clicked then
         this.restartGame()
         return
@@ -56,7 +63,7 @@ this.update = function(dt)
     Effects.update(dt)
     if GameOver.status then
         if GameOver.timer < 1 then
-            GameOver.timer = GameOver.timer + dt / 2
+            GameOver.timer = GameOver.timer + dt
         else
             GameOver.timer = 1
             love.mouse.setVisible(true)
@@ -83,8 +90,8 @@ local function drawGui()
         GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina, 100, 0, 0.6, 1, true)
     end
 
-    if Player.pv / Player.pvMax < 0.5 and Player.pv > 0 then
-        love.graphics.setColor(1, 1, 1, 1 - (Player.pv / Player.pvMax))
+    if Player.lowlife() then
+        love.graphics.setColor(1, 1, 1, math.sin(clignotementLowLife * 6))
         love.graphics.draw(Assets.lowlife, 0, 0, 0, PIXELLARGE, HEIGHT / 768)
     end
 end
@@ -182,7 +189,7 @@ this.draw = function()
         love.graphics.draw(Assets.GameOver, (PIXELLARGE - Assets.GameOver:getWidth()) / 2, (HEIGHT - Assets.GameOver:getHeight()) / 2)
     end
 
-    love.graphics.setColor(1, 1, 1, 1)
+    -- love.graphics.setColor(1, 1, 1, 1)
 end
 
 this.keypressed = function(key)

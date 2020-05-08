@@ -70,6 +70,10 @@ this.resetAnims = function()
     this.animRun.reset()
 end
 
+this.lowlife = function()
+    return this.pv / this.pvMax < 0.5 and this.pv > 0
+end
+
 local function move(dt)
     local tdx = this.dx * this.speed * dt
     local tdy = this.dy * this.speed * dt
