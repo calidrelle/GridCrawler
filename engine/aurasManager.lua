@@ -4,6 +4,7 @@ local auras = {}
 
 require("gameobjects.aura_poison")
 require("gameobjects.aura_morsure")
+require("gameobjects.aura_saignement")
 
 AurasManager.create = function(target, duration, icon)
     local this = {}
@@ -33,6 +34,8 @@ AurasManager.addAura = function(aura, duration, target)
             AurasManager.newAuraPoison(target, duration).start()
         elseif aura == "Morsure" then
             AurasManager.newAuraMorsure(target, duration).start()
+        elseif aura == "Saignement" then
+            AurasManager.newAuraSaignement(target, duration).start()
         else
             error("Aura inconnue de aurasManager : " .. aura)
         end

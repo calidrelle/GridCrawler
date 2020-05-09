@@ -32,6 +32,9 @@ DATA.RATIO_HARD = 1
     vampire1    . . . x x x . . .
     vampire2    . . . . . . x x x
     vampire3    . . . . . . . . x
+    squelette1  . . . x x . . . .
+    squelette2  . . . . . x x . .
+    squelette3  . . . . . . . x x
 ]]
 
 -- Format : nom_mob, liveau, from, to
@@ -51,7 +54,11 @@ DATA.mobLevels = {
     -- Vampires
     {"vampire", 1, 4, 6}, --
     {"vampire", 2, 7, 9}, --
-    {"vampire", 3, 8, 9} --
+    {"vampire", 3, 8, 9}, --
+    -- squelettes
+    {"squelette", 1, 5, 6}, --
+    {"squelette", 2, 7, 8}, --
+    {"squelette", 3, 8, 9} --
 }
 
 ---- SLIM
@@ -70,7 +77,7 @@ DATA.slim = {
 -- GOBLIN
 DATA.goblin = {
     pv = 22,
-    atk = 6,
+    atk = 4,
     atkRange = 20,
     detectRange = 100,
     speed = 40,
@@ -104,6 +111,19 @@ DATA.vampire = {
     lootPoMin = 15,
     lootPoMax = 30,
     auraToDeal = {{"Morsure", 8}}
+}
+
+-- SQUELETTE
+DATA.squelette = {
+    pv = 32,
+    atk = 8,
+    atkRange = 20,
+    detectRange = 100,
+    speed = 30,
+    atkSpeed = 0.25,
+    lootPoMin = 15,
+    lootPoMax = 30,
+    auraToDeal = {{"Saignement", 5}}
 }
 
 ------------------------------------------------ BACKUP

@@ -22,6 +22,7 @@ require("gameobjects.slim")
 require("gameobjects.goblin")
 require("gameobjects.zombie")
 require("gameobjects.vampire")
+require("gameobjects.squelette")
 
 MOBSTATES = {}
 MOBSTATES.NONE = ""
@@ -384,7 +385,7 @@ ItemManager.getRandomPoNumber = function(objData)
 end
 
 ItemManager.doAttack = function(fighter, target)
-    if not target.canBeAttacked then
+    if not target.canBeAttacked or target.pv <= 0 then
         return false
     end
 
@@ -414,7 +415,11 @@ ItemManager.doAttack = function(fighter, target)
         end
         target.pv = target.pv - damage
         if target.pv > 0 then
-            Assets.snd_hurt:play()
+            if fighter.name == "Saignement" then
+                Assets.snd_outch:play()
+            else
+                Assets.snd_hurt:play()
+            end
         end
         -- DOT ?
         for _, aura in pairs(fighter.aurasToDeal) do
@@ -435,7 +440,6 @@ ItemManager.doAttack = function(fighter, target)
 
         -- drop du loot
         ItemManager.doDrop(target)
-
     end
     return true
 end

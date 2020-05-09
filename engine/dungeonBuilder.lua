@@ -307,6 +307,14 @@ local function createVampires(level)
     ItemManager.newVampire(pos.x * TILESIZE, pos.y * TILESIZE, level)
 end
 
+local function createSquelettes(level)
+    local pos
+    repeat
+        pos = this.getEmptyLocation(0) -- monsters in rooms only
+    until pos.room ~= map.spawn.room and math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
+    ItemManager.newSquelette(pos.x * TILESIZE, pos.y * TILESIZE, level)
+end
+
 this.build = function(width, height, seed)
     map = {}
     rooms = {}
@@ -356,6 +364,8 @@ this.build = function(width, height, seed)
             createZombies(mob[2])
         elseif mob[1] == "vampire" then
             createVampires(mob[2])
+        elseif mob[1] == "squelette" then
+            createSquelettes(mob[2])
         else
             error("Type de monstre inconnue : " .. mob[1])
         end
