@@ -205,12 +205,16 @@ this.keypressed = function(key)
     if DevMode() then
         if key == "f2" then
             Bravoure.Savonnette.check()
+        elseif key == "f4" then
+            Player.gridOpened = true
+            Player.level = LEVELMAX
+            ItemManager.getItem("exit").walkOver(Player)
         elseif key == "f10" then
             Player.pv = -1
         elseif key == "f11" then
             Player.gridOpened = true
             if Player.level == LEVELMAX then
-                ScreenManager.setScreen("OUTSIDE")
+                ItemManager.getItem("exit").walkOver(Player)
             else
                 Inventory.addItem(ItemManager.newGold(0, 0), math.random(190, 250))
                 ScreenManager.setScreen("VENDOR")

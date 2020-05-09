@@ -129,6 +129,7 @@ local function doSelect()
                         stat.value = stat.value * 1.02
                         Player.speedInit = stat.value
                     end
+                    Bravoure.Harpagon.lost()
                     DATA.SaveGame()
                 end
             end

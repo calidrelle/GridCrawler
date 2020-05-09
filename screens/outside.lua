@@ -24,6 +24,20 @@ this.load = function()
         30)
 
     GUI.addInfoBull("Pour traversé le manoir, tu as mis " .. math.floor(Player.timers.getTotal()) .. "sec.", 60, 400)
+
+    Bravoure.Harpagon.check()
+    Bravoure.GousseDAil.check()
+    Bravoure.Vaccine.check()
+    Bravoure.Sparadrap.check()
+
+    if OPTIONS.DIFFICULTY == 1 then
+        Bravoure.Ecuyer.check()
+    elseif OPTIONS.DIFFICULTY == 2 then
+        Bravoure.Chevalier.check()
+    elseif OPTIONS.DIFFICULTY == 3 then
+        Bravoure.Paladin.check()
+    end
+
 end
 
 this.update = function(dt)

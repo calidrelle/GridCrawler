@@ -32,10 +32,13 @@ AurasManager.addAura = function(aura, duration, target)
         table.insert(target.auras, aura)
         if aura == "Poison" then
             AurasManager.newAuraPoison(target, duration).start()
+            Bravoure.Vaccine.lost()
         elseif aura == "Morsure" then
             AurasManager.newAuraMorsure(target, duration).start()
+            Bravoure.GousseDAil.lost()
         elseif aura == "Saignement" then
             AurasManager.newAuraSaignement(target, duration).start()
+            Bravoure.Sparadrap.lost()
         else
             error("Aura inconnue de aurasManager : " .. aura)
         end

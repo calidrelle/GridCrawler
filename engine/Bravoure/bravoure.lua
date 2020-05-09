@@ -9,6 +9,13 @@ ACTE_WIN = "win"
 Bravoure.init = function()
     -- Ordre de création important car ordre de sauvegarde
     require("engine.Bravoure.savonette")
+    require("engine.Bravoure.harpagon")
+    require("engine.Bravoure.gouissedail")
+    require("engine.Bravoure.vaccine")
+    require("engine.Bravoure.sparadrap")
+    require("engine.Bravoure.ecuyer")
+    require("engine.Bravoure.chevalier")
+    require("engine.Bravoure.paladin")
 
     Bravoure.load()
 
@@ -50,7 +57,7 @@ Bravoure.create = function(name)
     acte.achived = function()
         acte.status = ACTE_WIN
         acte.dateRealisation = os.date("%d/%m/%Y %H:%M:%S")
-        acte.timerDisplay = 10
+        acte.timerDisplay = 15
         Assets.snd_bravoure:play()
         Bravoure.save()
     end
@@ -64,9 +71,9 @@ Bravoure.create = function(name)
         end
     end
 
-    acte.draw = function()
+    acte.draw = function(numero)
         local xpos = 40
-        local ypos = 40 + acte.timerDisplay * 30
+        local ypos = 40 + acte.timerDisplay * 20 + numero * (Assets.cadre_acte:getHeight() + 10)
         local width = Assets.cadre_acte:getWidth()
 
         love.graphics.setColor(1, 1, 1, acte.timerDisplay)
@@ -94,9 +101,11 @@ Bravoure.update = function(dt)
 end
 
 Bravoure.draw = function()
+    local nb = 0
     for _, acte in pairs(actes) do
         if acte.status == ACTE_WIN and acte.displayed == false then
-            acte.draw()
+            acte.draw(nb)
+            nb = nb + 1
         end
     end
 end
@@ -120,7 +129,7 @@ Bravoure.save = function()
     local strBravoure = ""
 
     for i, acte in pairs(actes) do
-        strBravoure = strBravoure .. acte.dateRealisation .. "\n"
+        strBravoure = strBravoure .. wile.nvl(acte.dateRealisation) .. "\n"
     end
 
     love.filesystem.write("bravoure.sav", strBravoure)

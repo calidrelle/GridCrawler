@@ -81,6 +81,14 @@ function wile.boolToStr(value)
         return "not a boolean : " .. value
     end
 end
+
+function wile.nvl(value)
+    if value == nil then
+        return ""
+    else
+        return value
+    end
+end
 -------------------[[ GLOBAL FUNCTIONS ]]
 
 local optionsScreen = require("screens.optionsscreen")

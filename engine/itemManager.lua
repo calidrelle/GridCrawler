@@ -467,4 +467,13 @@ ItemManager.getPoInItems = function()
     return totalPo
 end
 
+ItemManager.getItem = function(name)
+    for _, item in pairs(items) do
+        if item.name == name then
+            return item
+        end
+    end
+    return nil
+end
+
 return ItemManager
