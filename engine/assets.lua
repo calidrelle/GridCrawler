@@ -98,7 +98,8 @@ Assets.init = function()
     Assets.smoke = createQuad(96, 96)
     Assets.aggro = createQuad(240, 48)
     Assets.poison = createQuad(272, 48)
-    Assets.morsure = createQuad(256, 48)
+    Assets.saignement = createQuad(256, 48)
+    Assets.morsure = createQuad(256, 64)
 
     ---------- SONDS
     Assets.snd_error = love.audio.newSource("sons/error.wav", "static")
