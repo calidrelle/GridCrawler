@@ -385,7 +385,7 @@ ItemManager.getRandomPoNumber = function(objData)
 end
 
 ItemManager.doAttack = function(fighter, target)
-    if not target.canBeAttacked or target.pv <= 0 then
+    if not target.canBeAttacked or Player.pv <= 0 then
         return false
     end
 
