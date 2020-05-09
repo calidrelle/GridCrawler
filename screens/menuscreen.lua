@@ -54,7 +54,6 @@ end
 
 local function doStartEasy()
     if btnPlayEasy.visible then
-        MUSICPLAYER:stop()
         OPTIONS.DIFFICULTY = 1
         ScreenManager.setScreen("GAME")
         ScreenManager.started = true
@@ -63,7 +62,6 @@ end
 
 local function doStartNormal()
     if btnPlayNormal.visible then
-        MUSICPLAYER:stop()
         OPTIONS.DIFFICULTY = 2
         ScreenManager.setScreen("GAME")
         ScreenManager.started = true
@@ -72,7 +70,6 @@ end
 
 local function doStartHard()
     if btnPlayHard.visible then
-        MUSICPLAYER:stop()
         OPTIONS.DIFFICULTY = 3
         ScreenManager.setScreen("GAME")
         ScreenManager.started = true

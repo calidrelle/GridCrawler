@@ -138,6 +138,9 @@ DATA.LoadGame = function()
     Player.speedInit = values[7] + 0
     DATA.sell1 = values[8] + 0
     DATA.sell2 = values[9] + 0
+    for i = 1, LEVELMAX do
+        Player.timers[i] = values[9 + i] or 0
+    end
 
     Player.pv = Player.pvMax
     Player.speed = Player.speedInit
@@ -159,6 +162,9 @@ DATA.SaveGame = function()
     add(Player.speedInit)
     add(DATA.sell1)
     add(DATA.sell2)
+    for i = 1, LEVELMAX do
+        add(Player.timers[i])
+    end
 
     love.filesystem.write("game.sav", strOptions)
     GUI.addInfoBull("Progression sauvegardée", 3, HEIGHT * 4 / 5, true)

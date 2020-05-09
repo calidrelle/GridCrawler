@@ -6,11 +6,6 @@ this.load = function()
     love.mouse.setVisible(true)
     local x = (WIDTH - 80 * SCALE) / 2
     local y = HEIGHT / 2
-
-    MUSICPLAYER:stop()
-    MUSICPLAYER = love.audio.newSource("sons/59.mp3", "stream")
-    MUSICPLAYER:setVolume(OPTIONS.volume / 100)
-    MUSICPLAYER:play()
 end
 
 this.update = function(dt)

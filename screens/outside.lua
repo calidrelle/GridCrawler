@@ -4,9 +4,9 @@ local btnPlay
 local btnQuit
 
 this.load = function()
-    local x = WIDTH * .5
-    local y = HEIGHT * 3 / 4
-    btnPlay = GUI.addButton("Retour", x, y)
+    local xpos = WIDTH * 4 / 5
+    local ypos = HEIGHT * 4 / 5
+    btnPlay = GUI.addButton("Retour", xpos, ypos)
 
     MUSICPLAYER:stop()
     MUSICPLAYER = love.audio.newSource("sons/24_v2.mp3", "stream")
@@ -22,6 +22,8 @@ this.load = function()
     GUI.addInfoBull(
         "Bravo, tu as réussi à sortir du manoir vivant. Tu auras toute une aventure à raconter à ta descendance !\nPartage ta victoire sur www.gamecodeur.fr",
         30)
+
+    GUI.addInfoBull("Pour traversé le manoir, tu as mis " .. math.floor(Player.timers.getTotal()) .. "sec.", 60, 400)
 end
 
 this.update = function(dt)

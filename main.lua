@@ -223,8 +223,10 @@ function love.draw()
             love.graphics.print("Golds: " .. Map.totalGolds, 10, 64)
         end
         love.graphics.print("Player.gridOpened : " .. wile.boolToStr(Player.gridOpened), 10, 80)
-        love.graphics.print("GameOver.status : " .. wile.boolToStr(GameOver.status), 10, 100)
-        love.graphics.print("GameOver.timer : " .. GameOver.timer, 10, 120)
+
+        for i = 1, LEVELMAX do
+            love.graphics.print("Lev" .. i .. " : " .. Player.timers[i], 10, 200 + 20 * i)
+        end
     end
 end
 

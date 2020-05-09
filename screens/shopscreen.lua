@@ -109,6 +109,7 @@ local function doSelect()
     if selectedItem == staires then
         Player.pv = Player.pvMax
         Player.level = Player.level + 1
+        Player.timers[Player.level] = 0
         ScreenManager.setScreen("NEXTLEVEL")
     elseif selectedItem.name then
         -- Le joueur à choisi une amélioration
@@ -190,7 +191,8 @@ this.draw = function()
     Player.draw()
     Assets.draw(Assets.vendor_topdoor, TILESIZE * 6, TILESIZE * 11)
 
-    love.graphics.print("Niv." .. Player.level, TILESIZE * 8, TILESIZE * 12)
+    love.graphics.print("Niv." .. Player.level .. " : " .. math.floor(Player.timers[Player.level]) .. "s.", TILESIZE * 8, TILESIZE * 12)
+    love.graphics.print("Total : " .. math.floor(Player.timers.getTotal()) .. "s.", TILESIZE * 1, TILESIZE * 12)
     love.graphics.print("Niv." .. Player.level + 1, TILESIZE * 6, TILESIZE * 1)
 
     love.graphics.pop() -------------------------------------
@@ -221,6 +223,7 @@ this.keypressed = function(key)
     if DevMode() then
         if key == "kp+" then
             Player.level = Player.level + 1
+            Player.timers[Player.level] = 0
             Player.atk = 100
             Player.pvMax = 100
         end

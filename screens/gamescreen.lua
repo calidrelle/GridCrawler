@@ -47,6 +47,7 @@ this.load = function()
 end
 
 this.update = function(dt)
+    Player.timers[Player.level] = Player.timers[Player.level] + dt
     if Player.lowlife() then
         clignotementLowLife = clignotementLowLife + dt
         if clignotementLowLife > 2 * math.pi then
@@ -203,8 +204,12 @@ this.keypressed = function(key)
             Player.pv = -1
         elseif key == "f11" then
             Player.gridOpened = true
-            Inventory.addItem(ItemManager.newGold(0, 0), math.random(190, 250))
-            ScreenManager.setScreen("VENDOR")
+            if Player.level == LEVELMAX then
+                ScreenManager.setScreen("OUTSIDE")
+            else
+                Inventory.addItem(ItemManager.newGold(0, 0), math.random(190, 250))
+                ScreenManager.setScreen("VENDOR")
+            end
         elseif key == "f12" then
             ScreenManager.setScreen("OUTSIDE")
         elseif key == "kp+" then

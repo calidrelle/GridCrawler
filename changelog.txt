@@ -1,6 +1,8 @@
 --- v0.5.3
 Les auras sont affichées sous la minimap et non dans l'écran de jeu
 Les effets de dégâts descendent trop vite
+Suppression de la musique d'accueil
+Mise en place d'un chrono par niveau et de l'affichage à la fin du jeu (préparation des HF)
 
 --- v0.5.2
 La barre de vie est violette si on est sous morsure

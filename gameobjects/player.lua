@@ -33,6 +33,17 @@ this.createNew = function()
     this.lastdy = 0
 
     this.hasItemSelected = false
+    Player.timers = {} -- temps par niveau
+    for i = 1, LEVELMAX do
+        Player.timers[i] = 0
+    end
+    Player.timers.getTotal = function()
+        local total = 0
+        for i = 1, LEVELMAX do
+            total = total + Player.timers[i]
+        end
+        return total
+    end
 
     this.canBeAttacked = true -- le player peut se faire taper
     this.pv = 10
