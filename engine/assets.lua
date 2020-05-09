@@ -43,6 +43,7 @@ Assets.init = function()
     Assets.vampire_idle_anim = createQuad(288, 80)
     Assets.vampire_run_anim = createQuad(288, 96)
     Assets.squelette_run_anim = createQuad(352, 32)
+    Assets.boss = createQuad(0, 208, 32, 32)
 
     -- DONJONS
     Assets.empty_gray = createQuad(144, 0)

@@ -1,6 +1,8 @@
 local this = {}
 
 Map = nil
+Boss = nil
+
 local btnRestart = nil
 local clignotementLowLife = 0
 
@@ -43,6 +45,8 @@ this.load = function()
         Player.setPosition(Map.spawn.x * TILESIZE, Map.spawn.y * TILESIZE)
         GUI.addInfoBull("Bienvenue au niveau " .. Player.level .. " de GridCrawler.\nTrouve les " .. MAX_PAGES ..
                             " pages pour reconstituer le grimoire d'ouverture de la grille.")
+
+        Boss = Map.boss
     end
     -- Calcul de la zone de jeu
     btnRestart = GUI.addButton("Rejouer", PIXELLARGE / 2 - 40 * SCALE, HEIGHT / 2 + 8 * SCALE, 64 * SCALE)
@@ -92,6 +96,13 @@ local function drawGui()
         GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina, 100, 0, 1, 0.6, true)
     else
         GUI.drawProgressBar(PIXELLARGE / 2 + 50, HEIGHT - 50, 200, 32, Player.stamina, 100, 0, 0.6, 1, true)
+    end
+
+    if Boss ~= nil then
+        love.graphics.setColor(1, 0, 0)
+        love.graphics.rectangle("fill", PIXELLARGE / 4, 40, PIXELLARGE / 2 * Boss.pv / Boss.pvMax, 12 * SCALE) -- La barre de vie à la taille d'une tile
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle("line", PIXELLARGE / 4, 40, PIXELLARGE / 2, 12 * SCALE) -- La barre de vie à la taille d'une tile
     end
 
     if Player.lowlife() then

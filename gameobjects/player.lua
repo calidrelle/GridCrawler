@@ -14,7 +14,7 @@ FRICTION = 0.55
 
 this.createNew = function()
     this.name = "player"
-    this.level = 1
+    this.level = 10
     this.x = 0
     this.y = 0
     this.bounds.x = 7

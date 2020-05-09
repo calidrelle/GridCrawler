@@ -2,7 +2,7 @@ DATA = {}
 
 DATA.barrel = {lootPoMin = 1, lootPoMax = 5}
 DATA.chest = {lootPoMin = 5, lootPoMax = 15}
-LEVELMAX = 9 -- rajouter des mobLevel si ça change
+LEVELMAX = 10 -- rajouter des mobLevel si ça change
 
 -- Nombre de pièces par niveau
 DATA.MINPO = 145
@@ -58,7 +58,9 @@ DATA.mobLevels = {
     -- squelettes
     {"squelette", 1, 5, 6}, --
     {"squelette", 2, 7, 8}, --
-    {"squelette", 3, 8, 9} --
+    {"squelette", 3, 8, 9}, --
+    -- BOSS
+    {"boss", 1, 10, 10} --
 }
 
 ---- SLIM
@@ -124,6 +126,18 @@ DATA.squelette = {
     lootPoMin = 15,
     lootPoMax = 30,
     auraToDeal = {{"Saignement", 5}}
+}
+
+DATA.boss = {
+    pv = 100,
+    atk = 0,
+    atkRange = 20,
+    detectRange = 100,
+    speed = 10,
+    atkSpeed = 0.35,
+    lootPoMin = 15,
+    lootPoMax = 30,
+    auraToDeal = {}
 }
 
 ------------------------------------------------ BACKUP

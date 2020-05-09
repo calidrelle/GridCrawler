@@ -23,6 +23,7 @@ require("gameobjects.goblin")
 require("gameobjects.zombie")
 require("gameobjects.vampire")
 require("gameobjects.squelette")
+require("gameobjects.boss")
 
 MOBSTATES = {}
 MOBSTATES.NONE = ""
@@ -85,7 +86,8 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
     end
 
     item.getCenter = function()
-        return item.x + item.width / 2, item.y + item.height / 2
+        -- return item.x + item.width / 2, item.y + item.height / 2
+        return item.x + TILESIZE / 2, item.y + TILESIZE / 2 -- pour le boss, ça gêne
     end
 
     item.getMapCell = function()
@@ -348,7 +350,7 @@ end
 ItemManager.draw = function()
     for _, item in pairs(items) do
         if item.x > -1 then
-            if item.state == MOBSTATES.SEEK then
+            if item.state == MOBSTATES.SEEK and item.name ~= "boss" then
                 Assets.draw(Assets.aggro, item.x, item.y)
             end
             love.graphics.setColor(1, 1, 1)
@@ -361,20 +363,24 @@ ItemManager.draw = function()
 
             -- si l'item à des PV, on les affiche
             if item.pv > 0 then
-                love.graphics.setColor(1, 0, 0)
-                love.graphics.rectangle("fill", item.x, item.y - 1, TILESIZE * item.pv / item.pvMax, 3) -- La barre de vie à la taille d'une tile
-                love.graphics.setColor(0, 0, 0)
-                love.graphics.rectangle("line", item.x, item.y - 1, TILESIZE, 3) -- La barre de vie à la taille d'une tile
-                -- niveau du mob
-                love.graphics.setColor(0.85, 0.9, 1, 0.8)
-                for l = 1, item.level do
-                    love.graphics.circle("fill", item.x + 1 * l * 2, item.y - 3, 1)
+                if item.name ~= "boss" then -- la barre de vie du boss s'affiche hors translate
+                    love.graphics.setColor(1, 0, 0)
+                    love.graphics.rectangle("fill", item.x, item.y - 1, TILESIZE * item.pv / item.pvMax, 3) -- La barre de vie à la taille d'une tile
+                    love.graphics.setColor(0, 0, 0)
+                    love.graphics.rectangle("line", item.x, item.y - 1, TILESIZE, 3) -- La barre de vie à la taille d'une tile
+                    -- niveau du mob
+                    love.graphics.setColor(0.85, 0.9, 1, 0.8)
+                    for l = 1, item.level do
+                        love.graphics.circle("fill", item.x + 1 * l * 2, item.y - 3, 1)
+                    end
                 end
             end
             if DevMode() then
                 if item.path ~= nil then
                     -- Map.pathfinder.draw(item.path)
                 end
+                -- boudingbox
+                -- love.graphics.rectangle("line", item.x, item.y, item.width, item.height)
             end
         end
     end

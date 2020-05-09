@@ -1,3 +1,6 @@
+--- v0.5.4
+Arrivée du boss de fin
+
 --- v0.5.3
 Les auras sont affichées sous la minimap et non dans l'écran de jeu
 Les effets de dégâts descendent trop vite

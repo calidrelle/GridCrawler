@@ -315,6 +315,14 @@ local function createSquelettes(level)
     ItemManager.newSquelette(pos.x * TILESIZE, pos.y * TILESIZE, level)
 end
 
+local function createBoss()
+    local pos
+    repeat
+        pos = this.getEmptyLocation(0) -- monsters in rooms only
+    until math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
+    map.boss = ItemManager.newBoss(pos.x * TILESIZE, pos.y * TILESIZE)
+end
+
 this.build = function(width, height, seed)
     map = {}
     rooms = {}
@@ -342,8 +350,10 @@ this.build = function(width, height, seed)
 
     -- on créé les autres entités du niveau par rapport à la position du player
     -- Items présents : les pics et la sortie
-    createBarrels(love.math.random(15, 25))
-    createChests(love.math.random(1, 3))
+    if Player.level < LEVELMAX then
+        createBarrels(love.math.random(15, 25))
+        createChests(love.math.random(1, 3))
+    end
 
     -- Création des mobs selon le niveau du Player
     local mobsToCreate = {}
@@ -353,7 +363,11 @@ this.build = function(width, height, seed)
         end
     end
 
-    local nbMobs = math.floor(10 + Player.level * 1.4 + (OPTIONS.DIFFICULTY * 1.5))
+    local nbMobs = 1
+    if Player.level < LEVELMAX then
+        nbMobs = math.floor(10 + Player.level * 1.4 + (OPTIONS.DIFFICULTY * 1.5))
+    end
+    map.boss = nil
     for i = 1, nbMobs do
         local mob = mobsToCreate[love.math.random(#mobsToCreate)]
         if mob[1] == "slim" then
@@ -366,12 +380,16 @@ this.build = function(width, height, seed)
             createVampires(mob[2])
         elseif mob[1] == "squelette" then
             createSquelettes(mob[2])
+        elseif mob[1] == "boss" then
+            createBoss()
         else
             error("Type de monstre inconnue : " .. mob[1])
         end
     end
     deployPages()
-    deployPieces()
+    if Player.level < LEVELMAX then
+        deployPieces()
+    end
 
     map.collideAt = function(x, y)
         local tileX = math.floor(x / TILESIZE)
