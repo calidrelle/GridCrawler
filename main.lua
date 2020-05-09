@@ -126,6 +126,7 @@ function love.load()
     require("engine.inventory")
     require("engine.gui").init()
     require("engine.effects").init()
+    require("engine.Bravoure.bravoure").init()
 
     Player = require("gameobjects.player")
     Player.createNew()
@@ -205,6 +206,7 @@ function love.update(dt)
     Background.update(dt)
     updateMusic()
     GUI.update(dt)
+    Bravoure.update(dt)
     screen.update(dt)
 end
 
@@ -213,6 +215,8 @@ function love.draw()
     love.graphics.setFont(Font20)
     screen.draw()
     GUI.draw()
+    Bravoure.draw()
+
     if DevMode() and displayDebugInfos then
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.setFont(Font16)

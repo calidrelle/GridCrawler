@@ -408,6 +408,7 @@ ItemManager.doAttack = function(fighter, target)
         if target == Player then
             Effects.createFloatingText("*", target.x, target.y, 2, 1, 0.7, 0)
             Effects.createCamShake(0.2, 2)
+            Bravoure.Savonnette.lost()
         else
             if target.displayPvLost then
                 Effects.createFloatingText("*", target.x, target.y, 2, 0.5, 1, 0.6)

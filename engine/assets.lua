@@ -21,6 +21,7 @@ Assets.init = function()
     Assets.outside = love.graphics.newImage("images/outside.png")
     Assets.shop = love.graphics.newImage("images/shop.png")
     Assets.lowlife = love.graphics.newImage("images/lowlife.png")
+    Assets.cadre_acte = love.graphics.newImage("images/cadre_actes.png")
 
     -- SPRITESHEET
     sheet = love.graphics.newImage("images/SpriteSheet.png")
@@ -116,6 +117,7 @@ Assets.init = function()
     Assets.snd_pay = love.audio.newSource("sons/pay.wav", "static")
     Assets.snd_pics = love.audio.newSource("sons/pics.wav", "static")
     Assets.snd_outch = love.audio.newSource("sons/outch.wav", "static")
+    Assets.snd_bravoure = love.audio.newSource("sons/bravoure.mp3", "static")
 
     Assets.snd_btnHover = love.audio.newSource("sons/btn_hover.wav", "static")
     Assets.snd_btnClicked = love.audio.newSource("sons/btn_clicked.wav", "static")

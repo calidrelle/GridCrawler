@@ -6,7 +6,8 @@ Mise en place d'un chrono par niveau et de l'affichage à la fin du jeu (prépar
 La morsure à une icône violette
 Le gobelin tape un peu moins fort
 Ajout du squelette et du saignement
-
+Début de mise en place des actes de bravoure
+Acte de bravoure "Savonette"
 
 --- v0.5.2
 La barre de vie est violette si on est sous morsure

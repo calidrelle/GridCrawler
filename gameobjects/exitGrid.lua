@@ -10,6 +10,7 @@ ItemManager.newExitGrid = function(tileX, tileY)
     item.walkOver = function(other)
         if other == Player then
             if Player.gridOpened then
+                Bravoure.Savonnette.check()
                 if Player.level == LEVELMAX then
                     ScreenManager.setScreen("OUTSIDE")
                 else

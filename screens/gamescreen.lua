@@ -8,6 +8,7 @@ this.restartGame = function()
     -- Après un gameover, on recréé un perso tout neuf
     print("restartGame")
     Assets.init()
+    Bravoure.init()
     Player.createNew()
     this.startNewLevel()
     OPTIONS.DIFFICULTY = 0
@@ -24,6 +25,7 @@ this.startNewLevel = function()
     Player.resetAnims()
     ItemManager.reset()
     AurasManager.reset()
+    Bravoure.resetLevel()
     Player.gridOpened = false
     GameOver.status = false
     GameOver.timer = 0
@@ -33,6 +35,7 @@ end
 this.load = function()
     love.mouse.setVisible(false)
     GUI.reset()
+    Bravoure.resetLevel()
     if (Map == nil) then
         local mapBuilder = require("engine.dungeonBuilder")
         -- Map = mapBuilder.build(60, 60, 1)
@@ -200,7 +203,9 @@ this.keypressed = function(key)
         return
     end
     if DevMode() then
-        if key == "f10" then
+        if key == "f2" then
+            Bravoure.Savonnette.check()
+        elseif key == "f10" then
             Player.pv = -1
         elseif key == "f11" then
             Player.gridOpened = true
