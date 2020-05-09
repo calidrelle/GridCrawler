@@ -224,6 +224,13 @@ this.keypressed = function(key)
         elseif key == "kp+" then
             Player.pvMax = Player.pvMax + 10
             Player.pv = Player.pv + 10
+        elseif key == "kp*" then
+            Player.level = Player.level + 1
+        elseif key == "kp/" then
+            Player.level = Player.level - 1
+
+        else
+            print(key)
         end
     end
 end

@@ -25,6 +25,17 @@ factory.create = function(type, quad)
     this.visited = false
 
     this.draw = function(x, y)
+        local r, g, b = 1, 1, 1
+        if Player.level > 6 then
+            r, g, b = 0.6, 0.6, 0.6
+        elseif Player.level > 3 then
+            r, g, b = 0.8, 0.8, 0.8
+        end
+        if this.type == FLOOR then
+            love.graphics.setColor(r, g, b)
+        else
+            love.graphics.setColor(1, 1, 1)
+        end
         Assets.draw(this.quad, x, y)
     end
 
@@ -32,3 +43,4 @@ factory.create = function(type, quad)
 end
 
 return factory
+

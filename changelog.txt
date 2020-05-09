@@ -11,6 +11,7 @@ Acte de bravoure "Savonette"
 Actes de bravoure : Ecuyer, Chevalier, Paladin, Gousse d'ail, Harpagon, Sparadrap, Vacciné
 Actes de bravoure : Legolas, Empaleur
 
+
 --- v0.5.2
 La barre de vie est violette si on est sous morsure
 Les monstres regardent à nouveaux dans le sens de leurs déplacements

@@ -116,7 +116,7 @@ DATA.vampire = {
 -- SQUELETTE
 DATA.squelette = {
     pv = 32,
-    atk = 8,
+    atk = 2,
     atkRange = 20,
     detectRange = 100,
     speed = 30,
