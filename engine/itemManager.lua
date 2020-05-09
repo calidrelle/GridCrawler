@@ -393,18 +393,16 @@ ItemManager.doAttack = function(fighter, target)
 
     if target == Player then
         if OPTIONS.DIFFICULTY == 1 then
-            damage = math.floor(damage * DATA.RATIO_EASY)
-        end
-        if OPTIONS.DIFFICULTY == 1 then
-            damage = math.floor(damage * DATA.RATIO_NORMAL)
-        end
-        if OPTIONS.DIFFICULTY == 3 then
-            damage = math.floor(damage * DATA.RATIO_HARD)
+            damage = damage * DATA.RATIO_EASY
+        elseif OPTIONS.DIFFICULTY == 2 then
+            damage = damage * DATA.RATIO_NORMAL
+        elseif OPTIONS.DIFFICULTY == 3 then
+            damage = damage * DATA.RATIO_HARD
         end
     end
 
     if damage > 0 then
-        -- print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
+        print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
         if target == Player then
             Effects.createFloatingText("*", target.x, target.y, 2, 1, 0.7, 0)
             Effects.createCamShake(0.2, 2)

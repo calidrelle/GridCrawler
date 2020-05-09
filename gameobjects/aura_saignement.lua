@@ -5,7 +5,7 @@ AurasManager.newAuraSaignement = function(target, duration)
     aura.name = "Saignement" -- Mettre une majuscule car texte affiché
     -- Saignement est un dot qui fait 0.8 de dégâts toutes les secondes pendant la durée
     aura.timer = 1
-    aura.atk = 4
+    aura.atk = 1.5
     aura.aurasToDeal = {} -- pas d'aura rajouté par cette aura, faut pas exagérer ^^
 
     aura.start = function()
