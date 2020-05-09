@@ -24,6 +24,7 @@ end
 
 this.keypressed = function(key)
     if key == "return" or key == "kpenter" then
+        MUSICPLAYER:setVolume(OPTIONS.volume / 100)
         ScreenManager.setScreen("TUTO")
     end
 end
