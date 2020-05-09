@@ -409,6 +409,7 @@ ItemManager.doAttack = function(fighter, target)
             Effects.createFloatingText("*", target.x, target.y, 2, 1, 0.7, 0)
             Effects.createCamShake(0.2, 2)
             Bravoure.Savonnette.lost()
+            Bravoure.Legolas.lost()
         else
             if target.displayPvLost then
                 Effects.createFloatingText("*", target.x, target.y, 2, 0.5, 1, 0.6)
@@ -436,6 +437,11 @@ ItemManager.doAttack = function(fighter, target)
         if target == Player then
             return true -- game over dans Player
         end
+
+        if fighter.name == "pics" and target ~= Player then
+            Bravoure.Empaleur.increment()
+        end
+
         target.actif = false
         Assets.snd_dead:play()
 

@@ -9,6 +9,7 @@ Ajout du squelette et du saignement
 Début de mise en place des actes de bravoure
 Acte de bravoure "Savonette"
 Actes de bravoure : Ecuyer, Chevalier, Paladin, Gousse d'ail, Harpagon, Sparadrap, Vacciné
+Actes de bravoure : Legolas, Empaleur
 
 --- v0.5.2
 La barre de vie est violette si on est sous morsure

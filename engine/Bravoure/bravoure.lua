@@ -16,6 +16,8 @@ Bravoure.init = function()
     require("engine.Bravoure.ecuyer")
     require("engine.Bravoure.chevalier")
     require("engine.Bravoure.paladin")
+    require("engine.Bravoure.legolas")
+    require("engine.Bravoure.empaleur")
 
     Bravoure.load()
 
