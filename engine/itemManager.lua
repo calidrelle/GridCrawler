@@ -24,6 +24,7 @@ require("gameobjects.zombie")
 require("gameobjects.vampire")
 require("gameobjects.squelette")
 require("gameobjects.boss")
+require("gameobjects.spell")
 
 MOBSTATES = {}
 MOBSTATES.NONE = ""
@@ -31,6 +32,7 @@ MOBSTATES.WALK = "walk"
 MOBSTATES.SEEK = "seek"
 MOBSTATES.FIGHT = "fight"
 MOBSTATES.CHANGEDIR = "change"
+MOBSTATES.MANAGED = "managed" -- traité ailleurs
 
 ItemManager.create = function(quad, x, y, width, height, onTop)
     local item = {}
@@ -55,6 +57,8 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
     item.path = nil
     item.jumpingTimer = 0
     item.isSelectable = true
+    item.distToPlay = 0
+    item.alpha = 1
 
     item.level = 1
     item.pv = 0
@@ -86,8 +90,8 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
     end
 
     item.getCenter = function()
-        -- return item.x + item.width / 2, item.y + item.height / 2
-        return item.x + TILESIZE / 2, item.y + TILESIZE / 2 -- pour le boss, ça gêne
+        return item.x + item.width / 2 - 2, item.y + item.height / 2
+        -- return item.x + TILESIZE / 2, item.y + TILESIZE / 2 -- pour le boss, ça gêne
     end
 
     item.getMapCell = function()
@@ -158,7 +162,7 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
         local ix, iy = item.getMapCell()
         item.path = Map.pathfinder.getPath(ix, iy, ox, oy)
         if item.path == nil then
-            -- déplacement à l'ancienne            
+            -- déplacement à l'ancienne
             if ox > ix then
                 item.dx = 1
                 item.flip = false
@@ -192,7 +196,7 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
 
     -- certains items comme les mobs, on une AI
     item.updateState = function(dt)
-        local distToPlay = item.distanceToOther(Player)
+        item.distToPlay = item.distanceToOther(Player)
         if item.state == MOBSTATES.NONE then
             item.state = MOBSTATES.CHANGEDIR
 
@@ -200,7 +204,7 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
             if item.checkCollision(dt) then
                 item.state = MOBSTATES.CHANGEDIR
             end
-            if distToPlay < item.detectRange then
+            if item.distToPlay < item.detectRange then
                 if Player.pv > 0 then
                     item.target = Player
                     item.state = MOBSTATES.SEEK
@@ -215,16 +219,17 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
             if item.target == nil then
                 item.path = nil
                 item.state = MOBSTATES.CHANGEDIR
-            elseif distToPlay > (item.detectRange * 2) then
+            elseif item.distToPlay > (item.detectRange * 2) then
                 item.target = nil
                 item.path = nil
                 item.state = MOBSTATES.CHANGEDIR
-            elseif distToPlay < item.atkRange then
+            elseif item.distToPlay < item.atkRange then
                 -- Attaque de la target
                 item.state = MOBSTATES.FIGHT
                 item.path = nil
                 item.dx = 0
                 item.dy = 0
+                return
             else
                 -- poursuite du Player
                 item.seek(Player)
@@ -233,7 +238,7 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
         elseif item.state == MOBSTATES.FIGHT then
             if Player.pv <= 0 then
                 item.state = MOBSTATES.CHANGEDIR
-            elseif distToPlay > item.atkRange then
+            elseif item.distToPlay > item.atkRange then
                 item.state = MOBSTATES.SEEK
             else
                 -- attaque du Player
@@ -248,6 +253,10 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
         elseif item.state == MOBSTATES.CHANGEDIR then
             item.chooseRandomDirection(dt)
             item.state = MOBSTATES.WALK
+
+        elseif item.state == MOBSTATES.MANAGED then
+            -- géré ailleurs
+            return
         else
             error("Etat non géré : " .. item.state)
         end
@@ -261,6 +270,9 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
     end
 
     item.addPo = function()
+    end
+
+    item.draw = function()
     end
 
     return item
@@ -353,7 +365,8 @@ ItemManager.draw = function()
             if item.state == MOBSTATES.SEEK and item.name ~= "boss" then
                 Assets.draw(Assets.aggro, item.x, item.y)
             end
-            love.graphics.setColor(1, 1, 1)
+            item.draw()
+            love.graphics.setColor(1, 1, 1, item.alpha)
             -- si l'item à une animation, on l'affiche, sinon, on affiche le quad de base
             if item.currentAnim ~= nil then
                 item.currentAnim.draw(item, item.x, item.y, item.flip)
@@ -379,7 +392,7 @@ ItemManager.draw = function()
                 if item.path ~= nil then
                     -- Map.pathfinder.draw(item.path)
                 end
-                -- boudingbox
+                -- boundingbox
                 -- love.graphics.rectangle("line", item.x, item.y, item.width, item.height)
             end
         end
@@ -446,8 +459,12 @@ ItemManager.doAttack = function(fighter, target)
             Bravoure.Empaleur.increment()
         end
 
-        target.actif = false
-        Assets.snd_dead:play()
+        if target.name == "boss" then
+            Assets.snd_boss_death:play()
+        else
+            Assets.snd_dead:play()
+            target.actif = false
+        end
 
         -- drop du loot
         ItemManager.doDrop(target)

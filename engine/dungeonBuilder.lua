@@ -315,12 +315,13 @@ local function createSquelettes(level)
     ItemManager.newSquelette(pos.x * TILESIZE, pos.y * TILESIZE, level)
 end
 
-local function createBoss()
+this.createBoss = function()
     local pos
     repeat
         pos = this.getEmptyLocation(0) -- monsters in rooms only
     until math.dist(pos.x, pos.y, map.spawn.x, map.spawn.y) > 15 -- pas dans monstre dans la pièce du spawn
     map.boss = ItemManager.newBoss(pos.x * TILESIZE, pos.y * TILESIZE)
+    deployPages()
 end
 
 this.build = function(width, height, seed)
@@ -380,16 +381,12 @@ this.build = function(width, height, seed)
             createVampires(mob[2])
         elseif mob[1] == "squelette" then
             createSquelettes(mob[2])
-        elseif mob[1] == "boss" then
-            createBoss()
         else
             error("Type de monstre inconnue : " .. mob[1])
         end
     end
     deployPages()
-    if Player.level < LEVELMAX then
-        deployPieces()
-    end
+    deployPieces()
 
     map.collideAt = function(x, y)
         local tileX = math.floor(x / TILESIZE)
@@ -470,6 +467,65 @@ this.createEmptyMap = function(width, height)
             return (map[tileX][tileY].type == WALL)
         end
     end
+    return map
+end
+
+-- Création d'une map depuis un fichier de Tiled
+
+this.buildFromTiled = function(filename)
+    map = {}
+
+    map.createItemFromId = function(id, x, y)
+        if id == 2 then
+            ItemManager.newBarrel(x * TILESIZE, y * TILESIZE)
+        elseif id == 34 then
+            ItemManager.newTable(x * TILESIZE, y * TILESIZE)
+        elseif id == 64 then
+            map.grid = {x = x, y = y, room = 1}
+            ItemManager.newExitGrid(map.grid.x * TILESIZE, map.grid.y * TILESIZE)
+        else
+            error("createItemFromId, id inconnu : " .. id)
+        end
+    end
+
+    map.collideAt = function(x, y)
+        local tileX = math.floor(x / TILESIZE)
+        local tileY = math.floor(y / TILESIZE)
+
+        if tileX < 1 or tileY < 1 or tileX > map.width or tileY > map.height then
+            return true
+        else
+            return (map[tileX][tileY].type == WALL)
+        end
+    end
+
+    local tiledMap = {}
+    tiledMap = assert(love.filesystem.load(filename))()
+    map.width = tiledMap.width
+    map.height = tiledMap.height
+
+    local room = {}
+    room.width = map.width - 1
+    room.height = map.height - 1
+    room.x = 1
+    room.y = 1
+    table.insert(rooms, room)
+
+    -- creation de la map dans le sens x, y
+    for x = 1, tiledMap.width do
+        map[x] = {}
+        for y = 1, tiledMap.height do
+            map[x][y] = {}
+        end
+    end
+
+    for i, layer in pairs(tiledMap.layers) do
+        tileFactory.addLayerToMap(layer, map)
+    end
+
+    map.pathfinder = pathfinder.create(map)
+    map.totalGolds = ItemManager.getPoInItems()
+
     return map
 end
 

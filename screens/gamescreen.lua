@@ -41,7 +41,13 @@ this.load = function()
     if (Map == nil) then
         local mapBuilder = require("engine.dungeonBuilder")
         -- Map = mapBuilder.build(60, 60, 1)
-        Map = mapBuilder.build(60, 60)
+        if Player.level == LEVELMAX then
+            Map = mapBuilder.buildFromTiled("maps/boss.lua")
+            mapBuilder.createBoss()
+
+        else
+            Map = mapBuilder.build(60, 60)
+        end
         Player.setPosition(Map.spawn.x * TILESIZE, Map.spawn.y * TILESIZE)
         GUI.addInfoBull("Bienvenue au niveau " .. Player.level .. " de GridCrawler.\nTrouve les " .. MAX_PAGES ..
                             " pages pour reconstituer le grimoire d'ouverture de la grille.")
@@ -155,15 +161,7 @@ local function drawMinimap()
     love.graphics.print("Niv. " .. Player.level .. ' (' .. strDiff(OPTIONS.DIFFICULTY) .. ")", xoff + SCALE, yoff - 6 * SCALE)
 end
 
-this.draw = function()
-    love.graphics.push()
-    love.graphics.scale(SCALE)
-    love.graphics.translate((-Player.x + (PIXELLARGE / SCALE) / 2), (-Player.y + (HEIGHT / SCALE) / 2))
-    Effects.preRender()
-
-    love.graphics.clear(0.297, 0.223, 0.254)
-    love.graphics.setColor(1, 1, 1)
-
+this.drawMap = function(upper)
     -- La map
     local nbTilesX = math.floor((PIXELLARGE / TILESIZE) / SCALE)
     local nbTilesY = math.floor((HEIGHT / TILESIZE) / SCALE)
@@ -177,14 +175,28 @@ this.draw = function()
             local tile = Map[x][y]
             local tx = x * TILESIZE
             local ty = y * TILESIZE
-            tile.draw(tx, ty)
+            tile.draw(tx, ty, upper)
             tile.visited = true
         end
     end
+end
+
+this.draw = function()
+    love.graphics.push()
+    love.graphics.scale(SCALE)
+    love.graphics.translate((-Player.x + (PIXELLARGE / SCALE) / 2), (-Player.y + (HEIGHT / SCALE) / 2))
+    Effects.preRender()
+
+    love.graphics.clear(0.297, 0.223, 0.254)
+    love.graphics.setColor(1, 1, 1)
+
+    this.drawMap(false)
     -- les items
     ItemManager.draw()
     -- le Player
     Player.draw()
+    this.drawMap(true)
+
     Effects.draw()
 
     love.graphics.pop() ----------------------------------------------------------------------- POP

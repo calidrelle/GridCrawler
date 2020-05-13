@@ -129,12 +129,12 @@ DATA.squelette = {
 }
 
 DATA.boss = {
-    pv = 100,
-    atk = 0,
+    pv = 400,
+    atk = 40,
     atkRange = 20,
-    detectRange = 100,
-    speed = 10,
-    atkSpeed = 0.35,
+    detectRange = 200,
+    speed = 40,
+    atkSpeed = 1.5,
     lootPoMin = 15,
     lootPoMax = 30,
     auraToDeal = {}

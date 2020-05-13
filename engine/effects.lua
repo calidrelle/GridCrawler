@@ -48,14 +48,14 @@ end
 
 -------------------------- EFFECTS--------------------------------
 
-Effects.createFloatingText = function(text, x, y, duree, r, g, b)
+Effects.createFloatingText = function(text, x, y, duree, r, g, b, puissance)
     local this = createNewEffect(x, y, duree)
     this.text = text
     this.r = r
     this.g = g
     this.b = b
     this.dx = math.random(-20, 20) / 10
-    this.dy = -5
+    this.dy = puissance or -5
 
     this.update = function(dt)
         this.x = this.x + this.dx * dt * 20

@@ -43,7 +43,8 @@ Assets.init = function()
     Assets.vampire_idle_anim = createQuad(288, 80)
     Assets.vampire_run_anim = createQuad(288, 96)
     Assets.squelette_run_anim = createQuad(352, 32)
-    Assets.boss = createQuad(0, 208, 32, 32)
+    Assets.boss_run_anim = createQuad(0, 208, 32, 32)
+    Assets.boss_fire_anim = createQuad(0, 208, 32, 32)
 
     -- DONJONS
     Assets.empty_gray = createQuad(144, 0)
@@ -128,6 +129,12 @@ Assets.init = function()
     Assets.snd_aggro_zombie = love.audio.newSource("sons/aggro_zombie.wav", "static")
     Assets.snd_aggro_vampire = love.audio.newSource("sons/aggro_vampire.wav", "static")
     Assets.snd_aggro_squlette = love.audio.newSource("sons/aggro_squelette.wav", "static")
+
+    Assets.snd_boss_aggro = love.audio.newSource("sons/boss_aggro.wav", "static")
+    Assets.snd_boss_prepare = love.audio.newSource("sons/boss_prepare.wav", "static")
+    Assets.snd_boss_regen = love.audio.newSource("sons/boss_regen.wav", "static")
+    Assets.snd_boss_death = love.audio.newSource("sons/boss_death.wav", "static")
+    Assets.snd_spell = love.audio.newSource("sons/spell.wav", "static")
 
     print("Assets loaded")
 end
