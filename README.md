@@ -8,6 +8,8 @@ https://itch.io/jam/gamecodeur-gamejam-24
 Lien itch.io : https://wile.itch.io/gridcrawler
 
 Lien youtube gameplay : https://www.youtube.com/watch?v=xIaNYg-BdKI
+Lien playlist youtube : https://www.youtube.com/watch?v=rASBcyMtc7g&list=PL8QJUy9inf1ZKqPHymntiBNjwBp8Wnt6E
+
 
 # Commances GIT
 
