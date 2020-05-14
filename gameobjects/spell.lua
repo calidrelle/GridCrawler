@@ -3,12 +3,17 @@
 ItemManager.newSpell = function(tileX, tileY, angle)
     local rnd = math.random(3)
     local spell
-    if rnd == 1 then
-        spell = Assets.morsure
-    elseif rnd == 2 then
-        spell = Assets.poison
-    else
+
+    if angle == nil then
         spell = Assets.saignement
+    else
+        if rnd == 1 then
+            spell = Assets.morsure
+        elseif rnd == 2 then
+            spell = Assets.poison
+        else
+            spell = Assets.saignement
+        end
     end
 
     local item = ItemManager.create(spell, tileX, tileY)
@@ -29,11 +34,14 @@ ItemManager.newSpell = function(tileX, tileY, angle)
         item.aurasToDeal = {{"Saignement", 4}}
     end
 
-    item.dx = math.cos(angle)
-    item.dy = math.sin(angle)
-
-    item.speed = 50 -- math.random(20, 50)
-    item.life = 5
+    if angle ~= nil then
+        item.dx = math.cos(angle)
+        item.dy = math.sin(angle)
+        item.speed = 50 -- math.random(20, 50)
+        item.life = 5
+    else
+        item.life = 0.3
+    end
 
     item.hit = function(other)
     end

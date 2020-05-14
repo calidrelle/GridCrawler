@@ -90,8 +90,7 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
     end
 
     item.getCenter = function()
-        return item.x + item.width / 2 - 2, item.y + item.height / 2
-        -- return item.x + TILESIZE / 2, item.y + TILESIZE / 2 -- pour le boss, ça gêne
+        return item.x + (item.width / 2) - 2, item.y + (item.height / 2)
     end
 
     item.getMapCell = function()

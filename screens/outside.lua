@@ -49,7 +49,6 @@ this.update = function(dt)
         Player.y = Player.y + 10 * dt
     end
     ItemManager.update(dt)
-    Player.update(dt)
 end
 
 this.draw = function()

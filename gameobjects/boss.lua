@@ -3,7 +3,8 @@
 ItemManager.newBoss = function(tileX, tileY)
     local ATKSTATE_SEEK = {id = "seek", duration = 0}
     local ATKSTATE_PREPARE = {id = "prepare", duration = 2}
-    local ATKSTATE_ATTAQUE = {id = "attack", duration = 10}
+    local ATKSTATE_ATTAQUE1 = {id = "attack1", duration = 10}
+    local ATKSTATE_ATTAQUE2 = {id = "attack2", duration = 10}
     local ATKSTATE_REGEN = {id = "regen", duration = 7}
 
     local item = ItemManager.create(Assets.boss_run_anim, tileX, tileY, 32, 32)
@@ -24,29 +25,58 @@ ItemManager.newBoss = function(tileX, tileY)
     item.atkTimer = 0
     item.coefModAttack = 4
     item.bloodTimer = 8
+    item.addPopTimer = DATA.boss.addPopTimer
+
+    item.angleAtk2 = 0
 
     item.hit = function(other)
     end
 
     item.addPo = function()
-        -- table.insert(item.lootTable, ItemManager.newGold(-1, -1, ItemManager.getRandomPoNumber(DATA.___)))
     end
 
     item.walkOver = function(other)
     end
 
     item.draw = function()
-        if DevMode() then
-            -- love.graphics.print(item.atkStatus.id .. "/" .. wile.display1decimale(item.atkTimer), item.x, item.y)
-            -- local cx, cy = item.getCenter()
-            -- love.graphics.circle("line", cx, cy, item.atkRange)
-            -- love.graphics.circle("line", cx, cy, item.atkRange * coefModAttack)
-        end
     end
 
     item.castSpells = function()
+        local x, y = item.getCenter()
+        x = x - 8
+        y = y - 8
         for i = 1, math.random(10, 45) do
-            ItemManager.newSpell(item.x, item.y, math.random() * 2 * math.pi)
+            ItemManager.newSpell(x, y, math.random() * 2 * math.pi)
+        end
+    end
+
+    item.castSpellsEtoile = function()
+        local x, y = item.getCenter()
+        x = x - 8
+        y = y - 8
+        local dx, dy = math.cos(item.angleAtk2), math.sin(item.angleAtk2)
+
+        for n = 10, WIDTH / 3, TILESIZE do
+            ItemManager.newSpell(x + dx * n, y + dy * n, nil)
+        end
+
+        dx, dy = math.cos(item.angleAtk2 + math.pi * 2 / 3), math.sin(item.angleAtk2 + math.pi * 2 / 3)
+
+        for n = 10, WIDTH / 3, TILESIZE do
+            ItemManager.newSpell(x + dx * n, y + dy * n, nil)
+        end
+
+        dx, dy = math.cos(item.angleAtk2 + math.pi * 4 / 3), math.sin(item.angleAtk2 + math.pi * 4 / 3)
+
+        for n = 10, WIDTH / 3, TILESIZE do
+            ItemManager.newSpell(x + dx * n, y + dy * n, nil)
+        end
+
+        item.angleAtk2 = item.angleAtk2 + math.rad(10)
+        for n = 0, 360, 15 do
+            local a = math.rad(n)
+            ItemManager.newSpell(x + math.cos(a) * 25, y + math.sin(a) * 25, nil)
+            ItemManager.newSpell(x + math.cos(a) * 50, y + math.sin(a) * 50, nil)
         end
     end
 
@@ -102,19 +132,39 @@ ItemManager.newBoss = function(tileX, tileY)
             elseif item.atkStatus == ATKSTATE_PREPARE then
                 item.atkTimer = item.atkTimer - dt
                 if item.atkTimer <= 0 then
-                    item.atkStatus = ATKSTATE_ATTAQUE
+                    if math.random() <= 0.5 then
+                        item.atkStatus = ATKSTATE_ATTAQUE1
+                    else
+                        item.atkStatus = ATKSTATE_ATTAQUE2
+                    end
                     item.atkTimer = item.atkStatus.duration
                     item.currentAnim = item.animFire
                     item.castTime = 0 -- pour tirer dès la passage à l'état ATKSTATE_ATTAQUE
                     return
                 end
 
-            elseif item.atkStatus == ATKSTATE_ATTAQUE then
+            elseif item.atkStatus == ATKSTATE_ATTAQUE1 then
                 item.atkTimer = item.atkTimer - dt
                 item.castTime = item.castTime - dt
                 if item.castTime <= 0 then
                     item.castSpells()
                     item.castTime = item.atkSpeed
+                end
+
+                if item.atkTimer <= 0 then
+                    item.atkStatus = ATKSTATE_REGEN
+                    Assets.snd_boss_regen:play()
+                    item.atkTimer = item.atkStatus.duration
+                    item.currentAnim = item.animRegen
+                    return
+                end
+
+            elseif item.atkStatus == ATKSTATE_ATTAQUE2 then
+                item.atkTimer = item.atkTimer - dt
+                item.castTime = item.castTime - dt
+                if item.castTime <= 0 then
+                    item.castSpellsEtoile()
+                    item.castTime = 0.2
                 end
 
                 if item.atkTimer <= 0 then
@@ -139,9 +189,17 @@ ItemManager.newBoss = function(tileX, tileY)
                 end
             end
         end
-
         -- print("item.atkStatus, item.atk : " .. item.atkStatus .. ", " .. item.atk)
-    end
+
+        item.addPopTimer = item.addPopTimer - dt
+        if item.addPopTimer <= 0 then
+            item.addPopTimer = DATA.boss.addPopTimer
+            if math.random(100) <= DATA.boss.addPopChance then
+                ItemManager.newSlim(Map.grid.x * TILESIZE, Map.grid.y * TILESIZE, 1)
+            end
+        end
+
+    end -- item.update
 
     return item
 end
