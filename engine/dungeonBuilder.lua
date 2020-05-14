@@ -504,6 +504,7 @@ this.buildFromTiled = function(filename)
     map.width = tiledMap.width
     map.height = tiledMap.height
 
+    table.removeAll(rooms)
     local room = {}
     room.width = map.width - 1
     room.height = map.height - 1

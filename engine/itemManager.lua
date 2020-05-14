@@ -420,37 +420,33 @@ ItemManager.doAttack = function(fighter, target)
         end
     end
 
-    if damage > 0 then
-        print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
-        if target == Player then
-            Effects.createFloatingText("*", target.x, target.y, 2, 1, 0.7, 0)
-            Effects.createCamShake(0.2, 2)
-            Bravoure.Savonnette.lost()
-            Bravoure.Legolas.lost()
-        else
-            if target.displayPvLost then
-                Effects.createFloatingText("*", target.x, target.y, 2, 0.5, 1, 0.6)
-            end
-        end
-        target.pv = target.pv - damage
-        if target.pv > 0 then
-            if fighter.name == "Saignement" then
-                Assets.snd_outch:play()
-            else
-                Assets.snd_hurt:play()
-            end
-        end
-        -- DOT ?
-        for _, aura in pairs(fighter.aurasToDeal) do
-            AurasManager.addAura(aura[1], aura[2], target)
-        end
+    print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
+    local tx, ty = target.getCenter()
+    if target == Player then
+        Effects.createFloatingText("*", tx, ty, 2, 1, 0.7, 0)
+        Effects.createCamShake(0.2, 2)
+        Bravoure.Savonnette.lost()
+        Bravoure.Legolas.lost()
     else
-        if target ~= Player then
-            Effects.createFloatingText("raté", target.x, target.y, 4, 1, 1, 1)
+        if target.displayPvLost then
+            Effects.createFloatingText("*", tx, ty, 2, 0.5, 1, 0.6)
         end
+    end
+    target.pv = target.pv - damage
+    if target.pv > 0 then
+        if fighter.name == "Saignement" then
+            Assets.snd_outch:play()
+        else
+            Assets.snd_hurt:play()
+        end
+    end
+    -- DOT ?
+    for _, aura in pairs(fighter.aurasToDeal) do
+        AurasManager.addAura(aura[1], aura[2], target)
     end
 
     if target.pv <= 0 then
+        target.pv = 0
         if target == Player then
             return true -- game over dans Player
         end

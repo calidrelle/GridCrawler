@@ -105,10 +105,7 @@ local function drawGui()
     end
 
     if Boss ~= nil then
-        love.graphics.setColor(1, 0, 0)
-        love.graphics.rectangle("fill", PIXELLARGE / 4, 40, PIXELLARGE / 2 * Boss.pv / Boss.pvMax, 12 * SCALE) -- La barre de vie à la taille d'une tile
-        love.graphics.setColor(0, 0, 0)
-        love.graphics.rectangle("line", PIXELLARGE / 4, 40, PIXELLARGE / 2, 12 * SCALE) -- La barre de vie à la taille d'une tile
+        GUI.drawProgressBar(PIXELLARGE / 4, 40, PIXELLARGE / 2, 32, Boss.pv, Boss.pvMax, 1, 0.1, 0, true)
     end
 
     if Player.lowlife() then
