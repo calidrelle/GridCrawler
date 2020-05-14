@@ -1,6 +1,14 @@
 -- This file is a template
 ItemManager.newExitGrid = function(tileX, tileY)
-    local item = ItemManager.create(Assets.floor_grid, tileX, tileY)
+    local asset
+    if Player.level > 6 then
+        asset = Assets.floor3_grid
+    elseif Player.level > 3 then
+        asset = Assets.floor2_grid
+    else
+        asset = Assets.floor1_grid
+    end
+    local item = ItemManager.create(asset, tileX, tileY)
     item.name = "exit"
     item.solid = false
 

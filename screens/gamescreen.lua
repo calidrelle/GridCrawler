@@ -44,7 +44,6 @@ this.load = function()
         if Player.level == LEVELMAX then
             Map = mapBuilder.buildFromTiled("maps/boss.lua")
             mapBuilder.createBoss()
-
         else
             Map = mapBuilder.build(60, 60)
         end

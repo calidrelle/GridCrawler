@@ -79,8 +79,14 @@ factory.create = function(type, quad)
         rnd = love.math.random(1, 2)
         this.quad = Assets.corridor[rnd]
     elseif type == FLOOR then
-        rnd = love.math.random(1, #Assets.floor)
-        this.quad = Assets.floor[rnd]
+        rnd = love.math.random(1, #Assets.floor1)
+        if Player.level > 6 then
+            this.quad = Assets.floor3[rnd]
+        elseif Player.level > 3 then
+            this.quad = Assets.floor2[rnd]
+        else
+            this.quad = Assets.floor1[rnd]
+        end
     elseif type == WALL then
         rnd = love.math.random(1, #Assets.wall)
         this.quad = Assets.wall[rnd]
@@ -92,17 +98,7 @@ factory.create = function(type, quad)
     this.visited = false
 
     this.draw = function(x, y, upper)
-        local r, g, b = 1, 1, 1
-        if Player.level > 6 then
-            r, g, b = 0.6, 0.6, 0.6
-        elseif Player.level > 3 then
-            r, g, b = 0.8, 0.8, 0.8
-        end
-        if this.type == FLOOR then
-            love.graphics.setColor(r, g, b)
-        else
-            love.graphics.setColor(1, 1, 1)
-        end
+        love.graphics.setColor(1, 1, 1)
         if upper then
             if this.upperQuad ~= nil then
                 Assets.draw(this.upperQuad, x, y)
