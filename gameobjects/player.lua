@@ -14,11 +14,7 @@ FRICTION = 0.55
 
 this.createNew = function()
     this.name = "player"
-    if DevMode() then
-        this.level = 10
-    else
-        this.level = 1
-    end
+    this.level = 1
     this.x = 0
     this.y = 0
     this.bounds.x = 7
