@@ -1,30 +1,37 @@
 @echo off
+
+rem Variable à changer selon l'environnement et le projet
+set distdir=c:\temp\dist
+set exedir=c:\temp\exe
+set lovedir=c:\program files\love
+set deploydir=d:\dev
+set gamename=GridCrawler
+
 set /p version=<version.txt
-rd d:\temp\dist /s /q
-rd d:\temp\exe /s /q
-mkdir d:\temp\dist
-mkdir d:\temp\exe
-xcopy *.lua d:\temp\dist /s
-xcopy *.ttf d:\temp\dist /s
-xcopy *.png d:\temp\dist /s
-xcopy *.wav d:\temp\dist /s
-xcopy *.mp3 d:\temp\dist /s
-xcopy changelog.txt d:\temp\dist /s
-d:
-cd d:\temp\dist\
+rd %distdir% /s /q
+rd %exedir% /s /q
+mkdir %distdir%
+mkdir %exedir%
+xcopy *.lua %distdir% /s
+xcopy *.ttf %distdir% /s
+xcopy *.png %distdir% /s
+xcopy *.wav %distdir% /s
+xcopy *.mp3 %distdir% /s
+xcopy changelog.txt %distdir% /s
+
+cd %distdir%\
 powershell -Command "(gc main.lua) -replace 'xx.xx.xx', '%version%' | Out-File -encoding ASCII main.lua"
 
-jar -cMf d:\temp\exe\game.love . 
-cd d:\temp\exe\
-copy "c:\program files\love\love.exe" . 
-copy "c:\program files\love\*.dll" . 
-copy "c:\program files\love\*.ico" . 
-copy /b love.exe+game.love GridCrawler.exe
+jar -cMf %exedir%\game.love . 
+cd %exedir%\
+copy "%lovedir%\love.exe" . 
+copy "%lovedir%\*.dll" . 
+copy "%lovedir%\*.ico" . 
+copy /b love.exe+game.love %gamename%.exe
 del game.love
 del love.exe
-xcopy d:\temp\dist\changelog.txt .
-jar -cMf d:\dev\GridCrawler.v%version%.zip .
+xcopy %distdir%\changelog.txt .
+jar -cMf %deploydir%\%gamename%.v%version%.zip .
 echo --------------------------
-echo Build dispo dans d:\dev\GridCrawler.v%version%.zip
+echo Build dispo dans %deploydir%\%gamename%.v%version%.zip
 echo --------------------------
-
