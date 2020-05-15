@@ -33,5 +33,8 @@ ItemManager.newZombie = function(tileX, tileY, level)
         Assets.snd_aggro_zombie:play()
     end
 
+    item.onDie = function()
+        Bravoure.kill100zombies.increment()
+    end
     return item
 end

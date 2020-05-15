@@ -19,6 +19,9 @@ ItemManager.newExitGrid = function(tileX, tileY)
         if other == Player then
             if Player.gridOpened then
                 Bravoure.Savonnette.check()
+                if ItemManager.getPoInItems() > 0 then
+                    Bravoure.MonPrecieux.lost()
+                end
                 if Player.level == LEVELMAX then
                     ScreenManager.setScreen("OUTSIDE")
                 else

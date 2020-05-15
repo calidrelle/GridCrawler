@@ -18,6 +18,16 @@ Bravoure.init = function()
     require("engine.Bravoure.paladin")
     require("engine.Bravoure.legolas")
     require("engine.Bravoure.empaleur")
+    require("engine.Bravoure.kill100slimes")
+    require("engine.Bravoure.kill100goblins")
+    require("engine.Bravoure.kill100zombies")
+    require("engine.Bravoure.kill100vampires")
+    require("engine.Bravoure.kill100squelettes")
+    require("engine.Bravoure.niddouillet")
+    require("engine.Bravoure.grandArgentier")
+    require("engine.Bravoure.monPrecieux")
+    require("engine.Bravoure.surLeFil")
+    require("engine.Bravoure.martyr")
 
     Bravoure.load()
 
@@ -40,6 +50,7 @@ Bravoure.create = function(name)
     acte.status = ACTE_NA
     acte.displayed = false
     acte.timerDisplay = 0
+    acte.counter = 0
 
     acte.lost = function()
         acte.status = ACTE_LOST
@@ -56,7 +67,20 @@ Bravoure.create = function(name)
     acte.check = function() -- chaque acte de bravoure doit être vérifier
     end
 
+    acte.increment = function(value)
+        if value == nil then
+            acte.counter = acte.counter + 1
+        else
+            acte.counter = acte.counter + value
+        end
+        print("** Acte " .. acte.name .. ", counter : " .. acte.counter)
+        acte.check()
+    end
+
     acte.achived = function()
+        if acte.status == ACTE_WIN then
+            return
+        end
         acte.status = ACTE_WIN
         acte.dateRealisation = os.date("%d/%m/%Y %H:%M:%S")
         acte.timerDisplay = 15

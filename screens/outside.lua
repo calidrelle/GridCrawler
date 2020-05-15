@@ -30,6 +30,8 @@ this.load = function()
     Bravoure.Vaccine.check()
     Bravoure.Sparadrap.check()
     Bravoure.Legolas.check()
+    Bravoure.NidDouillet.check()
+    Bravoure.MonPrecieux.check()
 
     if OPTIONS.DIFFICULTY == 1 then
         Bravoure.Ecuyer.check()

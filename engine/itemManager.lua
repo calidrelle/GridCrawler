@@ -192,6 +192,8 @@ ItemManager.create = function(quad, x, y, width, height, onTop)
     -- virtual
     item.aggroSound = function()
     end
+    item.onDie = function()
+    end
 
     -- certains items comme les mobs, on une AI
     item.updateState = function(dt)
@@ -419,13 +421,16 @@ ItemManager.doAttack = function(fighter, target)
         end
     end
 
-    print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
+    -- print(fighter.name .. " hit " .. target.name .. " for " .. damage .. " damages")
     local tx, ty = target.getCenter()
     if target == Player then
         Effects.createFloatingText("*", tx, ty, 2, 1, 0.7, 0)
         Effects.createCamShake(0.2, 2)
         Bravoure.Savonnette.lost()
         Bravoure.Legolas.lost()
+        if fighter.name == "pics" then
+            Bravoure.NidDouillet.lost()
+        end
     else
         if target.displayPvLost then
             Effects.createFloatingText("*", tx, ty, 2, 0.5, 1, 0.6)
@@ -454,10 +459,15 @@ ItemManager.doAttack = function(fighter, target)
             Bravoure.Empaleur.increment()
         end
 
+        if math.floor(Player.pv) <= 1 and target.displayPvLost then
+            Bravoure.SurLeFil.achived()
+        end
+
         if target.name == "boss" then
             Assets.snd_boss_death:play()
         else
             Assets.snd_dead:play()
+            target.onDie()
             target.actif = false
         end
 

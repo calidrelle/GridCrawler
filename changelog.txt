@@ -6,6 +6,7 @@ Les floatingTexts démarrent de getCenter() plutôt que x, y
 Le boss à une secondes attaque possible
 Le boss à des adds
 Changement de couleur de tuile selon le niveau 1, 4, 7
+Ajout des derniers actes de bravours manquants
 
 --- v0.5.4
 Arrivée du boss de fin

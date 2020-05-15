@@ -33,5 +33,9 @@ ItemManager.newGoblin = function(tileX, tileY, level)
         Assets.snd_aggro_goblin:play()
     end
 
+    item.onDie = function()
+        Bravoure.kill100goblins.increment()
+    end
+
     return item
 end

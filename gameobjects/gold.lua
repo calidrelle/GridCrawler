@@ -11,6 +11,7 @@ ItemManager.newGold = function(tileX, tileY, amount)
         if other == Player then
             Inventory.addItem(item, item.amount)
             item.actif = false
+            Bravoure.GrandArgentier.increment(item.amount)
         end
     end
 

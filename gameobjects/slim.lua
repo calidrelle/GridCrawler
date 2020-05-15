@@ -33,5 +33,9 @@ ItemManager.newSlim = function(tileX, tileY, level)
         Assets.snd_aggro_slim:play()
     end
 
+    item.onDie = function()
+        Bravoure.kill100slimes.increment()
+    end
+
     return item
 end

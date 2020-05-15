@@ -31,5 +31,8 @@ ItemManager.newSquelette = function(tileX, tileY, level)
         Assets.snd_aggro_squlette:play()
     end
 
+    item.onDie = function()
+        Bravoure.kill100squlettes.increment()
+    end
     return item
 end

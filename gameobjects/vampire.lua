@@ -33,5 +33,9 @@ ItemManager.newVampire = function(tileX, tileY, level)
         Assets.snd_aggro_vampire:play()
     end
 
+    item.onDie = function()
+        Bravoure.kill100vampires.increment()
+    end
+
     return item
 end

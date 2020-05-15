@@ -249,7 +249,7 @@ this.keypressed = function(key)
             Player.level = Player.level - 1
 
         else
-            print(key)
+            -- print(key)
         end
     end
 end

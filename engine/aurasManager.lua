@@ -42,6 +42,9 @@ AurasManager.addAura = function(aura, duration, target)
         else
             error("Aura inconnue de aurasManager : " .. aura)
         end
+        if #target.auras == 3 then
+            Bravoure.Martyr.achived()
+        end
     end
 end
 
