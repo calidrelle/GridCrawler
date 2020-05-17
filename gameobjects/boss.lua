@@ -21,13 +21,28 @@ ItemManager.newBoss = function(tileX, tileY)
     item.animRegen = require("engine.animation").createNew(Assets.boss_run_anim, 1, 0.05, true)
     item.currentAnim = item.animRun
 
+    item.slims = {} -- A détruire lors de la mort du boss
+
     item.atkStatus = ATKSTATE_SEEK
+    if math.random(100) <= 50 then
+        item.currentAttack = ATKSTATE_ATTAQUE1
+    else
+        item.currentAttack = ATKSTATE_ATTAQUE2
+    end
+
+    item.seekTime = DATA.boss.seekTime
     item.atkTimer = 0
-    item.coefModAttack = 4
     item.bloodTimer = 8
-    item.addPopTimer = DATA.boss.addPopTimer
 
     item.angleAtk2 = 0
+    item.deltaAngleAtk2 = 0
+
+    if OPTIONS.DIFFICULTY == 2 then
+        DATA.boss.addPopTimer = DATA.boss.addPopTimer + 5
+    elseif OPTIONS.DIFFICULTY == 1 then
+        DATA.boss.addPopTimer = DATA.boss.addPopTimer + 10
+    end
+    item.addPopTimer = DATA.boss.addPopTimer
 
     item.hit = function(other)
     end
@@ -41,6 +56,13 @@ ItemManager.newBoss = function(tileX, tileY)
     item.draw = function()
     end
 
+    item.onDie = function()
+        print("BOSS DIE")
+        for _, slim in pairs(item.slims) do
+            slim.actif = false
+        end
+    end
+
     item.castSpells = function()
         local x, y = item.getCenter()
         x = x - 8
@@ -48,6 +70,7 @@ ItemManager.newBoss = function(tileX, tileY)
         for i = 1, math.random(10, 45) do
             ItemManager.newSpell(x, y, math.random() * 2 * math.pi)
         end
+        Assets.snd_spell:play()
     end
 
     item.castSpellsEtoile = function()
@@ -72,17 +95,18 @@ ItemManager.newBoss = function(tileX, tileY)
             ItemManager.newSpell(x + dx * n, y + dy * n, nil)
         end
 
-        item.angleAtk2 = item.angleAtk2 + math.rad(10)
+        item.angleAtk2 = item.angleAtk2 + item.deltaAngleAtk2
         for n = 0, 360, 15 do
             local a = math.rad(n)
             ItemManager.newSpell(x + math.cos(a) * 25, y + math.sin(a) * 25, nil)
             ItemManager.newSpell(x + math.cos(a) * 50, y + math.sin(a) * 50, nil)
         end
+        Assets.snd_laser:play()
     end
 
     item.update = function(dt)
         --[[
-            Machine à état : 
+            Machine à état :
                 - le boss court après le joueur : fait très mal
                 - il se prépare à attaquer, attaquable
                 - il attaque : attaquable, lancement des sorts à éviter
@@ -111,11 +135,10 @@ ItemManager.newBoss = function(tileX, tileY)
             return
         end
 
-        if item.state == MOBSTATES.SEEK and item.distToPlay <= item.atkRange * item.coefModAttack then
-            if math.random(100) <= 2 then
-                item.state = MOBSTATES.MANAGED
-                return
-            end
+        item.seekTime = item.seekTime - dt
+        if item.state == MOBSTATES.SEEK and item.seekTime <= 0 then
+            item.state = MOBSTATES.MANAGED
+            return
         end
 
         if item.state == MOBSTATES.MANAGED then
@@ -132,11 +155,18 @@ ItemManager.newBoss = function(tileX, tileY)
             elseif item.atkStatus == ATKSTATE_PREPARE then
                 item.atkTimer = item.atkTimer - dt
                 if item.atkTimer <= 0 then
-                    if math.random() <= 0.5 then
-                        item.atkStatus = ATKSTATE_ATTAQUE1
+                    if item.currentAttack == ATKSTATE_ATTAQUE1 then
+                        item.currentAttack = ATKSTATE_ATTAQUE2
+                        if math.random(100) <= 50 then
+                            item.deltaAngleAtk2 = math.rad(10)
+                        else
+                            item.deltaAngleAtk2 = math.rad(-10)
+                        end
                     else
-                        item.atkStatus = ATKSTATE_ATTAQUE2
+                        item.currentAttack = ATKSTATE_ATTAQUE1
                     end
+
+                    item.atkStatus = item.currentAttack
                     item.atkTimer = item.atkStatus.duration
                     item.currentAnim = item.animFire
                     item.castTime = 0 -- pour tirer dès la passage à l'état ATKSTATE_ATTAQUE
@@ -180,6 +210,7 @@ ItemManager.newBoss = function(tileX, tileY)
                 item.atkTimer = item.atkTimer - dt
                 if item.atkTimer <= 0 then
                     item.atkStatus = ATKSTATE_SEEK
+                    item.seekTime = DATA.boss.seekTime
                     Assets.snd_boss_aggro:play()
                     item.atkTimer = item.atkStatus.duration
                     item.currentAnim = item.animRun
@@ -189,14 +220,13 @@ ItemManager.newBoss = function(tileX, tileY)
                 end
             end
         end
-        -- print("item.atkStatus, item.atk : " .. item.atkStatus .. ", " .. item.atk)
 
+        -- pop des adds
         item.addPopTimer = item.addPopTimer - dt
         if item.addPopTimer <= 0 then
             item.addPopTimer = DATA.boss.addPopTimer
-            if math.random(100) <= DATA.boss.addPopChance then
-                ItemManager.newSlim(Map.grid.x * TILESIZE, Map.grid.y * TILESIZE, 1)
-            end
+            local slim = ItemManager.newSlim(Map.grid.x * TILESIZE, Map.grid.y * TILESIZE, 1)
+            table.insert(item.slims, slim)
         end
 
     end -- item.update

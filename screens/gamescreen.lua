@@ -46,11 +46,10 @@ this.load = function()
             mapBuilder.createBoss()
         else
             Map = mapBuilder.build(60, 60)
+            GUI.addInfoBull("Bienvenue au niveau " .. Player.level .. " de GridCrawler.\nTrouve les " .. MAX_PAGES ..
+                                " pages pour reconstituer le grimoire d'ouverture de la grille.")
         end
         Player.setPosition(Map.spawn.x * TILESIZE, Map.spawn.y * TILESIZE)
-        GUI.addInfoBull("Bienvenue au niveau " .. Player.level .. " de GridCrawler.\nTrouve les " .. MAX_PAGES ..
-                            " pages pour reconstituer le grimoire d'ouverture de la grille.")
-
         Boss = Map.boss
     end
     -- Calcul de la zone de jeu

@@ -467,10 +467,10 @@ ItemManager.doAttack = function(fighter, target)
             Assets.snd_boss_death:play()
         else
             Assets.snd_dead:play()
-            target.onDie()
             target.actif = false
         end
 
+        target.onDie()
         -- drop du loot
         ItemManager.doDrop(target)
     end

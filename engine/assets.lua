@@ -158,6 +158,7 @@ Assets.init = function()
     Assets.snd_boss_regen = love.audio.newSource("sons/boss_regen.wav", "static")
     Assets.snd_boss_death = love.audio.newSource("sons/boss_death.wav", "static")
     Assets.snd_spell = love.audio.newSource("sons/spell.wav", "static")
+    Assets.snd_laser = love.audio.newSource("sons/laser.wav", "static")
 
     print("Assets loaded")
 end

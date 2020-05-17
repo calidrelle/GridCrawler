@@ -138,8 +138,8 @@ DATA.boss = {
     lootPoMin = 15,
     lootPoMax = 30,
     auraToDeal = {},
-    addPopTimer = 10, -- fréquence de pop des add, toutes les n secondes
-    addPopChance = 45 -- pourcentage de change qu'un add pop
+    addPopTimer = 30,
+    seekTime = 8
 }
 
 ------------------------------------------------ BACKUP

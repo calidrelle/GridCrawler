@@ -24,7 +24,6 @@ ItemManager.newSpell = function(tileX, tileY, angle)
     item.displayPvLost = true
 
     item.initStats(0, 1, 0, 0, 0, 0) -- pv, atk, atkRange, detectRange, speed, atkSpeed
-    Assets.snd_spell:play()
 
     if spell == Assets.morsure then
         item.aurasToDeal = {{"Morsure", 4}}
