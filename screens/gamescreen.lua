@@ -44,10 +44,16 @@ this.load = function()
         if Player.level == LEVELMAX then
             Map = mapBuilder.buildFromTiled("maps/boss.lua")
             mapBuilder.createBoss()
+            Player.addKey(3)
         else
             Map = mapBuilder.build(60, 60)
             GUI.addInfoBull("Bienvenue au niveau " .. Player.level .. " de GridCrawler.\nTrouve les " .. MAX_PAGES ..
                                 " pages pour reconstituer le grimoire d'ouverture de la grille.")
+            if Player.level == 4 then
+                Player.addKey(1)
+            elseif Player.level == 7 then
+                Player.addKey(2)
+            end
         end
         Player.setPosition(Map.spawn.x * TILESIZE, Map.spawn.y * TILESIZE)
         Boss = Map.boss

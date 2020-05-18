@@ -478,13 +478,25 @@ this.buildFromTiled = function(filename)
     map.createItemFromId = function(id, x, y)
         if id == 2 then
             ItemManager.newBarrel(x * TILESIZE, y * TILESIZE)
+        elseif id == 3 then
+            ItemManager.newBooks(x * TILESIZE, y * TILESIZE)
+        elseif id == 29 then
+            ItemManager.newBigTable(x * TILESIZE, y * TILESIZE)
+        elseif id == 30 then
+            -- 2° partie de la table
         elseif id == 34 then
             ItemManager.newTable(x * TILESIZE, y * TILESIZE)
         elseif id == 64 then
             map.grid = {x = x, y = y, room = 1}
             ItemManager.newExitGrid(map.grid.x * TILESIZE, map.grid.y * TILESIZE)
+        elseif id == 86 then
+            ItemManager.newDownstairs(x * TILESIZE, y * TILESIZE)
+        elseif id == 92 then
+            ItemManager.newGrid(x * TILESIZE, y * TILESIZE)
+        elseif id == 147 then
+            ItemManager.newChest(x * TILESIZE, y * TILESIZE)
         else
-            error("createItemFromId, id inconnu : " .. id)
+            error("createItemFromId, id inconnu : " .. id .. ", coords: " .. x .. "," .. y)
         end
     end
 

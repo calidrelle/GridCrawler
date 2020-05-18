@@ -7,6 +7,7 @@ La fréquence d'apparition des adds en fixe et dépend du niveau de difficulté
 Le sens de rotation des lasers est aléatoire
 L'infobulle d'entrée de niveau n'apparait plus dans le niveau du boss
 
+
 --- v0.5.5
 Correction bug à cause de rooms non initialisé
 Les PV reste à 0 à la mort au lieu de partir en négatif (boss)

@@ -14,7 +14,7 @@ FRICTION = 0.55
 
 this.createNew = function()
     this.name = "player"
-    this.level = 10
+    this.level = 1
     this.x = 0
     this.y = 0
     this.bounds.x = 7
@@ -59,6 +59,8 @@ this.createNew = function()
     this.auras = {}
     this.aurasToDeal = {} -- les debufs que le player passe à ses cibles
 
+    this.loadKeys()
+
     Inventory.init()
 end
 
@@ -83,6 +85,72 @@ end
 
 this.lowlife = function()
     return this.pv / this.pvMax < 0.5 and this.pv > 0
+end
+
+this.keys = {}
+local keyName = function(gridNumber, difficulty)
+    local diff
+    if difficulty then
+        diff = difficulty
+    else
+        diff = OPTIONS.DIFFICULTY
+    end
+
+    if diff == 1 then
+        return "easy" .. gridNumber
+    elseif diff == 2 then
+        return "normal" .. gridNumber
+    elseif diff == 3 then
+        return "hard" .. gridNumber
+    else
+        return "unkown" .. gridNumber
+    end
+end
+
+this.addKey = function(gridNumber)
+    if gridNumber == 1 then
+        Bravoure.Clef1.check()
+    elseif gridNumber == 2 then
+        Bravoure.Clef2.check()
+    elseif gridNumber == 3 then
+        Bravoure.Clef3.check()
+    end
+    this.keys[keyName(gridNumber)] = {
+        level = this.level,
+        pvMax = this.pvMax,
+        atk = this.atk,
+        def = this.def,
+        speedInit = this.speedInit,
+        gold = Inventory.getPo()
+    }
+    this.saveKeys()
+end
+
+this.hasKey = function(gridNumber, difficulty)
+    local tmp = this.keys[keyName(gridNumber, difficulty)]
+    return tmp ~= nil
+end
+
+this.useKey = function(gridNumber)
+    local key = this.keys[keyName(gridNumber)]
+    this.level = key.level
+    this.pvMax = key.pvMax
+    this.pv = key.pvMax -- on redémarre au max de vie
+    this.atk = key.atk
+    this.def = key.def
+    this.speedInit = key.speedInit
+    Inventory.setPo(key.gold)
+end
+
+this.saveKeys = function()
+    local chunk = table.serialize(this.keys)
+    love.filesystem.write("keys.sav", "return " .. chunk)
+end
+
+this.loadKeys = function()
+    if love.filesystem.getInfo("keys.sav") then
+        this.keys = assert(love.filesystem.load("keys.sav"))()
+    end
 end
 
 local function move(dt)

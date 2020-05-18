@@ -44,6 +44,9 @@ GUI.addInfoBull = function(text, duree, ypos, persistant)
         love.graphics.printf(this.text, (WIDTH - this.large) / 2, this.ypos + 6, this.large, "center")
     end
 
+    this.drawHints = function()
+    end
+
     table.insert(buttons, this)
     return this
 end
@@ -81,6 +84,20 @@ GUI.addButton = function(text, x, y, width)
 
         if this.hover and this.hints ~= "" then
             love.graphics.setFont(Font20)
+            love.graphics.print(this.hints, love.mouse.getX(), love.mouse.getY() + 16)
+        end
+    end
+
+    this.drawHints = function()
+        if not this.visible then
+            return
+        end
+        if this.hover and this.hints ~= "" then
+            local l, s = Font20:getWrap(this.hints, 5000)
+            love.graphics.setColor(0.21, 0.21, 0.21, 0.9)
+            love.graphics.rectangle("fill", love.mouse.getX() - 4, love.mouse.getY() + 16, l + 8, 24)
+            love.graphics.setFont(Font20)
+            love.graphics.setColor(1, 1, 1, 1)
             love.graphics.print(this.hints, love.mouse.getX(), love.mouse.getY() + 16)
         end
     end
@@ -160,6 +177,10 @@ end
 GUI.draw = function()
     for _, b in pairs(buttons) do
         b.draw()
+    end
+    -- après tous les boutons, on affiche les hints
+    for _, b in pairs(buttons) do
+        b.drawHints()
     end
 end
 

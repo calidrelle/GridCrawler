@@ -49,6 +49,7 @@ Assets.init = function()
     -- DONJONS
     Assets.empty_gray = createQuad(144, 0)
     Assets.empty_brown = createQuad(160, 0)
+    Assets.grid = createQuad(112, 48)
 
     Assets.wall = {}
     Assets.wall[1] = createQuad(240, 0)

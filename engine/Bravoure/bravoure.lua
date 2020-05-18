@@ -28,6 +28,9 @@ Bravoure.init = function()
     require("engine.Bravoure.monPrecieux")
     require("engine.Bravoure.surLeFil")
     require("engine.Bravoure.martyr")
+    require("engine.Bravoure.clef1")
+    require("engine.Bravoure.clef2")
+    require("engine.Bravoure.clef3")
 
     Bravoure.load()
 
@@ -46,6 +49,7 @@ Bravoure.create = function(name)
     local acte = {}
     acte.name = name
     acte.description = ""
+    acte.toSave = true
     acte.dateRealisation = ""
     acte.status = ACTE_NA
     acte.displayed = false
@@ -155,7 +159,9 @@ Bravoure.save = function()
     local strBravoure = ""
 
     for i, acte in pairs(actes) do
-        strBravoure = strBravoure .. wile.nvl(acte.dateRealisation) .. "\n"
+        if acte.toSave then
+            strBravoure = strBravoure .. wile.nvl(acte.dateRealisation) .. "\n"
+        end
     end
 
     love.filesystem.write("bravoure.sav", strBravoure)

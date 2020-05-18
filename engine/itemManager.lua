@@ -16,6 +16,7 @@ require("gameobjects.books")
 require("gameobjects.chest")
 require("gameobjects.pics")
 require("gameobjects.smoke")
+require("gameobjects.grid")
 
 -- mobs
 require("gameobjects.slim")
@@ -282,6 +283,7 @@ end
 
 ItemManager.reset = function()
     items = {}
+    ItemManager.gridNumber = nil
 end
 
 ItemManager.update = function(dt)

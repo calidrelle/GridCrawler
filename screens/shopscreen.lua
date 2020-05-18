@@ -30,30 +30,17 @@ this.load = function()
     ItemManager.reset()
     AurasManager.reset()
     local mapBuilder = require("engine.dungeonBuilder")
-    Map = mapBuilder.createEmptyMap(12, 11)
+    -- Map = mapBuilder.createEmptyMap(12, 11)
+    Map = mapBuilder.buildFromTiled("maps/shop.lua")
+    staires = ItemManager.getItem("downstaires")
 
-    --- SCENERY
     Player.currentAnim = Player.animRun
-    Player.setPosition(6.5 * TILESIZE, 10 * TILESIZE)
+    Player.setPosition((Map.spawn.x + 0.5) * TILESIZE, Map.spawn.y * TILESIZE)
 
-    ItemManager.newVendor(6.5 * TILESIZE, 5 * TILESIZE)
-    ItemManager.newBigTable(6 * TILESIZE, 6 * TILESIZE)
+    ItemManager.newVendor(8.5 * TILESIZE, 6 * TILESIZE)
 
-    staires = ItemManager.newDownstairs(7 * TILESIZE, 3 * TILESIZE)
-    ItemManager.newTorch(4 * TILESIZE, 1 * TILESIZE)
-    ItemManager.newTorch(9 * TILESIZE, 1 * TILESIZE)
-
-    ItemManager.newBarrel(3 * TILESIZE, 4 * TILESIZE).isSelectable = false
-    ItemManager.newBarrel(2 * TILESIZE, 10 * TILESIZE).isSelectable = false
-    ItemManager.newBarrel(10 * TILESIZE, 10 * TILESIZE).isSelectable = false
-
-    ItemManager.newBooks(3 * TILESIZE, 2 * TILESIZE)
-    ItemManager.newBooks(4 * TILESIZE, 2 * TILESIZE)
-    ItemManager.newBooks(5 * TILESIZE, 2 * TILESIZE)
-    ItemManager.newBooks(8 * TILESIZE, 2 * TILESIZE)
-    ItemManager.newBooks(9 * TILESIZE, 2 * TILESIZE)
-    ItemManager.newBooks(10 * TILESIZE, 2 * TILESIZE)
-    ItemManager.newChest(11 * TILESIZE, 2 * TILESIZE)
+    ItemManager.newTorch(5 * TILESIZE, 2 * TILESIZE)
+    ItemManager.newTorch(13 * TILESIZE, 2 * TILESIZE)
 
     -- Les stats : 2 au hasard
     if DATA.sell1 == 0 then
@@ -82,16 +69,16 @@ this.load = function()
     end
 
     if DATA.sell1 == STAT_PV or DATA.sell2 == STAT_PV then
-        addStat(STAT_PV, "Point de vie +1", 150, Player.pvMax, ItemManager.newTable(3 * TILESIZE, 7 * TILESIZE))
+        addStat(STAT_PV, "Point de vie +1", 150, Player.pvMax, ItemManager.newTable(5 * TILESIZE, 8 * TILESIZE))
     end
     if DATA.sell1 == STAT_DEF or DATA.sell2 == STAT_DEF then
-        addStat(STAT_DEF, "Défense +1", 150, Player.def, ItemManager.newTable(3 * TILESIZE, 9 * TILESIZE))
+        addStat(STAT_DEF, "Défense +1", 150, Player.def, ItemManager.newTable(5 * TILESIZE, 11 * TILESIZE))
     end
     if DATA.sell1 == STAT_ATK or DATA.sell2 == STAT_ATK then
-        addStat(STAT_ATK, "Attaque +1", 150, Player.atk, ItemManager.newTable(10 * TILESIZE, 7 * TILESIZE))
+        addStat(STAT_ATK, "Attaque +1", 150, Player.atk, ItemManager.newTable(12 * TILESIZE, 8 * TILESIZE))
     end
     if DATA.sell1 == STAT_SPD or DATA.sell2 == STAT_SPD then
-        addStat(STAT_SPD, "Vitesse +2%", 150, Player.speedInit, ItemManager.newTable(10 * TILESIZE, 9 * TILESIZE))
+        addStat(STAT_SPD, "Vitesse +2%", 150, Player.speedInit, ItemManager.newTable(12 * TILESIZE, 11 * TILESIZE))
     end
 
     MUSICPLAYER:stop()
@@ -111,6 +98,17 @@ local function doSelect()
         Player.level = Player.level + 1
         Player.timers[Player.level] = 0
         ScreenManager.setScreen("NEXTLEVEL")
+
+    elseif selectedItem.name == "grid" then
+        if Player.hasKey(selectedItem.gridNumber) then
+            Player.useKey(selectedItem.gridNumber)
+            Player.timers[Player.level] = 0
+            ScreenManager.setScreen("NEXTLEVEL")
+        else
+            GUI.addInfoBull("Vous n'avez pas la clef pour descendre ici")
+        end
+        return
+
     elseif selectedItem.name then
         -- Le joueur à choisi une amélioration
         for _, stat in pairs(stats) do
@@ -134,7 +132,6 @@ local function doSelect()
                 end
             end
         end
-
     end
 end
 
@@ -163,14 +160,14 @@ this.update = function(dt)
     end
 end
 
-local function drawMap()
+local function drawMap(upper)
     -- La map
     for x = 1, Map.width do
         for y = 1, Map.height do
             local tile = Map[x][y]
             local tx = x * TILESIZE
             local ty = y * TILESIZE
-            tile.draw(tx, ty)
+            tile.draw(tx, ty, upper)
         end
     end
 end
@@ -183,18 +180,16 @@ this.draw = function()
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setFont(FontVendor12)
 
-    drawMap()
-    love.graphics.draw(Assets.shop, 0, 0)
+    drawMap(false)
     ItemManager.draw()
-    Assets.draw(Assets.floor1_grid, 6 * TILESIZE, 3 * TILESIZE)
-    Assets.draw(Assets.floor1_grid, 11 * TILESIZE, 9 * TILESIZE)
 
     Player.draw()
-    Assets.draw(Assets.vendor_topdoor, TILESIZE * 6, TILESIZE * 11)
+    drawMap(true)
+    -- Assets.draw(Assets.vendor_topdoor, TILESIZE * 6, TILESIZE * 11)
 
-    love.graphics.print("Niv." .. Player.level .. " : " .. math.floor(Player.timers[Player.level]) .. "s.", TILESIZE * 8, TILESIZE * 12)
-    love.graphics.print("Total : " .. math.floor(Player.timers.getTotal()) .. "s.", TILESIZE * 1, TILESIZE * 12)
-    love.graphics.print("Niv." .. Player.level + 1, TILESIZE * 6, TILESIZE * 1)
+    love.graphics.print("Niv." .. Player.level .. " : " .. math.floor(Player.timers[Player.level]) .. "s.", TILESIZE * 10, TILESIZE * 15)
+    love.graphics.print("Total : " .. math.floor(Player.timers.getTotal()) .. "s.", TILESIZE * 2, TILESIZE * 15)
+    love.graphics.print("Niv." .. Player.level + 1, TILESIZE * 8, TILESIZE * 2)
 
     love.graphics.pop() -------------------------------------
 

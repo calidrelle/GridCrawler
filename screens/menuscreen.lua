@@ -2,9 +2,9 @@ local this = {}
 
 local btnPlay
 local btnReplay
-local btnPlayEasy
-local btnPlayNormal
-local btnPlayHard
+local btnPlayEasy, btnContinuEasy
+local btnPlayNormal, btnContinueNormal
+local btnPlayHard, btnContinueHard
 local btnOptions
 local btnQuit
 
@@ -20,10 +20,21 @@ this.load = function()
     btnPlayNormal = GUI.addButton("2. Partie normal", x, y - 80, 100 * SCALE)
     btnPlayHard = GUI.addButton("3. Partie difficile", x, y - 20, 100 * SCALE)
 
+    btnContinuEasy = GUI.addButton("Magasin facile", x - 400, y + 100, 80 * SCALE)
+    btnContinueNormal = GUI.addButton("Magasin normal", x - 400, y + 160, 80 * SCALE)
+    btnContinueHard = GUI.addButton("Magasin difficile", x - 400, y + 220, 80 * SCALE)
+
     if DATA.SaveExists() then
         ScreenManager.started = true
         btnReplay.hints = "Attention, recommencer une partie efface la progression en cours"
     end
+
+    btnContinuEasy.visible = Player.hasKey(1, 1)
+    btnContinuEasy.hints = btnReplay.hints
+    btnContinueNormal.visible = Player.hasKey(1, 2)
+    btnContinueNormal.hints = btnReplay.hints
+    btnContinueHard.visible = Player.hasKey(1, 3)
+    btnContinueHard.hints = btnReplay.hints
 
     if ScreenManager.started then
         btnPlayEasy.visible = false
@@ -52,26 +63,41 @@ local function doBackInGame()
     end
 end
 
-local function doStartEasy()
-    if btnPlayEasy.visible then
+local function doStartEasy(useKey)
+    if btnPlayEasy.visible or btnContinuEasy.visible then
         OPTIONS.DIFFICULTY = 1
-        ScreenManager.setScreen("GAME")
+        if useKey then
+            Player.level = 1
+            ScreenManager.setScreen("VENDOR")
+        else
+            ScreenManager.setScreen("GAME")
+        end
         ScreenManager.started = true
     end
 end
 
-local function doStartNormal()
-    if btnPlayNormal.visible then
+local function doStartNormal(useKey)
+    if btnPlayNormal.visible or btnContinueNormal.visible then
         OPTIONS.DIFFICULTY = 2
-        ScreenManager.setScreen("GAME")
+        if useKey then
+            Player.level = 1
+            ScreenManager.setScreen("VENDOR")
+        else
+            ScreenManager.setScreen("GAME")
+        end
         ScreenManager.started = true
     end
 end
 
-local function doStartHard()
-    if btnPlayHard.visible then
+local function doStartHard(useKey)
+    if btnPlayHard.visible or btnContinueHard.visible then
         OPTIONS.DIFFICULTY = 3
-        ScreenManager.setScreen("GAME")
+        if useKey then
+            Player.level = 1
+            ScreenManager.setScreen("VENDOR")
+        else
+            ScreenManager.setScreen("GAME")
+        end
         ScreenManager.started = true
     end
 end
@@ -91,6 +117,13 @@ this.update = function(dt)
         doStartNormal()
     elseif btnPlayHard.clicked then
         doStartHard()
+
+    elseif btnContinuEasy.clicked then
+        doStartEasy(true)
+    elseif btnContinueNormal.clicked then
+        doStartNormal(true)
+    elseif btnContinueHard.clicked then
+        doStartHard(true)
 
     elseif btnOptions.clicked then
         doOptions()
