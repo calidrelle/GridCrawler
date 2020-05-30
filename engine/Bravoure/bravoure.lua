@@ -58,8 +58,10 @@ Bravoure.create = function(name)
     acte.countToReach = 0
 
     acte.lost = function()
-        acte.status = ACTE_LOST
-        print("** Acte " .. acte.name .. " : " .. acte.status)
+        if acte.status == ACTE_NA then
+            acte.status = ACTE_LOST
+            print("** Acte " .. acte.name .. " : " .. acte.status)
+        end
     end
 
     acte.reset = function()
