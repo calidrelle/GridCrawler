@@ -228,6 +228,8 @@ this.keypressed = function(key)
     end
     if DevMode() then
         if key == "f2" then
+            Bravoure.Savonnette.status = ACTE_NA
+            Bravoure.Savonnette.displayed = false
             Bravoure.Savonnette.check()
         elseif key == "f4" then
             Player.gridOpened = true

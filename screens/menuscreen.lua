@@ -7,6 +7,7 @@ local btnPlayNormal, btnContinueNormal
 local btnPlayHard, btnContinueHard
 local btnOptions
 local btnQuit
+local btnBravoure
 
 this.load = function()
     GUI.reset()
@@ -23,6 +24,8 @@ this.load = function()
     btnContinuEasy = GUI.addButton("Magasin facile", x - 400, y + 100, 80 * SCALE)
     btnContinueNormal = GUI.addButton("Magasin normal", x - 400, y + 160, 80 * SCALE)
     btnContinueHard = GUI.addButton("Magasin difficile", x - 400, y + 220, 80 * SCALE)
+
+    btnBravoure = GUI.addButton("Actes de Bravoure", WIDTH * 3 / 4, HEIGHT - 30 * SCALE, 80 * SCALE)
 
     if DATA.SaveExists() then
         ScreenManager.started = true
@@ -127,6 +130,8 @@ this.update = function(dt)
 
     elseif btnOptions.clicked then
         doOptions()
+    elseif btnBravoure.clicked then
+        ScreenManager.setScreen("BRAVOURE")
     elseif btnQuit.clicked then
         ScreenManager.setScreen("QUIT")
     end

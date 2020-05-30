@@ -1,5 +1,6 @@
 Bravoure.Empaleur = Bravoure.create("Empaleur")
 Bravoure.Empaleur.description = "Réussir à tuer 15 monstres par empalement"
+Bravoure.Empaleur.countToReach = 15
 
 -- Bravoure.Empaleur.counter = 0
 -- Bravoure.Empaleur.increment = function()
@@ -8,7 +9,7 @@ Bravoure.Empaleur.description = "Réussir à tuer 15 monstres par empalement"
 -- end
 
 Bravoure.Empaleur.check = function()
-    if Bravoure.Empaleur.status == ACTE_NA and Bravoure.Empaleur.counter >= 15 then
+    if Bravoure.Empaleur.status == ACTE_NA and Bravoure.Empaleur.counter >= Bravoure.Empaleur.countToReach then
         Bravoure.Empaleur.achived()
     end
 end

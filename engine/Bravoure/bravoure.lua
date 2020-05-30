@@ -40,7 +40,7 @@ Bravoure.init = function()
         else
             acte.status = ACTE_WIN
         end
-        print("** Acte " .. acte.name .. " : " .. acte.status)
+        print("** Acte " .. acte.name .. " : " .. acte.status .. ", " .. acte.counter .. ", " .. wile.boolToStr(acte.displayed))
     end
     print("** Actes de bravoure initialized")
 end
@@ -55,6 +55,7 @@ Bravoure.create = function(name)
     acte.displayed = false
     acte.timerDisplay = 0
     acte.counter = 0
+    acte.countToReach = 0
 
     acte.lost = function()
         acte.status = ACTE_LOST
@@ -79,6 +80,7 @@ Bravoure.create = function(name)
         end
         print("** Acte " .. acte.name .. ", counter : " .. acte.counter)
         acte.check()
+        Bravoure.save()
     end
 
     acte.achived = function()
@@ -97,6 +99,7 @@ Bravoure.create = function(name)
             acte.timerDisplay = acte.timerDisplay - dt
             if acte.timerDisplay <= 0 then
                 acte.displayed = true
+                print("*** Actes " .. acte.name .. " displayed")
             end
         end
     end
@@ -104,15 +107,32 @@ Bravoure.create = function(name)
     acte.draw = function(numero)
         local xpos = 40
         local ypos = 40 + acte.timerDisplay * 20 + numero * (Assets.cadre_acte:getHeight() + 10)
-        local width = Assets.cadre_acte:getWidth()
+        acte.drawAtPos(xpos, ypos, acte.timerDisplay)
+    end
 
-        love.graphics.setColor(1, 1, 1, acte.timerDisplay)
+    acte.drawAtPos = function(xpos, ypos, alpha)
+        local width = Assets.cadre_acte:getWidth()
+        if acte.status == ACTE_WIN then
+            love.graphics.setColor(1, 1, 1, alpha)
+        else
+            love.graphics.setColor(.7, .6, .6, alpha)
+        end
         love.graphics.draw(Assets.cadre_acte, xpos, ypos)
         love.graphics.setFont(FontVendor20)
         love.graphics.setColor(1, 0.85, 0)
         love.graphics.printf(acte.name, xpos + 5, ypos + 5, width - 10, "center")
         love.graphics.setColor(0.21, 0.21, 0.21)
         love.graphics.printf(acte.description, xpos + 5, ypos + 30, width - 10, "left")
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setFont(FontVendor12)
+        if acte.status == ACTE_WIN then
+            love.graphics.printf(acte.dateRealisation, xpos + 5, ypos + 84, width - 10, "right")
+        else
+            if acte.countToReach > 0 then
+                love.graphics.printf("Avancement : " .. math.floor(acte.counter / acte.countToReach * 100) .. " %", xpos + 5, ypos + 84,
+                                     width - 10, "right")
+            end
+        end
     end
 
     table.insert(actes, acte)
@@ -122,6 +142,10 @@ end
 Bravoure.resetLevel = function()
     -- Fonction qui itinialise les actes par niveau
     Bravoure.Savonnette.reset()
+end
+
+Bravoure.getActes = function()
+    return actes
 end
 
 Bravoure.update = function(dt)
@@ -141,30 +165,34 @@ Bravoure.draw = function()
 end
 
 Bravoure.load = function()
-    if love.filesystem.getInfo("bravoure.sav") == nil then
+    if love.filesystem.getInfo("bravoure.sav.txt") == nil then
         return
     end
-    local values = {}
-    for line in love.filesystem.lines("bravoure.sav") do
-        table.insert(values, line)
-    end
-
-    for i, acte in pairs(actes) do
-        acte.dateRealisation = values[i]
+    local values = table.load("bravoure.sav.txt")
+    for _, v in pairs(values) do
+        for _, acte in pairs(actes) do
+            if (acte.name == v.name) then
+                acte.dateRealisation = v.dateRealisation
+                acte.counter = v.counter
+                acte.status = v.status
+                break
+            end
+        end
     end
     print("** Bravoure loaded")
 end
 
 Bravoure.save = function()
-    local strBravoure = ""
+    local chunk = {}
 
-    for i, acte in pairs(actes) do
+    for _, acte in pairs(actes) do
         if acte.toSave then
-            strBravoure = strBravoure .. wile.nvl(acte.dateRealisation) .. "\n"
+            local a = {name = acte.name, dateRealisation = acte.dateRealisation, counter = acte.counter, status = acte.status}
+            table.insert(chunk, a)
         end
     end
 
-    love.filesystem.write("bravoure.sav", strBravoure)
+    table.save(chunk, "bravoure.sav.txt")
     print("** Bravoure saved")
 end
 

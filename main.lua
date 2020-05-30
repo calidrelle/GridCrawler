@@ -14,67 +14,6 @@ function DevMode()
     return inDevMod
 end
 
-function trim(s)
-    return (s:gsub("^%s*(.-)%s*$", "%1"))
-end
-
-function table.contains(tab, item)
-    for key, value in pairs(tab) do
-        if value == item then
-            return true
-        end
-    end
-    return false
-end
-
-function table.removeAll(tab)
-    while #tab > 0 do
-        tab[1] = {}
-        table.remove(tab, 1)
-    end
-end
-
-function table.removeFromValue(tab, value)
-    for i = #tab, 1, -1 do
-        if tab[i] == value then
-            table.remove(tab, i)
-            return true
-        end
-    end
-    return false
-end
-
-function table.serialize(val, name, skipnewlines, depth)
-    skipnewlines = skipnewlines or false
-    depth = depth or 0
-
-    local tmp = string.rep(" ", depth)
-
-    if name then
-        tmp = tmp .. name .. " = "
-    end
-
-    if type(val) == "table" then
-        tmp = tmp .. "{" .. (not skipnewlines and "\n" or "")
-
-        for k, v in pairs(val) do
-            tmp = tmp .. table.serialize(v, k, skipnewlines, depth + 1) .. "," .. (not skipnewlines and "\n" or "")
-        end
-
-        tmp = tmp .. string.rep(" ", depth) .. "}"
-    elseif type(val) == "number" then
-        tmp = tmp .. tostring(val)
-    elseif type(val) == "string" then
-        tmp = tmp .. string.format("%q", val)
-    elseif type(val) == "boolean" then
-        tmp = tmp .. (val and "true" or "false")
-    else
-        tmp = tmp .. "\"[inserializeable datatype:" .. type(val) .. "]\""
-    end
-
-    return tmp
-end
-
 function math.dist(x1, y1, x2, y2)
     return ((x2 - x1) ^ 2 + (y2 - y1) ^ 2) ^ 0.5
 end
@@ -91,35 +30,7 @@ function math.impair(x)
     return math.floor(x / 2) * 2 - 1
 end
 
-wile = {}
-function wile.display2decimale(value)
-    return math.floor(value * 100) / 100
-end
-
-function wile.display1decimale(value)
-    return math.floor(value * 10) / 10
-end
-
-function wile.boolToStr(value)
-    if value == nil then
-        return "nil"
-    end
-    if value then
-        return "true"
-    elseif not value then
-        return "false"
-    else
-        return "not a boolean : " .. value
-    end
-end
-
-function wile.nvl(value)
-    if value == nil then
-        return ""
-    else
-        return value
-    end
-end
+require("wile")
 -------------------[[ GLOBAL FUNCTIONS ]]
 
 local optionsScreen = require("screens.optionsscreen")
@@ -131,6 +42,7 @@ local gameQuit = require("screens.quitscreen")
 local keysOptionsScreen = require("screens.keysoptions")
 local shopScreen = require("screens.shopscreen")
 local outsideScreen = require("screens.outside")
+local bravoureScreen = require("screens.bravourescreen")
 
 local screen = nil
 
@@ -225,6 +137,8 @@ ScreenManager.setScreen = function(name)
         screen = shopScreen
     elseif name == "OUTSIDE" then
         screen = outsideScreen
+    elseif name == "BRAVOURE" then
+        screen = bravoureScreen
     else
         error("L'écran " .. name .. " n'existe pas")
     end

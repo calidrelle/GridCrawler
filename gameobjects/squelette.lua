@@ -32,7 +32,7 @@ ItemManager.newSquelette = function(tileX, tileY, level)
     end
 
     item.onDie = function()
-        Bravoure.kill100squlettes.increment()
+        Bravoure.kill100squelettes.increment()
     end
     return item
 end
