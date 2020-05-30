@@ -1,3 +1,7 @@
+--- v0.5.7
+Ecran des actes de Bravoure
+Sauvegarde des actes avec leurs compteurs
+
 --- v0.5.6
 Boss de fin avec son propre donjon et ses sorts
 Le déclenchement des attaques ne dépendent plus de la position du joueur, mais simplement du temps
