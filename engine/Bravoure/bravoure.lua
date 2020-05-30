@@ -127,7 +127,7 @@ Bravoure.create = function(name)
         love.graphics.printf(acte.description, xpos + 5, ypos + 30, width - 10, "left")
         love.graphics.setColor(1, 1, 1)
         love.graphics.setFont(FontVendor12)
-        if acte.status == ACTE_WIN then
+        if acte.status == ACTE_WIN and acte.toSave then
             love.graphics.printf(acte.dateRealisation, xpos + 5, ypos + 84, width - 10, "right")
         else
             if acte.countToReach > 0 then
